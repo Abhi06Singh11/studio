@@ -1,0 +1,368 @@
+
+"use client";
+
+import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import * as z from "zod";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
+import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon } from "lucide-react";
+
+const profileFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters.").max(50, "Name must be at most 50 characters."),
+  bio: z.string().max(500, "Bio must be at most 500 characters.").optional(),
+  location: z.string().max(100, "Location must be at most 100 characters.").optional(),
+  profilePictureUrl: z.string().url("Please enter a valid URL for profile picture.").optional().or(z.literal('')),
+  role: z.enum(["Developer", "Entrepreneur", "Investor", "General"]),
+  
+  // Developer specific
+  skills: z.string().optional(), // comma separated
+  tools: z.string().optional(), // comma separated
+  
+  // Entrepreneur specific
+  startupName: z.string().optional(),
+  ideaSummary: z.string().max(1000, "Idea summary must be at most 1000 characters.").optional(),
+  pitchDeckUrl: z.string().url("Please enter a valid URL for pitch deck.").optional().or(z.literal('')),
+
+  // Investor specific
+  investmentInterests: z.string().optional(), // comma separated
+
+  // TODO: Add WorkExperience, Education as repeatable field groups
+  // For now, keeping it simple
+
+  linkedinUrl: z.string().url("Please enter a valid LinkedIn URL.").optional().or(z.literal('')),
+  portfolioWebsiteUrl: z.string().url("Please enter a valid Portfolio/Website URL.").optional().or(z.literal('')),
+  githubUrl: z.string().url("Please enter a valid GitHub URL.").optional().or(z.literal('')),
+
+  profileVisibility: z.enum(["Public", "Private", "Connections Only"]),
+});
+
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
+
+// This can be set to user's current values when editing
+const defaultValues: Partial<ProfileFormValues> = {
+  name: "",
+  bio: "",
+  location: "",
+  profilePictureUrl: "",
+  role: "Developer",
+  skills: "",
+  tools: "",
+  startupName: "",
+  ideaSummary: "",
+  pitchDeckUrl: "",
+  investmentInterests: "",
+  linkedinUrl: "",
+  portfolioWebsiteUrl: "",
+  githubUrl: "",
+  profileVisibility: "Public",
+};
+
+export default function ProfileEditPage() {
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileFormSchema),
+    defaultValues,
+    mode: "onChange",
+  });
+
+  const watchedRole = form.watch("role");
+
+  function onSubmit(data: ProfileFormValues) {
+    // In a real app, you'd send this data to your backend
+    console.log(data);
+    toast({
+      title: "Profile Updated!",
+      description: "Your profile information has been saved.",
+    });
+  }
+
+  return (
+    <div className="space-y-6">
+       <Link href="/profiles" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+         <ArrowLeftIcon className="mr-2 h-4 w-4" />
+         Back to Profiles
+       </Link>
+      <Card>
+        <CardHeader>
+          <CardTitle>Edit Your Profile</CardTitle>
+          <CardDescription>Manage your professional information and how others see you on Synergy Hub.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Dr. Elara Vance" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="profilePictureUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profile Picture URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com/your-image.png" {...field} />
+                    </FormControl>
+                    <FormDescription>Link to your hosted profile picture.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Tell us a bit about yourself..." className="resize-y min-h-[100px]" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Location</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., San Francisco, CA" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Primary Role</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your primary role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Developer"><BriefcaseIcon className="inline-block mr-2 h-4 w-4" />Developer</SelectItem>
+                        <SelectItem value="Entrepreneur"><LightbulbIcon className="inline-block mr-2 h-4 w-4" />Entrepreneur</SelectItem>
+                        <SelectItem value="Investor"><DollarSignIcon className="inline-block mr-2 h-4 w-4" />Investor</SelectItem>
+                        <SelectItem value="General"><UserIcon className="inline-block mr-2 h-4 w-4" />General</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {watchedRole === "Developer" && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="skills"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Skills</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., JavaScript, React, Node.js" {...field} />
+                        </FormControl>
+                        <FormDescription>Comma-separated list of your technical skills.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="tools"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tools & Technologies</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., VS Code, Docker, AWS" {...field} />
+                        </FormControl>
+                        <FormDescription>Comma-separated list of tools you use.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
+              {watchedRole === "Entrepreneur" && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="startupName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Startup Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., DevOptimize Inc." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="ideaSummary"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Idea Summary / Elevator Pitch</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Briefly describe your startup or idea..." className="resize-y min-h-[100px]" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="pitchDeckUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Pitch Deck URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://example.com/your-pitch-deck.pdf" {...field} />
+                        </FormControl>
+                        <FormDescription>Link to your hosted pitch deck.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
+            {watchedRole === "Investor" && (
+                <FormField
+                  control={form.control}
+                  name="investmentInterests"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Investment Interests</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., AI, SaaS, FinTech" {...field} />
+                      </FormControl>
+                      <FormDescription>Comma-separated list of your investment interests.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              
+              <h3 className="text-lg font-medium border-t pt-6">Social Links</h3>
+               <FormField
+                control={form.control}
+                name="linkedinUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>LinkedIn Profile URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://linkedin.com/in/yourprofile" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="portfolioWebsiteUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Portfolio/Website URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://yourportfolio.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="githubUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GitHub Profile URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://github.com/yourusername" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <h3 className="text-lg font-medium border-t pt-6">Settings</h3>
+              <FormField
+                control={form.control}
+                name="profileVisibility"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profile Visibility</FormLabel>
+                     <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select profile visibility" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Public"><EyeIcon className="inline-block mr-2 h-4 w-4" />Public</SelectItem>
+                          <SelectItem value="Connections Only"><UsersIcon className="inline-block mr-2 h-4 w-4" />Connections Only</SelectItem>
+                          <SelectItem value="Private"><UserIcon className="inline-block mr-2 h-4 w-4" />Private</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    <FormDescription>Control who can see your profile.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button type="button" variant="outline" asChild>
+                  <Link href="/profiles">Cancel</Link>
+                </Button>
+                <Button type="submit">Save Profile</Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+    
