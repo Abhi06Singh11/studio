@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon, SmileIcon } from "lucide-react";
+import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon, SmileIcon, StarIcon } from "lucide-react";
 
 interface WorkExperience {
   title: string;
@@ -63,9 +63,10 @@ interface Profile {
   customStatusEmoji?: string;
   presence?: UserPresence;
   lastActiveTimestamp?: string;
+  isStarred?: boolean;
 }
 
-const sampleProfiles: Profile[] = [
+const initialSampleProfiles: Profile[] = [
   {
     id: "1",
     name: "Dr. Elara Vance",
@@ -92,6 +93,7 @@ const sampleProfiles: Profile[] = [
     presence: "online",
     customStatusText: "Deep in thought with LLMs",
     customStatusEmoji: "🧠",
+    isStarred: true,
   },
   {
     id: "2",
@@ -122,6 +124,7 @@ const sampleProfiles: Profile[] = [
     customStatusText: "Coffee break!",
     customStatusEmoji: "☕",
     lastActiveTimestamp: "5m ago",
+    isStarred: false,
   },
   {
     id: "3",
@@ -149,6 +152,7 @@ const sampleProfiles: Profile[] = [
     profileVisibility: "Connections Only",
     presence: "offline",
     lastActiveTimestamp: "3h ago",
+    isStarred: true,
   },
    {
     id: "4",
@@ -176,10 +180,11 @@ const sampleProfiles: Profile[] = [
     presence: "online",
     customStatusText: "Designing new experiences",
     customStatusEmoji: "🎨",
+    isStarred: false,
   },
 ];
 
-const suggestedProfilesStatic: Profile[] = sampleProfiles.slice(0, 2).filter(p => p.id !== sampleProfiles[0]?.id);
+const suggestedProfilesStatic: Profile[] = initialSampleProfiles.slice(0, 2).filter(p => p.id !== initialSampleProfiles[0]?.id);
 
 
 function getRoleSpecificIcon(role: UserRole) {
@@ -202,33 +207,41 @@ function PresenceIndicator({ presence, lastActiveTimestamp }: { presence?: UserP
   if (presence === 'away') {
     return <span className="absolute bottom-1 right-1 block h-3 w-3 rounded-full border-2 border-card bg-yellow-500" title="Away" />;
   }
-  // For offline, no dot, but lastActiveTimestamp might be shown elsewhere
   return null;
 }
 
 export default function ProfilesPage() {
+  const [profilesList, setProfilesList] = React.useState<Profile[]>(initialSampleProfiles);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [selectedRole, setSelectedRole] = React.useState("All");
   const [selectedLocation, setSelectedLocation] = React.useState("All");
-  const [displayProfiles, setDisplayProfiles] = React.useState<Profile[]>(sampleProfiles);
+  const [displayProfiles, setDisplayProfiles] = React.useState<Profile[]>(profilesList);
 
-  const roles = ["All", ...new Set(sampleProfiles.map(p => p.role))];
-  const locations = ["All", ...new Set(sampleProfiles.map(p => p.location).filter(Boolean))];
+  const roles = ["All", ...new Set(profilesList.map(p => p.role))];
+  const locations = ["All", ...new Set(profilesList.map(p => p.location).filter(Boolean))];
+
+  const toggleStar = (profileId: string) => {
+    setProfilesList(prevProfiles =>
+      prevProfiles.map(profile =>
+        profile.id === profileId ? { ...profile, isStarred: !profile.isStarred } : profile
+      )
+    );
+  };
 
   React.useEffect(() => {
-    let profiles = sampleProfiles;
+    let filtered = profilesList;
 
     if (selectedRole !== "All") {
-      profiles = profiles.filter(p => p.role === selectedRole);
+      filtered = filtered.filter(p => p.role === selectedRole);
     }
 
     if (selectedLocation !== "All") {
-      profiles = profiles.filter(p => p.location === selectedLocation);
+      filtered = filtered.filter(p => p.location === selectedLocation);
     }
 
     if (searchTerm) {
       const lowerSearchTerm = searchTerm.toLowerCase();
-      profiles = profiles.filter(p =>
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(lowerSearchTerm) ||
         p.title.toLowerCase().includes(lowerSearchTerm) ||
         p.bio.toLowerCase().includes(lowerSearchTerm) ||
@@ -238,8 +251,10 @@ export default function ProfilesPage() {
         (p.investmentInterests && p.investmentInterests.join(" ").toLowerCase().includes(lowerSearchTerm))
       );
     }
-    setDisplayProfiles(profiles);
-  }, [searchTerm, selectedRole, selectedLocation]);
+    setDisplayProfiles(filtered);
+  }, [searchTerm, selectedRole, selectedLocation, profilesList]);
+  
+  const starredProfiles = profilesList.filter(p => p.isStarred);
 
   return (
     <div className="space-y-8">
@@ -253,11 +268,27 @@ export default function ProfilesPage() {
         </Link>
       </div>
 
+      {/* Starred Connections Section */}
+      {starredProfiles.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-bold tracking-tight mb-4 flex items-center">
+            <StarIcon className="mr-2 h-6 w-6 text-yellow-400 fill-yellow-400" /> Starred Connections
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {starredProfiles.map((profile) => (
+              <ProfileCard key={`starred-${profile.id}`} profile={profile} onToggleStar={toggleStar} />
+            ))}
+          </div>
+        </div>
+      )}
+      {starredProfiles.length > 0 && <hr className="my-8 border-border" />}
+
+
       {/* Search and Filters */}
       <Card className="p-4 sm:p-6 shadow-md rounded-xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
           <div className="sm:col-span-2 md:col-span-1">
-            <label htmlFor="search-profiles" className="block text-sm font-medium text-muted-foreground mb-1">Search</label>
+            <label htmlFor="search-profiles" className="block text-sm font-medium text-muted-foreground mb-1">Search All Profiles</label>
             <div className="relative">
               <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -294,126 +325,12 @@ export default function ProfilesPage() {
         </div>
       </Card>
 
-      {/* Profiles Grid */}
+      {/* All Profiles Grid */}
+      <h2 className="text-2xl font-bold tracking-tight mt-8">All Profiles</h2>
       {displayProfiles.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayProfiles.map((profile) => (
-            <Card key={profile.id} className="overflow-hidden shadow-lg rounded-xl flex flex-col">
-              <CardHeader className="p-0">
-                 <div className="relative h-32 w-full bg-muted">
-                   {profile.bannerUrl && <Image src={profile.bannerUrl} alt={`${profile.name} banner`} layout="fill" objectFit="cover" data-ai-hint={profile.bannerAiHint || "abstract background"}/>}
-                 </div>
-                 <div className="flex justify-center -mt-12">
-                  <div className="relative">
-                    <Avatar className="h-24 w-24 border-4 border-card shadow-md">
-                      <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
-                      <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
-                    </Avatar>
-                    <PresenceIndicator presence={profile.presence} />
-                  </div>
-                 </div>
-              </CardHeader>
-              <CardContent className="text-center pt-4 flex-grow">
-                <CardTitle className="text-xl">{profile.name}</CardTitle>
-                <CardDescription className="text-primary">{profile.title}</CardDescription>
-                
-                {(profile.customStatusEmoji || profile.customStatusText) && (
-                  <div className="mt-1 flex items-center justify-center text-xs text-muted-foreground">
-                    {profile.customStatusEmoji && <span className="mr-1 text-base">{profile.customStatusEmoji}</span>}
-                    <span>{profile.customStatusText}</span>
-                  </div>
-                )}
-
-                {profile.presence === 'offline' && profile.lastActiveTimestamp && (
-                  <p className="text-xs text-muted-foreground mt-1">Last active: {profile.lastActiveTimestamp}</p>
-                )}
-                
-                <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
-                  {getRoleSpecificIcon(profile.role)} {profile.role}
-                </div>
-                
-                {profile.company && (
-                  <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
-                    <BuildingIcon className="h-3 w-3 mr-1" /> {profile.company}
-                  </div>
-                )}
-                <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
-                  <MapPinIcon className="h-3 w-3 mr-1" /> {profile.location}
-                </div>
-                
-                <p className="mt-3 text-sm text-muted-foreground px-2 line-clamp-3">{profile.bio}</p>
-                
-                <div className="mt-4">
-                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">
-                    {profile.role === 'Developer' ? 'Skills & Tools' : profile.role === 'Investor' ? 'Investment Interests' : 'Key Skills'}
-                  </h4>
-                  <div className="flex flex-wrap justify-center gap-1">
-                    {(profile.skills || profile.investmentInterests || []).slice(0, 3).map(skill => (
-                      <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
-                    ))}
-                    {profile.role === 'Developer' && (profile.tools || []).slice(0,2).map(tool =>(
-                       <Badge key={tool} variant="outline" className="text-xs">{tool}</Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {profile.role === 'Entrepreneur' && profile.startupName && (
-                  <div className="mt-3 text-sm">
-                    <p className="font-semibold text-foreground">{profile.startupName}</p>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{profile.ideaSummary}</p>
-                    {profile.pitchDeckUrl && <Button variant="link" size="sm" className="p-0 h-auto mt-1 text-primary"><FileTextIcon className="h-3 w-3 mr-1"/>View Pitch</Button>}
-                  </div>
-                )}
-
-                {profile.workExperience && profile.workExperience.length > 0 && (
-                  <div className="mt-3 text-left text-xs border-t pt-2">
-                    <div className="flex items-center text-muted-foreground mb-1">
-                      <BriefcaseIcon className="h-3 w-3 mr-1.5"/>
-                      <span>{profile.workExperience[0].title} at {profile.workExperience[0].company}</span>
-                    </div>
-                  </div>
-                )}
-
-                {profile.education && profile.education.length > 0 && (
-                  <div className="mt-1 text-left text-xs">
-                     <div className="flex items-center text-muted-foreground">
-                      <GraduationCapIcon className="h-3 w-3 mr-1.5"/>
-                      <span>{profile.education[0].degree} from {profile.education[0].institution}</span>
-                    </div>
-                  </div>
-                )}
-
-              </CardContent>
-              <CardFooter className="flex flex-col items-center gap-2 p-4 border-t">
-                <Button className="w-full">View Profile</Button>
-                <div className="flex space-x-1 sm:space-x-2">
-                   <Button variant="outline" size="icon" aria-label="Connect">
-                    <UserPlusIcon className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" aria-label="Follow">
-                    <RssIcon className="h-4 w-4" />
-                  </Button>
-                  {profile.socialLinks?.linkedin && (
-                    <Button variant="outline" size="icon" asChild>
-                      <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon className="h-4 w-4" /></a>
-                    </Button>
-                  )}
-                  {profile.socialLinks?.github && (
-                    <Button variant="outline" size="icon" asChild>
-                      <a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GithubIcon className="h-4 w-4" /></a>
-                    </Button>
-                  )}
-                  {profile.socialLinks?.portfolioWebsite && (
-                    <Button variant="outline" size="icon" asChild>
-                      <a href={profile.socialLinks.portfolioWebsite} target="_blank" rel="noopener noreferrer" aria-label="Website"><GlobeIcon className="h-4 w-4" /></a>
-                    </Button>
-                  )}
-                  <Button variant="outline" size="icon" aria-label="Message">
-                    <MailIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardFooter>
-            </Card>
+            <ProfileCard key={profile.id} profile={profile} onToggleStar={toggleStar} />
           ))}
         </div>
       ) : (
@@ -429,59 +346,13 @@ export default function ProfilesPage() {
          </Card>
       )}
 
-      {/* Suggested Connections Section */}
+      {/* Suggested Connections Section (Existing) */}
       {suggestedProfilesStatic.length > 0 && (
         <div className="mt-12">
           <h2 className="text-2xl font-bold tracking-tight mb-4">Suggested Connections</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {suggestedProfilesStatic.map((profile) => (
-               <Card key={`suggest-${profile.id}`} className="overflow-hidden shadow-lg rounded-xl flex flex-col">
-                 <CardHeader className="p-0">
-                    <div className="relative h-32 w-full bg-muted">
-                      {profile.bannerUrl && <Image src={profile.bannerUrl} alt={`${profile.name} banner`} layout="fill" objectFit="cover" data-ai-hint={profile.bannerAiHint || "abstract background"}/>}
-                    </div>
-                    <div className="flex justify-center -mt-12">
-                     <div className="relative">
-                        <Avatar className="h-24 w-24 border-4 border-card shadow-md">
-                          <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
-                          <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
-                        </Avatar>
-                        <PresenceIndicator presence={profile.presence} />
-                      </div>
-                    </div>
-                 </CardHeader>
-                 <CardContent className="text-center pt-4 flex-grow">
-                   <CardTitle className="text-xl">{profile.name}</CardTitle>
-                   <CardDescription className="text-primary">{profile.title}</CardDescription>
-                    {(profile.customStatusEmoji || profile.customStatusText) && (
-                      <div className="mt-1 flex items-center justify-center text-xs text-muted-foreground">
-                        {profile.customStatusEmoji && <span className="mr-1 text-base">{profile.customStatusEmoji}</span>}
-                        <span>{profile.customStatusText}</span>
-                      </div>
-                    )}
-                    {profile.presence === 'offline' && profile.lastActiveTimestamp && (
-                      <p className="text-xs text-muted-foreground mt-1">Last active: {profile.lastActiveTimestamp}</p>
-                    )}
-                   <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
-                     {getRoleSpecificIcon(profile.role)} {profile.role}
-                   </div>
-                   <p className="mt-2 text-sm text-muted-foreground px-2 line-clamp-2">{profile.bio}</p>
-                 </CardContent>
-                 <CardFooter className="flex flex-col items-center gap-2 p-4 border-t">
-                   <Button className="w-full">View Profile</Button>
-                   <div className="flex space-x-1 sm:space-x-2">
-                      <Button variant="outline" size="icon" aria-label="Connect">
-                       <UserPlusIcon className="h-4 w-4" />
-                     </Button>
-                     <Button variant="outline" size="icon" aria-label="Follow">
-                       <RssIcon className="h-4 w-4" />
-                     </Button>
-                     <Button variant="outline" size="icon" aria-label="Message">
-                       <MailIcon className="h-4 w-4" />
-                     </Button>
-                   </div>
-                 </CardFooter>
-               </Card>
+               <ProfileCard key={`suggest-${profile.id}`} profile={profile} onToggleStar={toggleStar} />
             ))}
           </div>
         </div>
@@ -490,5 +361,134 @@ export default function ProfilesPage() {
   );
 }
 
+// Extracted ProfileCard component
+interface ProfileCardProps {
+  profile: Profile;
+  onToggleStar: (profileId: string) => void;
+}
+
+function ProfileCard({ profile, onToggleStar }: ProfileCardProps) {
+  return (
+    <Card key={profile.id} className="overflow-hidden shadow-lg rounded-xl flex flex-col">
+      <CardHeader className="p-0">
+         <div className="relative h-32 w-full bg-muted">
+           {profile.bannerUrl && <Image src={profile.bannerUrl} alt={`${profile.name} banner`} layout="fill" objectFit="cover" data-ai-hint={profile.bannerAiHint || "abstract background"}/>}
+         </div>
+         <div className="flex justify-center -mt-12">
+          <div className="relative">
+            <Avatar className="h-24 w-24 border-4 border-card shadow-md">
+              <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
+              <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
+            </Avatar>
+            <PresenceIndicator presence={profile.presence} />
+          </div>
+         </div>
+      </CardHeader>
+      <CardContent className="text-center pt-4 flex-grow">
+        <CardTitle className="text-xl">{profile.name}</CardTitle>
+        <CardDescription className="text-primary">{profile.title}</CardDescription>
+        
+        {(profile.customStatusEmoji || profile.customStatusText) && (
+          <div className="mt-1 flex items-center justify-center text-xs text-muted-foreground">
+            {profile.customStatusEmoji && <span className="mr-1 text-base">{profile.customStatusEmoji}</span>}
+            <span>{profile.customStatusText}</span>
+          </div>
+        )}
+
+        {profile.presence === 'offline' && profile.lastActiveTimestamp && (
+          <p className="text-xs text-muted-foreground mt-1">Last active: {profile.lastActiveTimestamp}</p>
+        )}
+        
+        <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
+          {getRoleSpecificIcon(profile.role)} {profile.role}
+        </div>
+        
+        {profile.company && (
+          <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
+            <BuildingIcon className="h-3 w-3 mr-1" /> {profile.company}
+          </div>
+        )}
+        <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
+          <MapPinIcon className="h-3 w-3 mr-1" /> {profile.location}
+        </div>
+        
+        <p className="mt-3 text-sm text-muted-foreground px-2 line-clamp-3">{profile.bio}</p>
+        
+        <div className="mt-4">
+          <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">
+            {profile.role === 'Developer' ? 'Skills & Tools' : profile.role === 'Investor' ? 'Investment Interests' : 'Key Skills'}
+          </h4>
+          <div className="flex flex-wrap justify-center gap-1">
+            {(profile.skills || profile.investmentInterests || []).slice(0, 3).map(skill => (
+              <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
+            ))}
+            {profile.role === 'Developer' && (profile.tools || []).slice(0,2).map(tool =>(
+               <Badge key={tool} variant="outline" className="text-xs">{tool}</Badge>
+            ))}
+          </div>
+        </div>
+
+        {profile.role === 'Entrepreneur' && profile.startupName && (
+          <div className="mt-3 text-sm">
+            <p className="font-semibold text-foreground">{profile.startupName}</p>
+            <p className="text-xs text-muted-foreground line-clamp-2">{profile.ideaSummary}</p>
+            {profile.pitchDeckUrl && <Button variant="link" size="sm" className="p-0 h-auto mt-1 text-primary"><FileTextIcon className="h-3 w-3 mr-1"/>View Pitch</Button>}
+          </div>
+        )}
+
+        {profile.workExperience && profile.workExperience.length > 0 && (
+          <div className="mt-3 text-left text-xs border-t pt-2">
+            <div className="flex items-center text-muted-foreground mb-1">
+              <BriefcaseIcon className="h-3 w-3 mr-1.5"/>
+              <span>{profile.workExperience[0].title} at {profile.workExperience[0].company}</span>
+            </div>
+          </div>
+        )}
+
+        {profile.education && profile.education.length > 0 && (
+          <div className="mt-1 text-left text-xs">
+             <div className="flex items-center text-muted-foreground">
+              <GraduationCapIcon className="h-3 w-3 mr-1.5"/>
+              <span>{profile.education[0].degree} from {profile.education[0].institution}</span>
+            </div>
+          </div>
+        )}
+
+      </CardContent>
+      <CardFooter className="flex flex-col items-center gap-2 p-4 border-t">
+        <Button className="w-full">View Profile</Button>
+        <div className="flex space-x-1 sm:space-x-2">
+           <Button variant="outline" size="icon" aria-label="Star" onClick={() => onToggleStar(profile.id)}>
+            <StarIcon className="h-4 w-4" fill={profile.isStarred ? "currentColor" : "none"} />
+          </Button>
+           <Button variant="outline" size="icon" aria-label="Connect">
+            <UserPlusIcon className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="icon" aria-label="Follow">
+            <RssIcon className="h-4 w-4" />
+          </Button>
+          {profile.socialLinks?.linkedin && (
+            <Button variant="outline" size="icon" asChild>
+              <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon className="h-4 w-4" /></a>
+            </Button>
+          )}
+          {profile.socialLinks?.github && (
+            <Button variant="outline" size="icon" asChild>
+              <a href={profile.socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GithubIcon className="h-4 w-4" /></a>
+            </Button>
+          )}
+          {profile.socialLinks?.portfolioWebsite && (
+            <Button variant="outline" size="icon" asChild>
+              <a href={profile.socialLinks.portfolioWebsite} target="_blank" rel="noopener noreferrer" aria-label="Website"><GlobeIcon className="h-4 w-4" /></a>
+            </Button>
+          )}
+          <Button variant="outline" size="icon" aria-label="Message">
+            <MailIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}
 
     
