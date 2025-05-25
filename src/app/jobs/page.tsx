@@ -17,6 +17,7 @@ const sampleJobPostings: JobPostingCardProps[] = [
     location: "Remote (Global)",
     description: "Seeking an experienced React developer to lead our new e-commerce platform. Strong experience with Next.js and TypeScript required. Join a dynamic team pushing innovation.",
     skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GraphQL", "Jest"],
+    tags: ["Remote", "Full-time", "Senior"],
     budget: "$100k - $140k/year",
     timeline: "Full-time",
     type: "Job",
@@ -30,6 +31,7 @@ const sampleJobPostings: JobPostingCardProps[] = [
     location: "Contract (6 months)",
     description: "We need a Python developer with experience in NLP and LLMs to build a prototype for an AI content generation tool. Familiarity with Genkit is a plus.",
     skills: ["Python", "NLP", "LLM", "Genkit", "FastAPI"],
+    tags: ["AI", "Contract", "Innovation"],
     budget: "$5,000 - $8,000",
     timeline: "6 Months",
     type: "Project",
@@ -43,6 +45,7 @@ const sampleJobPostings: JobPostingCardProps[] = [
     location: "New York, NY",
     description: "Drive the user experience for our diverse portfolio of clients. Must have a strong portfolio showcasing mobile and web application designs. Figma expert.",
     skills: ["UX Design", "UI Design", "Figma", "Prototyping", "User Research", "Agile"],
+    tags: ["Design", "Full-time", "Lead"],
     budget: "$90k - $120k/year",
     timeline: "Full-time",
     type: "Job",
@@ -54,6 +57,7 @@ const sampleJobPostings: JobPostingCardProps[] = [
     title: "Develop Custom Shopify Theme",
     description: "Freelance project to create a highly customized Shopify theme for a luxury brand. Requires strong Liquid, HTML, CSS, and JavaScript skills. Previous Shopify experience essential.",
     skills: ["Shopify", "Liquid", "HTML5", "CSS3", "JavaScript", "E-commerce"],
+    tags: ["Freelance", "E-commerce", "Web Development"],
     budget: "Project-based ($3k - $6k)",
     timeline: "4-6 Weeks",
     type: "Project",
@@ -76,7 +80,8 @@ export default function JobsPage() {
         posting.title.toLowerCase().includes(term) ||
         posting.description.toLowerCase().includes(term) ||
         (posting.company && posting.company.toLowerCase().includes(term)) ||
-        posting.skills.some(skill => skill.toLowerCase().includes(term));
+        posting.skills.some(skill => skill.toLowerCase().includes(term)) ||
+        (posting.tags && posting.tags.some(tag => tag.toLowerCase().includes(term)));
     
     return roleMatch && skillMatch && searchMatch;
   });
@@ -108,7 +113,7 @@ export default function JobsPage() {
               <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 id="search-jobs"
-                placeholder="Keyword, skill, company..."
+                placeholder="Keyword, skill, company, tag..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-8 bg-background"

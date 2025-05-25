@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BriefcaseIcon, LightbulbIcon, DollarSignIcon, CalendarDaysIcon, ArrowRightIcon, MapPinIcon } from "lucide-react";
+import { BriefcaseIcon, LightbulbIcon, DollarSignIcon, CalendarDaysIcon, ArrowRightIcon, MapPinIcon, TagIcon } from "lucide-react";
 import type { LucideIcon } from 'lucide-react';
 
 export interface JobPostingCardProps {
@@ -18,6 +18,7 @@ export interface JobPostingCardProps {
   type: 'Job' | 'Project';
   imageUrl?: string;
   imageAiHint?: string;
+  tags?: string[]; // New prop for tags
   // onApply: () => void; // Placeholder for apply action
   // onViewDetails: () => void; // Placeholder for view details action
 }
@@ -33,6 +34,7 @@ export default function JobPostingCard({
   type,
   imageUrl,
   imageAiHint,
+  tags,
 }: JobPostingCardProps) {
   const TypeIcon: LucideIcon = type === 'Job' ? BriefcaseIcon : LightbulbIcon;
 
@@ -58,9 +60,9 @@ export default function JobPostingCard({
           </div>
         )}
       </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-3">{description}</p>
-        <div className="mb-3 space-y-1">
+      <CardContent className="flex-grow space-y-3">
+        <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
+        <div className="space-y-1">
           {budget && (
             <div className="flex items-center text-xs text-muted-foreground">
               <DollarSignIcon className="h-4 w-4 mr-1.5 text-primary" />
@@ -83,6 +85,17 @@ export default function JobPostingCard({
             {skills.length > 5 && <Badge variant="outline">+{skills.length - 5} more</Badge>}
           </div>
         </div>
+        {tags && tags.length > 0 && (
+          <div>
+            <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1.5 mt-2">Tags</h4>
+            <div className="flex flex-wrap gap-1">
+              {tags.slice(0, 5).map(tag => (
+                <Badge key={tag} variant="secondary">{tag}</Badge>
+              ))}
+              {tags.length > 5 && <Badge variant="secondary">+{tags.length - 5} more</Badge>}
+            </div>
+          </div>
+        )}
       </CardContent>
       <CardFooter className="p-4 border-t">
         <Button className="w-full">
