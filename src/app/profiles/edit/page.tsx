@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import * as React from "react";
@@ -28,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon } from "lucide-react";
+import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon } from "lucide-react";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(50, "Name must be at most 50 characters."),
