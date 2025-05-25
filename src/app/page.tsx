@@ -1,9 +1,11 @@
+
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PaperclipIcon, SendIcon } from 'lucide-react';
+import { PaperclipIcon, SendIcon, HashIcon } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 const feedItems = [
   {
@@ -58,11 +60,16 @@ export default function ActivityFeedPage() {
               <AvatarImage src="https://placehold.co/100x100.png?a=user" data-ai-hint="user icon"/>
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <Input placeholder="What's on your mind?" className="mb-2 h-20 resize-none bg-background" as="textarea" />
+            <div className="flex-1 space-y-3">
+              <Textarea placeholder="What's on your mind?" className="resize-y min-h-[100px] bg-background" />
+              <div className="relative">
+                <HashIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="Add hashtags (e.g., #innovation #tech)" className="pl-8 bg-background" />
+              </div>
               <div className="flex justify-between items-center">
                 <Button variant="ghost" size="icon">
                   <PaperclipIcon className="h-5 w-5 text-muted-foreground" />
+                  <span className="sr-only">Attach media</span>
                 </Button>
                 <Button>
                   <SendIcon className="mr-2 h-4 w-4" /> Post
