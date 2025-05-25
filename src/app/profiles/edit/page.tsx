@@ -27,8 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch"; // Added Switch import
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon, SmileIcon } from "lucide-react";
+import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon, SmileIcon, BellIcon } from "lucide-react"; // Added BellIcon
 
 const profileFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(50, "Name must be at most 50 characters."),
@@ -57,6 +58,12 @@ const profileFormSchema = z.object({
   githubUrl: z.string().url("Please enter a valid GitHub URL.").optional().or(z.literal('')),
 
   profileVisibility: z.enum(["Public", "Private", "Connections Only"]),
+
+  // Notification Preferences
+  notifyOnNewMessages: z.boolean().optional(),
+  notifyOnJobPosts: z.boolean().optional(),
+  notifyOnNewFollowers: z.boolean().optional(),
+  doNotDisturb: z.boolean().optional(),
 
   // Password change fields
   currentPassword: z.string().optional().or(z.literal('')),
@@ -117,6 +124,10 @@ const defaultValues: Partial<ProfileFormValues> = {
   portfolioWebsiteUrl: "",
   githubUrl: "",
   profileVisibility: "Public",
+  notifyOnNewMessages: true,
+  notifyOnJobPosts: true,
+  notifyOnNewFollowers: true,
+  doNotDisturb: false,
   currentPassword: "",
   newPassword: "",
   confirmPassword: "",
@@ -418,9 +429,74 @@ export default function ProfileEditPage() {
                   </FormItem>
                 )}
               />
+              
+              <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                <BellIcon className="mr-2 h-5 w-5 text-primary" /> Notification Preferences
+              </h3>
+                <FormField
+                    control={form.control}
+                    name="notifyOnNewMessages"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <FormLabel className="text-base">Direct Messages</FormLabel>
+                            <FormDescription>Receive notifications for new direct messages.</FormDescription>
+                        </div>
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="notifyOnJobPosts"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <FormLabel className="text-base">Relevant Job/Project Posts</FormLabel>
+                            <FormDescription>Get notified about new job or project opportunities relevant to you.</FormDescription>
+                        </div>
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="notifyOnNewFollowers"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <FormLabel className="text-base">New Followers</FormLabel>
+                            <FormDescription>Be notified when someone follows your profile.</FormDescription>
+                        </div>
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="doNotDisturb"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <FormLabel className="text-base">Do Not Disturb</FormLabel>
+                            <FormDescription>Mute all notifications for a period or until turned off.</FormDescription>
+                        </div>
+                        <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+
 
               <h3 className="text-lg font-medium border-t pt-6 flex items-center">
-                <EyeIcon className="mr-2 h-5 w-5 text-primary" /> Settings
+                <EyeIcon className="mr-2 h-5 w-5 text-primary" /> Profile Visibility & Settings
               </h3>
               <FormField
                 control={form.control}
@@ -503,6 +579,4 @@ export default function ProfileEditPage() {
     </div>
   );
 }
-
-
     
