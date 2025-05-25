@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import * as React from "react";
@@ -29,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon } from "lucide-react";
+import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon } from "lucide-react";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(50, "Name must be at most 50 characters."),
@@ -50,19 +49,53 @@ const profileFormSchema = z.object({
   // Investor specific
   investmentInterests: z.string().optional(), // comma separated
 
-  // TODO: Add WorkExperience, Education as repeatable field groups
-  // For now, keeping it simple
-
   linkedinUrl: z.string().url("Please enter a valid LinkedIn URL.").optional().or(z.literal('')),
   portfolioWebsiteUrl: z.string().url("Please enter a valid Portfolio/Website URL.").optional().or(z.literal('')),
   githubUrl: z.string().url("Please enter a valid GitHub URL.").optional().or(z.literal('')),
 
   profileVisibility: z.enum(["Public", "Private", "Connections Only"]),
+
+  // Password change fields
+  currentPassword: z.string().optional().or(z.literal('')),
+  newPassword: z.string().optional().or(z.literal('')),
+  confirmPassword: z.string().optional().or(z.literal('')),
+}).superRefine((data, ctx) => {
+  if (data.newPassword && data.newPassword.length > 0) { // User intends to change password
+    if (!data.currentPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Current password is required to set a new password.",
+        path: ["currentPassword"],
+      });
+    }
+    if (data.newPassword.length < 8) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.too_small,
+        minimum: 8,
+        type: "string",
+        inclusive: true,
+        message: "New password must be at least 8 characters.",
+        path: ["newPassword"],
+      });
+    }
+    if (!data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Please confirm your new password.",
+        path: ["confirmPassword"],
+      });
+    } else if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "New passwords do not match.",
+        path: ["confirmPassword"],
+      });
+    }
+  }
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-// This can be set to user's current values when editing
 const defaultValues: Partial<ProfileFormValues> = {
   name: "",
   bio: "",
@@ -79,6 +112,9 @@ const defaultValues: Partial<ProfileFormValues> = {
   portfolioWebsiteUrl: "",
   githubUrl: "",
   profileVisibility: "Public",
+  currentPassword: "",
+  newPassword: "",
+  confirmPassword: "",
 };
 
 export default function ProfileEditPage() {
@@ -92,7 +128,12 @@ export default function ProfileEditPage() {
 
   function onSubmit(data: ProfileFormValues) {
     // In a real app, you'd send this data to your backend
-    console.log(data);
+    // For password change, you'd typically make a separate API call
+    const { currentPassword, newPassword, confirmPassword, ...profileData } = data;
+    console.log("Profile Data:", profileData);
+    if (newPassword && currentPassword) {
+      console.log("Password Change Attempted (UI only):", { currentPassword, newPassword });
+    }
     toast({
       title: "Profile Updated!",
       description: "Your profile information has been saved.",
@@ -351,6 +392,48 @@ export default function ProfileEditPage() {
                   </FormItem>
                 )}
               />
+
+              <h3 className="text-lg font-medium border-t pt-6">Security</h3>
+                <FormField
+                    control={form.control}
+                    name="currentPassword"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Current Password</FormLabel>
+                        <FormControl>
+                        <Input type="password" placeholder="Enter current password" {...field} autoComplete="current-password"/>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="newPassword"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>New Password</FormLabel>
+                        <FormControl>
+                        <Input type="password" placeholder="Enter new password" {...field} autoComplete="new-password"/>
+                        </FormControl>
+                        <FormDescription>Must be at least 8 characters.</FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Confirm New Password</FormLabel>
+                        <FormControl>
+                        <Input type="password" placeholder="Confirm new password" {...field} autoComplete="new-password"/>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
               
               <div className="flex justify-end space-x-2 pt-4">
                 <Button type="button" variant="outline" asChild>
@@ -365,5 +448,3 @@ export default function ProfileEditPage() {
     </div>
   );
 }
-
-    
