@@ -1,8 +1,9 @@
+
 import Image from 'next/image';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { HeartIcon, MessageCircleIcon, Share2Icon, MoreHorizontalIcon } from 'lucide-react';
+import { HeartIcon, MessageCircleIcon, Share2Icon, MoreHorizontalIcon, SmilePlusIcon } from 'lucide-react';
 
 interface ActivityFeedItemProps {
   userName: string;
@@ -29,6 +30,12 @@ export default function ActivityFeedItem({
   comments,
   shares,
 }: ActivityFeedItemProps) {
+  // Sample reactions for UI demonstration
+  const sampleReactions = [
+    { emoji: '👍', count: 5 },
+    { emoji: '🎉', count: 2 },
+  ];
+
   return (
     <Card className="overflow-hidden shadow-lg rounded-xl">
       <CardHeader className="flex flex-row items-center space-x-3 p-4">
@@ -44,24 +51,44 @@ export default function ActivityFeedItem({
           <MoreHorizontalIcon className="h-5 w-5" />
         </Button>
       </CardHeader>
-      <CardContent className="px-4 pb-2">
+      <CardContent className="px-4 pb-3">
         <p className="text-sm mb-3 whitespace-pre-wrap">{content}</p>
         {imageUrl && (
           <div className="relative aspect-video w-full overflow-hidden rounded-lg border">
             <Image src={imageUrl} alt="Feed image" fill style={{ objectFit: 'cover' }} data-ai-hint={imageAiHint}/>
           </div>
         )}
+         {/* Display existing reactions - UI only */}
+        <div className="mt-3 flex items-center space-x-2">
+          {sampleReactions.map(reaction => (
+            <Button key={reaction.emoji} variant="outline" size="sm" className="text-xs px-2 py-1 h-auto rounded-full">
+              {reaction.emoji} <span className="ml-1 text-muted-foreground">{reaction.count}</span>
+            </Button>
+          ))}
+        </div>
       </CardContent>
-      <CardFooter className="flex justify-between p-4 border-t">
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-          <HeartIcon className="mr-2 h-4 w-4" /> {likes} Likes
-        </Button>
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-          <MessageCircleIcon className="mr-2 h-4 w-4" /> {comments} Comments
-        </Button>
-        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-          <Share2Icon className="mr-2 h-4 w-4" /> {shares} Shares
-        </Button>
+      <CardFooter className="flex flex-col items-start p-4 border-t space-y-2">
+        <div className="flex justify-between w-full">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+            <HeartIcon className="mr-2 h-4 w-4" /> {likes} Likes
+          </Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+            <MessageCircleIcon className="mr-2 h-4 w-4" /> {comments} Comments
+          </Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+            <Share2Icon className="mr-2 h-4 w-4" /> {shares} Shares
+          </Button>
+        </div>
+        <div className="flex items-center space-x-1 pt-1 w-full border-t mt-2">
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary h-8 w-8">
+                <SmilePlusIcon className="h-5 w-5"/>
+                <span className="sr-only">Add reaction</span>
+            </Button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">👍</Button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">🎉</Button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">❤️</Button>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">🤔</Button>
+        </div>
       </CardFooter>
     </Card>
   );
