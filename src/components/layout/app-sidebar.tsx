@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -20,6 +21,7 @@ import {
   Code2Icon,
   SparklesIcon,
   Share2Icon, // For Synergy Hub Logo
+  BriefcaseIcon, // For Jobs/Projects
   PanelLeft
 } from 'lucide-react';
 
@@ -28,6 +30,7 @@ const navItems = [
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
+  { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
 ];
