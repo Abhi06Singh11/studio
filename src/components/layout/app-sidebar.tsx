@@ -22,6 +22,7 @@ import {
   SparklesIcon,
   Share2Icon, // For Synergy Hub Logo
   BriefcaseIcon, // For Jobs/Projects
+  LayoutDashboardIcon, // For Admin Panel
   PanelLeft
 } from 'lucide-react';
 
@@ -33,6 +34,8 @@ const navItems = [
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
+  // Add Admin Panel link - consider conditional rendering based on user role in a real app
+  { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
 ];
 
 export default function AppSidebar() {
