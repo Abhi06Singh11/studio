@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontalIcon, UsersIcon, LineChartIcon, UserPlusIcon, FileTextIcon, MessageSquareIcon, BriefcaseIcon, ShieldIcon, EyeIcon, UserXIcon, BanIcon, CheckCircleIcon, XCircleIcon, SettingsIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { MoreHorizontalIcon, UsersIcon, LineChartIcon, UserPlusIcon, FileTextIcon, MessageSquareIcon, BriefcaseIcon, ShieldIcon, EyeIcon, UserXIcon, BanIcon, CheckCircleIcon, XCircleIcon, SettingsIcon, MegaphoneIcon } from "lucide-react";
 
 // Sample data - replace with actual data fetching in a real app
 const sampleAdminUsers = [
@@ -26,11 +28,13 @@ const sampleAnalyticsData = {
   totalComments: 1200,
   totalJobPostings: 85,
   openJobPostings: 42,
-  reportsToReview: 3, // Placeholder for reports
+  reportsToReview: 5, 
 };
 
 export default function AdminPage() {
   const [users, setUsers] = React.useState(sampleAdminUsers);
+  const [announcementText, setAnnouncementText] = React.useState("");
+  const [announcementTarget, setAnnouncementTarget] = React.useState("");
 
   const handleSuspendUser = (userId: string) => {
     setUsers(users.map(user => user.id === userId ? { ...user, status: user.status === "Suspended" ? "Active" : "Suspended" } : user));
@@ -42,6 +46,18 @@ export default function AdminPage() {
     setUsers(users.map(user => user.id === userId ? { ...user, status: "Banned" } : user));
     // In real app, call API to ban user
     console.log(`User ${userId} banned.`);
+  };
+
+  const handleBroadcastAnnouncement = () => {
+    if (!announcementText.trim()) {
+      alert("Announcement text cannot be empty."); // Simple validation
+      return;
+    }
+    // In a real app, this would call an API
+    console.log("Broadcasting announcement:", { text: announcementText, target: announcementTarget || "All Users" });
+    alert(`Announcement broadcasted to ${announcementTarget || "All Users"}:\n${announcementText}`);
+    setAnnouncementText("");
+    setAnnouncementTarget("");
   };
 
 
@@ -71,6 +87,41 @@ export default function AdminPage() {
           <StatCard icon={BriefcaseIcon} title="Total Job Postings" value={sampleAnalyticsData.totalJobPostings.toLocaleString()} />
           <StatCard icon={BriefcaseIcon} title="Open Job Postings" value={sampleAnalyticsData.openJobPostings.toLocaleString()} variant="secondary" />
           <StatCard icon={ShieldIcon} title="Reports to Review" value={sampleAnalyticsData.reportsToReview.toLocaleString()} variant="destructive" description="Action Required"/>
+        </CardContent>
+      </Card>
+
+      {/* Broadcast Announcements Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center"><MegaphoneIcon className="mr-2 h-5 w-5 text-primary" />Broadcast Announcements</CardTitle>
+          <CardDescription>Post global messages to platform users.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <label htmlFor="announcement-text" className="block text-sm font-medium text-muted-foreground mb-1">Announcement Message</label>
+            <Textarea
+              id="announcement-text"
+              placeholder="Type your announcement here..."
+              value={announcementText}
+              onChange={(e) => setAnnouncementText(e.target.value)}
+              className="min-h-[100px] bg-background"
+            />
+          </div>
+          <div>
+            <label htmlFor="announcement-target" className="block text-sm font-medium text-muted-foreground mb-1">Target Audience (optional)</label>
+            <Input
+              id="announcement-target"
+              placeholder="e.g., All, Developers, Investors (leave blank for all users)"
+              value={announcementTarget}
+              onChange={(e) => setAnnouncementTarget(e.target.value)}
+              className="bg-background"
+            />
+          </div>
+        </CardContent>
+        <CardContent className="pt-0"> {/* CardFooter could also be used, using CardContent to keep button aligned with inputs */}
+             <Button onClick={handleBroadcastAnnouncement} className="w-full sm:w-auto">
+                <MegaphoneIcon className="mr-2 h-4 w-4" /> Broadcast Announcement
+            </Button>
         </CardContent>
       </Card>
 
@@ -162,3 +213,5 @@ function StatCard({ icon: Icon, title, value, description, variant = "default" }
     </Card>
   );
 }
+
+    
