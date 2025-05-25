@@ -1,8 +1,9 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, SendIcon, PaperclipIcon, SmileIcon } from "lucide-react";
+import { SearchIcon, SendIcon, SmileIcon } from "lucide-react"; // Removed PaperclipIcon
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const conversations = [
@@ -72,7 +73,7 @@ export default function MessagesPage() {
                 </Avatar>
                 <div>
                   <p className="font-semibold">{conversations[0].name}</p>
-                  <p className="text-xs text-green-500">Online</p>
+                  <p className="text-xs text-green-500">Online</p> {/* Placeholder for online status */}
                 </div>
               </div>
               <ScrollArea className="flex-1 p-4 space-y-4">
@@ -88,7 +89,7 @@ export default function MessagesPage() {
               <div className="p-4 border-t bg-card">
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" size="icon"><SmileIcon className="h-5 w-5 text-muted-foreground" /></Button>
-                  <Button variant="ghost" size="icon"><PaperclipIcon className="h-5 w-5 text-muted-foreground" /></Button>
+                  {/* PaperclipIcon removed to align with MVP: No file sharing */}
                   <Input placeholder="Type a message..." className="flex-1 bg-background" />
                   <Button><SendIcon className="h-5 w-5" /></Button>
                 </div>
