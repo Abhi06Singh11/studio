@@ -8,7 +8,7 @@ import Image from "next/image";
 const sampleProjects = [
   {
     id: "1",
-    name: "Synergy Hub Platform",
+    name: "CodeSphere Platform",
     description: "Developing the core platform for developer collaboration and networking. Focus on scalability and user experience.",
     status: "In Progress",
     progress: 75,
@@ -38,7 +38,7 @@ const sampleProjects = [
   {
     id: "3",
     name: "Mobile App Companion",
-    description: "Creating a native mobile application for Synergy Hub to enhance on-the-go connectivity and notifications.",
+    description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications.",
     status: "Completed",
     progress: 100,
     team: [

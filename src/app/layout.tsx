@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Synergy Hub',
-  description: 'The Professional Playground for Developers, Entrepreneurs & Investors.',
+  title: 'CodeSphere',
+  description: 'The Professional Playground for Developers, Entrepreneurs & Investors on CodeSphere.',
 };
 
 export default function RootLayout({

@@ -149,7 +149,7 @@ export default function ProfileEditPage() {
       <Card>
         <CardHeader>
           <CardTitle>Edit Your Profile</CardTitle>
-          <CardDescription>Manage your professional information and how others see you on Synergy Hub.</CardDescription>
+          <CardDescription>Manage your professional information and how others see you on CodeSphere.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

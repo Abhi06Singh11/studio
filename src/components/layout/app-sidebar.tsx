@@ -20,7 +20,7 @@ import {
   FolderKanbanIcon,
   Code2Icon,
   SparklesIcon,
-  Share2Icon, // For Synergy Hub Logo
+  Share2Icon, // For CodeSphere Logo
   BriefcaseIcon, // For Jobs/Projects
   LayoutDashboardIcon, // For Admin Panel
   PanelLeft
@@ -46,7 +46,7 @@ export default function AppSidebar() {
       <SidebarHeader className="border-b">
         <Button variant="ghost" className="w-full justify-start gap-2 px-3 text-lg font-semibold">
           <Share2Icon className="h-6 w-6 text-primary" />
-          <span className="text-foreground group-data-[collapsible=icon]:hidden">Synergy Hub</span>
+          <span className="text-foreground group-data-[collapsible=icon]:hidden">CodeSphere</span>
         </Button>
       </SidebarHeader>
       <SidebarContent className="p-2">
