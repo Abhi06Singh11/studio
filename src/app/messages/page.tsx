@@ -3,14 +3,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, SendIcon, SmileIcon } from "lucide-react"; // Removed PaperclipIcon
+import { SearchIcon, SendIcon, SmileIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const conversations = [
-  { id: "1", name: "Alice Wonderland", lastMessage: "Sounds great! Let's discuss tomorrow.", time: "10:30 AM", unread: 2, avatar: "https://placehold.co/100x100.png?a=1", dataAiHint: "woman portrait" },
-  { id: "2", name: "Bob The Builder", lastMessage: "Can you send over the project files?", time: "Yesterday", avatar: "https://placehold.co/100x100.png?a=2", dataAiHint: "man construction" },
-  { id: "3", name: "Carol Danvers", lastMessage: "Meeting confirmed for 2 PM.", time: "Mon", avatar: "https://placehold.co/100x100.png?a=3", dataAiHint: "woman pilot" },
-  { id: "4", name: "David Copperfield", lastMessage: "Thanks for the feedback!", time: "Sun", avatar: "https://placehold.co/100x100.png?a=4", dataAiHint: "man magician" },
+type UserPresence = 'online' | 'offline' | 'away';
+
+interface Conversation {
+  id: string;
+  name: string;
+  lastMessage: string;
+  time: string;
+  unread?: number;
+  avatar: string;
+  dataAiHint: string;
+  presence: UserPresence;
+  lastActive?: string;
+}
+
+const conversations: Conversation[] = [
+  { id: "1", name: "Alice Wonderland", lastMessage: "Sounds great! Let's discuss tomorrow.", time: "10:30 AM", unread: 2, avatar: "https://placehold.co/100x100.png?a=1", dataAiHint: "woman portrait", presence: "online" },
+  { id: "2", name: "Bob The Builder", lastMessage: "Can you send over the project files?", time: "Yesterday", avatar: "https://placehold.co/100x100.png?a=2", dataAiHint: "man construction", presence: "offline", lastActive: "2h ago" },
+  { id: "3", name: "Carol Danvers", lastMessage: "Meeting confirmed for 2 PM.", time: "Mon", avatar: "https://placehold.co/100x100.png?a=3", dataAiHint: "woman pilot", presence: "away" },
+  { id: "4", name: "David Copperfield", lastMessage: "Thanks for the feedback!", time: "Sun", avatar: "https://placehold.co/100x100.png?a=4", dataAiHint: "man magician", presence: "online" },
 ];
 
 const activeChatMessages = [
@@ -22,6 +36,10 @@ const activeChatMessages = [
 
 
 export default function MessagesPage() {
+  // For MVP, let's assume the first conversation is active.
+  // In a real app, this would be managed by state based on user interaction.
+  const activeConversation = conversations.length > 0 ? conversations[0] : null;
+
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col"> {/* Adjust height based on header/footer */}
       <div className="mb-4">
@@ -41,9 +59,11 @@ export default function MessagesPage() {
           <ScrollArea className="flex-1">
             {conversations.map(convo => (
               <div key={convo.id} className="flex items-center p-3 hover:bg-muted/50 cursor-pointer border-b">
-                <Avatar className="h-10 w-10 mr-3">
+                <Avatar className="h-10 w-10 mr-3 relative">
                   <AvatarImage src={convo.avatar} data-ai-hint={convo.dataAiHint} />
                   <AvatarFallback>{convo.name.substring(0,1)}</AvatarFallback>
+                  {convo.presence === 'online' && <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-2 border-card bg-green-500" title="Online" />}
+                  {convo.presence === 'away' && <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-2 border-card bg-yellow-500" title="Away" />}
                 </Avatar>
                 <div className="flex-1">
                   <p className="font-semibold text-sm">{convo.name}</p>
@@ -64,16 +84,24 @@ export default function MessagesPage() {
 
         {/* Main chat area */}
         <div className="w-2/3 flex flex-col bg-background">
-          {conversations.length > 0 ? (
+          {activeConversation ? (
             <>
               <div className="p-4 border-b flex items-center space-x-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={conversations[0].avatar} data-ai-hint={conversations[0].dataAiHint} />
-                  <AvatarFallback>{conversations[0].name.substring(0,1)}</AvatarFallback>
+                <Avatar className="h-10 w-10 relative">
+                  <AvatarImage src={activeConversation.avatar} data-ai-hint={activeConversation.dataAiHint} />
+                  <AvatarFallback>{activeConversation.name.substring(0,1)}</AvatarFallback>
+                  {activeConversation.presence === 'online' && <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-2 border-card bg-green-500" title="Online" />}
+                  {activeConversation.presence === 'away' && <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full border-2 border-card bg-yellow-500" title="Away" />}
                 </Avatar>
                 <div>
-                  <p className="font-semibold">{conversations[0].name}</p>
-                  <p className="text-xs text-green-500">Online</p> {/* Placeholder for online status */}
+                  <p className="font-semibold">{activeConversation.name}</p>
+                  {activeConversation.presence === 'online' && <p className="text-xs text-green-500">Online</p>}
+                  {activeConversation.presence === 'away' && <p className="text-xs text-yellow-500">Away</p>}
+                  {activeConversation.presence === 'offline' && (
+                    <p className="text-xs text-muted-foreground">
+                      Offline {activeConversation.lastActive ? `(Last active: ${activeConversation.lastActive})` : ''}
+                    </p>
+                  )}
                 </div>
               </div>
               <ScrollArea className="flex-1 p-4 space-y-4">
@@ -89,7 +117,6 @@ export default function MessagesPage() {
               <div className="p-4 border-t bg-card">
                 <div className="flex items-center space-x-2">
                   <Button variant="ghost" size="icon"><SmileIcon className="h-5 w-5 text-muted-foreground" /></Button>
-                  {/* PaperclipIcon removed to align with MVP: No file sharing */}
                   <Input placeholder="Type a message..." className="flex-1 bg-background" />
                   <Button><SendIcon className="h-5 w-5" /></Button>
                 </div>
@@ -105,3 +132,6 @@ export default function MessagesPage() {
     </div>
   );
 }
+
+
+    

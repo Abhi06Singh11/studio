@@ -28,22 +28,25 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon } from "lucide-react";
+import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon, SmileIcon } from "lucide-react";
 
 const profileFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(50, "Name must be at most 50 characters."),
-  bio: z.string().max(500, "Bio must be at most 500 characters.").optional(),
-  location: z.string().max(100, "Location must be at most 100 characters.").optional(),
+  bio: z.string().max(500, "Bio must be at most 500 characters.").optional().or(z.literal('')),
+  location: z.string().max(100, "Location must be at most 100 characters.").optional().or(z.literal('')),
   profilePictureUrl: z.string().url("Please enter a valid URL for profile picture.").optional().or(z.literal('')),
   role: z.enum(["Developer", "Entrepreneur", "Investor", "General"]),
   
+  customStatusEmoji: z.string().max(10, "Emoji should be a short text or emoji character.").optional().or(z.literal('')),
+  customStatusText: z.string().max(100, "Status text must be at most 100 characters.").optional().or(z.literal('')),
+
   // Developer specific
   skills: z.string().optional(), // comma separated
   tools: z.string().optional(), // comma separated
   
   // Entrepreneur specific
   startupName: z.string().optional(),
-  ideaSummary: z.string().max(1000, "Idea summary must be at most 1000 characters.").optional(),
+  ideaSummary: z.string().max(1000, "Idea summary must be at most 1000 characters.").optional().or(z.literal('')),
   pitchDeckUrl: z.string().url("Please enter a valid URL for pitch deck.").optional().or(z.literal('')),
 
   // Investor specific
@@ -102,6 +105,8 @@ const defaultValues: Partial<ProfileFormValues> = {
   location: "",
   profilePictureUrl: "",
   role: "Developer",
+  customStatusEmoji: "",
+  customStatusText: "",
   skills: "",
   tools: "",
   startupName: "",
@@ -232,8 +237,44 @@ export default function ProfileEditPage() {
                 )}
               />
 
+              <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                <SmileIcon className="mr-2 h-5 w-5 text-primary" /> Presence & Status
+              </h3>
+              <FormField
+                control={form.control}
+                name="customStatusEmoji"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status Emoji</FormLabel>
+                    <FormControl>
+                      <Input placeholder="💡 e.g., 🧠, ☕, 🎨" {...field} />
+                    </FormControl>
+                    <FormDescription>A single emoji or short symbol for your status.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="customStatusText"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status Text</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Working on a new feature" {...field} />
+                    </FormControl>
+                    <FormDescription>What are you currently up to? (Max 100 characters)</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+
               {watchedRole === "Developer" && (
                 <>
+                 <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                    <BriefcaseIcon className="mr-2 h-5 w-5 text-primary" /> Developer Details
+                 </h3>
                   <FormField
                     control={form.control}
                     name="skills"
@@ -267,6 +308,9 @@ export default function ProfileEditPage() {
 
               {watchedRole === "Entrepreneur" && (
                 <>
+                  <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                    <LightbulbIcon className="mr-2 h-5 w-5 text-primary" /> Entrepreneur Details
+                  </h3>
                   <FormField
                     control={form.control}
                     name="startupName"
@@ -311,6 +355,10 @@ export default function ProfileEditPage() {
               )}
 
             {watchedRole === "Investor" && (
+              <>
+                <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                    <DollarSignIcon className="mr-2 h-5 w-5 text-primary" /> Investor Details
+                </h3>
                 <FormField
                   control={form.control}
                   name="investmentInterests"
@@ -325,9 +373,12 @@ export default function ProfileEditPage() {
                     </FormItem>
                   )}
                 />
+              </>
               )}
               
-              <h3 className="text-lg font-medium border-t pt-6">Social Links</h3>
+              <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                <LinkIcon className="mr-2 h-5 w-5 text-primary" /> Social Links
+              </h3>
                <FormField
                 control={form.control}
                 name="linkedinUrl"
@@ -368,7 +419,9 @@ export default function ProfileEditPage() {
                 )}
               />
 
-              <h3 className="text-lg font-medium border-t pt-6">Settings</h3>
+              <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                <EyeIcon className="mr-2 h-5 w-5 text-primary" /> Settings
+              </h3>
               <FormField
                 control={form.control}
                 name="profileVisibility"
@@ -393,7 +446,9 @@ export default function ProfileEditPage() {
                 )}
               />
 
-              <h3 className="text-lg font-medium border-t pt-6">Security</h3>
+              <h3 className="text-lg font-medium border-t pt-6 flex items-center">
+                <LockIcon className="mr-2 h-5 w-5 text-primary" /> Security
+              </h3>
                 <FormField
                     control={form.control}
                     name="currentPassword"
@@ -448,3 +503,6 @@ export default function ProfileEditPage() {
     </div>
   );
 }
+
+
+    

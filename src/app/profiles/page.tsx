@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon } from "lucide-react";
+import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon, SmileIcon } from "lucide-react";
 
 interface WorkExperience {
   title: string;
@@ -33,6 +33,7 @@ interface SocialLinks {
 }
 
 type UserRole = 'Developer' | 'Entrepreneur' | 'Investor' | 'General';
+type UserPresence = 'online' | 'offline' | 'away';
 
 interface Profile {
   id: string;
@@ -58,6 +59,10 @@ interface Profile {
   education?: Education[];
   socialLinks?: SocialLinks;
   profileVisibility?: 'Public' | 'Private' | 'Connections Only';
+  customStatusText?: string;
+  customStatusEmoji?: string;
+  presence?: UserPresence;
+  lastActiveTimestamp?: string;
 }
 
 const sampleProfiles: Profile[] = [
@@ -84,6 +89,9 @@ const sampleProfiles: Profile[] = [
     ],
     socialLinks: { linkedin: "#", portfolioWebsite: "#", github: "#" },
     profileVisibility: "Public",
+    presence: "online",
+    customStatusText: "Deep in thought with LLMs",
+    customStatusEmoji: "🧠",
   },
   {
     id: "2",
@@ -110,6 +118,10 @@ const sampleProfiles: Profile[] = [
     ],
     socialLinks: { linkedin: "#", portfolioWebsite: "#", github: "#" },
     profileVisibility: "Public",
+    presence: "away",
+    customStatusText: "Coffee break!",
+    customStatusEmoji: "☕",
+    lastActiveTimestamp: "5m ago",
   },
   {
     id: "3",
@@ -135,6 +147,8 @@ const sampleProfiles: Profile[] = [
     ],
     socialLinks: { linkedin: "#" },
     profileVisibility: "Connections Only",
+    presence: "offline",
+    lastActiveTimestamp: "3h ago",
   },
    {
     id: "4",
@@ -159,6 +173,9 @@ const sampleProfiles: Profile[] = [
     ],
     socialLinks: { linkedin: "#", portfolioWebsite: "#" },
     profileVisibility: "Public",
+    presence: "online",
+    customStatusText: "Designing new experiences",
+    customStatusEmoji: "🎨",
   },
 ];
 
@@ -176,6 +193,17 @@ function getRoleSpecificIcon(role: UserRole) {
     default:
       return <UsersIcon className="h-4 w-4 text-primary mr-1" />;
   }
+}
+
+function PresenceIndicator({ presence, lastActiveTimestamp }: { presence?: UserPresence, lastActiveTimestamp?: string }) {
+  if (presence === 'online') {
+    return <span className="absolute bottom-1 right-1 block h-3 w-3 rounded-full border-2 border-card bg-green-500" title="Online" />;
+  }
+  if (presence === 'away') {
+    return <span className="absolute bottom-1 right-1 block h-3 w-3 rounded-full border-2 border-card bg-yellow-500" title="Away" />;
+  }
+  // For offline, no dot, but lastActiveTimestamp might be shown elsewhere
+  return null;
 }
 
 export default function ProfilesPage() {
@@ -276,15 +304,29 @@ export default function ProfilesPage() {
                    {profile.bannerUrl && <Image src={profile.bannerUrl} alt={`${profile.name} banner`} layout="fill" objectFit="cover" data-ai-hint={profile.bannerAiHint || "abstract background"}/>}
                  </div>
                  <div className="flex justify-center -mt-12">
-                  <Avatar className="h-24 w-24 border-4 border-card shadow-md">
-                    <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
-                    <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
-                  </Avatar>
+                  <div className="relative">
+                    <Avatar className="h-24 w-24 border-4 border-card shadow-md">
+                      <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
+                      <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
+                    </Avatar>
+                    <PresenceIndicator presence={profile.presence} />
+                  </div>
                  </div>
               </CardHeader>
               <CardContent className="text-center pt-4 flex-grow">
                 <CardTitle className="text-xl">{profile.name}</CardTitle>
                 <CardDescription className="text-primary">{profile.title}</CardDescription>
+                
+                {(profile.customStatusEmoji || profile.customStatusText) && (
+                  <div className="mt-1 flex items-center justify-center text-xs text-muted-foreground">
+                    {profile.customStatusEmoji && <span className="mr-1 text-base">{profile.customStatusEmoji}</span>}
+                    <span>{profile.customStatusText}</span>
+                  </div>
+                )}
+
+                {profile.presence === 'offline' && profile.lastActiveTimestamp && (
+                  <p className="text-xs text-muted-foreground mt-1">Last active: {profile.lastActiveTimestamp}</p>
+                )}
                 
                 <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
                   {getRoleSpecificIcon(profile.role)} {profile.role}
@@ -399,15 +441,27 @@ export default function ProfilesPage() {
                       {profile.bannerUrl && <Image src={profile.bannerUrl} alt={`${profile.name} banner`} layout="fill" objectFit="cover" data-ai-hint={profile.bannerAiHint || "abstract background"}/>}
                     </div>
                     <div className="flex justify-center -mt-12">
-                     <Avatar className="h-24 w-24 border-4 border-card shadow-md">
-                       <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
-                       <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
-                     </Avatar>
+                     <div className="relative">
+                        <Avatar className="h-24 w-24 border-4 border-card shadow-md">
+                          <AvatarImage src={profile.avatarUrl} alt={profile.name} data-ai-hint={profile.dataAiHint} />
+                          <AvatarFallback>{profile.name.substring(0,1)}</AvatarFallback>
+                        </Avatar>
+                        <PresenceIndicator presence={profile.presence} />
+                      </div>
                     </div>
                  </CardHeader>
                  <CardContent className="text-center pt-4 flex-grow">
                    <CardTitle className="text-xl">{profile.name}</CardTitle>
                    <CardDescription className="text-primary">{profile.title}</CardDescription>
+                    {(profile.customStatusEmoji || profile.customStatusText) && (
+                      <div className="mt-1 flex items-center justify-center text-xs text-muted-foreground">
+                        {profile.customStatusEmoji && <span className="mr-1 text-base">{profile.customStatusEmoji}</span>}
+                        <span>{profile.customStatusText}</span>
+                      </div>
+                    )}
+                    {profile.presence === 'offline' && profile.lastActiveTimestamp && (
+                      <p className="text-xs text-muted-foreground mt-1">Last active: {profile.lastActiveTimestamp}</p>
+                    )}
                    <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
                      {getRoleSpecificIcon(profile.role)} {profile.role}
                    </div>
@@ -435,3 +489,6 @@ export default function ProfilesPage() {
     </div>
   );
 }
+
+
+    
