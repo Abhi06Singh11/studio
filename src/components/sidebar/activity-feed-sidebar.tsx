@@ -37,7 +37,7 @@ const quickAccessLinks = [
 
 export default function ActivityFeedSidebar() {
   return (
-    <aside className="w-full space-y-6 shrink-0"> {/* Removed lg:w-72 xl:w-80 */}
+    <aside className="w-full space-y-6 shrink-0">
       {/* User Profile Card Section */}
       <Card className="shadow-lg rounded-xl overflow-hidden">
         <div className="relative h-20 bg-gradient-to-br from-primary/30 to-accent/30">
@@ -111,14 +111,7 @@ export default function ActivityFeedSidebar() {
         </CardContent>
       </Card>
       
-       {/* Footer Links */}
-      <div className="text-center text-xs text-muted-foreground space-x-2 p-4">
-        <Link href="#" className="hover:underline">About</Link>
-        <Link href="#" className="hover:underline">Accessibility</Link>
-        <Link href="#" className="hover:underline">Help Center</Link>
-        <Link href="#" className="hover:underline">Privacy & Terms</Link>
-        <p className="mt-1">&copy; {new Date().getFullYear()} CodeSphere</p>
-      </div>
+      {/* Footer Links Removed From Here */}
     </aside>
   );
 }
