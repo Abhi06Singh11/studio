@@ -7,10 +7,12 @@ import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react';
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon } from 'lucide-react'; // Added HashIcon
+import { Textarea } from '@/components/ui/textarea'; // Added Textarea
+import { Input } from '@/components/ui/input'; // Added Input for hashtags
 import CreatePostModal from "@/components/post/create-post-modal"; 
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
-import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar"; // Import the new NewsletterSidebar
+import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
 
 const feedItems = [
   {
@@ -65,9 +67,9 @@ export default function ActivityFeedPage() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left Sidebar (Newsletter) - visible on lg and up */}
+        {/* Left Sidebar (User Profile & Quick Access) - visible on lg and up */}
         <div className="hidden lg:block lg:col-span-3">
-          <NewsletterSidebar />
+          <ActivityFeedSidebar />
         </div>
 
         {/* Main Content Area (Feed) */}
@@ -116,15 +118,15 @@ export default function ActivityFeedPage() {
           </div>
         </main>
 
-        {/* Right Sidebar (Profile & Quick Access) - visible on lg and up */}
+        {/* Right Sidebar (Newsletter) - visible on lg and up */}
         <div className="hidden lg:block lg:col-span-3">
-          <ActivityFeedSidebar />
+          <NewsletterSidebar />
         </div>
 
         {/* Sidebars stacked below for smaller screens */}
         <div className="lg:hidden col-span-1 space-y-8 mt-8">
+          <ActivityFeedSidebar /> 
           <NewsletterSidebar />
-          <ActivityFeedSidebar />
         </div>
       </div>
     </div>
