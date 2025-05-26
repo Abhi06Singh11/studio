@@ -1,9 +1,14 @@
+
+"use client";
+
+import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, SettingsIcon } from "lucide-react";
+import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, SettingsIcon, BuildingIcon } from "lucide-react";
 import Image from "next/image";
+import CreateOrganizationModal from "@/components/organization/create-organization-modal";
 
 const sampleProjects = [
   {
@@ -53,6 +58,8 @@ const sampleProjects = [
 ];
 
 export default function ProjectsPage() {
+  const [isCreateOrgModalOpen, setIsCreateOrgModalOpen] = React.useState(false);
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -60,10 +67,20 @@ export default function ProjectsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
           <p className="text-muted-foreground">Collaborate, manage tasks, and share files for your projects.</p>
         </div>
-        <Button>
-          <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setIsCreateOrgModalOpen(true)}>
+            <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
+          </Button>
+          <Button variant="outline">
+            <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
+          </Button>
+        </div>
       </div>
+
+      <CreateOrganizationModal 
+        isOpen={isCreateOrgModalOpen} 
+        onOpenChange={setIsCreateOrgModalOpen} 
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sampleProjects.map((project) => (
