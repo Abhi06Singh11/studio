@@ -16,7 +16,7 @@ import MyOrganizationsView from "@/components/project/views/my-organizations-vie
 import CreateProjectInOrgView from "@/components/project/views/create-project-org-view";
 import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
-import CreateActionsModal from "@/components/project/create-actions-modal"; // New modal
+import CreateActionsModal from "@/components/project/create-actions-modal"; 
 
 export type ProjectWorkspaceView = 
   | "threads" 
@@ -58,13 +58,13 @@ export default function ProjectsPage() {
       case "join-organization":
         return <JoinOrganizationView />;
       case "my-organizations":
-        return <MyOrganizationsView setActiveView={setActiveView} />; // Pass setActiveView for navigation
+        return <MyOrganizationsView setActiveView={setActiveView} />; 
       case "create-project-org":
         return <CreateProjectInOrgView />;
       case "join-project-org":
         return <JoinProjectOrgView />;
       case "my-projects-org":
-        return <MyProjectsOrgView setActiveView={setActiveView} />; // Pass setActiveView for navigation
+        return <MyProjectsOrgView setActiveView={setActiveView} />; 
       default:
         return <ThreadsView />;
     }
@@ -76,7 +76,7 @@ export default function ProjectsPage() {
         <ProjectWorkspaceSidebar 
           activeView={activeView} 
           setActiveView={setActiveView}
-          onOpenCreateActionsModal={() => setIsCreateActionsModalOpen(true)} // Pass handler
+          onOpenCreateActionsModal={() => setIsCreateActionsModalOpen(true)} 
         />
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
           {renderActiveView()}
@@ -89,3 +89,4 @@ export default function ProjectsPage() {
     </>
   );
 }
+
