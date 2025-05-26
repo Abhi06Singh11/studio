@@ -89,13 +89,13 @@ export default function ActivityFeedPage() {
                 </Button>
               </div>
               <div className="mt-3 flex justify-around pt-3 border-t">
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
                   <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
                   <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
                   <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
                 </Button>
               </div>
@@ -117,13 +117,13 @@ export default function ActivityFeedPage() {
 
         <div className="hidden lg:block lg:col-span-3">
           <NewsletterSidebar />
-          {/* FooterContent removed from here */}
         </div>
 
-        <div className="lg:hidden col-span-1 space-y-8 mt-8">
-          <ActivityFeedSidebar /> 
-          <NewsletterSidebar />
-          {/* FooterContent removed from here */}
+        <div className="lg:hidden col-span-1 mt-8">
+          <div className="space-y-6">
+            <ActivityFeedSidebar /> 
+            <NewsletterSidebar />
+          </div>
         </div>
       </div>
     </div>
