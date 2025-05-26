@@ -14,10 +14,10 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-background hover:bg-accent hover:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -42,14 +42,40 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    
+    // Determine children for Comp
+    let childrenForComp = children;
+    if (!asChild && Comp === "button" && React.Children.count(children) === 0) {
+      // Default content for button if no children provided and not asChild
+      // This part can be customized or removed if not needed
+      // For SidebarTrigger, it expects children to be passed or its default.
+    }
+    
+    if (asChild) {
+      // If asChild is true, Slot should have exactly one child.
+      // The props (including className, variant, size) are passed to Slot,
+      // which then merges them onto its direct child.
+      return (
+        <Slot
+          ref={ref}
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...props}
+        >
+          {children}
+        </Slot>
+      )
+    }
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {childrenForComp}
+      </Comp>
     )
   }
 )
