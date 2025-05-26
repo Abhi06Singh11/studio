@@ -1,4 +1,9 @@
 
+// This component is no longer used directly by the JobsProjectsWorkspacePage.
+// Its form logic is now primarily handled by CreateJobPostingModal.
+// Keeping the file for now in case its structure is useful elsewhere or for reference,
+// but it can be safely deleted if CreateJobPostingModal covers all "Post a Job" needs.
+
 "use client";
 
 import * as React from "react";
@@ -28,21 +33,16 @@ const experienceLevels = ["Entry-level", "Mid-level", "Senior-level", "Lead", "M
 const jobCategories = ["Software Development", "DevOps & SRE", "AI & Machine Learning", "Data Science & Analytics", "Product Management", "UX/UI Design", "Cybersecurity", "IT Support", "Sales & Marketing", "Other"] as const;
 
 const postJobFormSchema = z.object({
-  // Job Details
   jobTitle: z.string().min(3, "Job title must be at least 3 characters."),
   companyName: z.string().min(2, "Company name is required."),
   jobType: z.enum(jobTypes, { required_error: "Please select a job type." }),
-  experienceRequired: z.string().min(1, "Experience level is required."), // e.g. "2-5 years" or "Entry Level"
-  salaryRange: z.string().optional().or(z.literal('')), // e.g., "₹12 LPA – ₹20 LPA" or "$80k - $100k"
+  experienceRequired: z.string().min(1, "Experience level is required."),
+  salaryRange: z.string().optional().or(z.literal('')),
   location: z.string().min(2, "Location is required."),
   jobCategory: z.enum(jobCategories, { required_error: "Please select a job category." }),
-  requiredSkills: z.string().min(3, "Please list at least one required skill."), // Comma-separated
+  requiredSkills: z.string().min(3, "Please list at least one required skill."),
   assessmentRequired: z.enum(["Yes", "No"], { required_error: "Please specify if an assessment is required." }),
-  
-  // Description
   jobDescription: z.string().min(50, "Job description must be at least 50 characters.").max(10000, "Description too long."),
-
-  // Additional
   lastDateToApply: z.date().optional(),
   hiringContactEmail: z.string().email("Invalid email address."),
   companyLogoUrl: z.string().url("Invalid URL for company logo.").optional().or(z.literal('')),
@@ -56,7 +56,7 @@ export default function PostJobView() {
     resolver: zodResolver(postJobFormSchema),
     defaultValues: {
       jobTitle: "",
-      companyName: "Codesphere Inc.", // Default company for company-only posting
+      companyName: "Codesphere Inc.",
       jobType: "Full-time",
       experienceRequired: "",
       salaryRange: "",
@@ -76,7 +76,7 @@ export default function PostJobView() {
         ...data,
         requiredSkills: data.requiredSkills.split(',').map(skill => skill.trim()).filter(Boolean),
         lastDateToApply: data.lastDateToApply ? format(data.lastDateToApply, "yyyy-MM-dd") : undefined,
-        postedBy: "company_admin_placeholder_uid", // Placeholder
+        postedBy: "company_admin_placeholder_uid",
         postedAt: new Date().toISOString(),
     };
     console.log("Job Posting Data (Conceptual Firestore Write):", finalData);
@@ -91,17 +91,16 @@ export default function PostJobView() {
     <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="text-2xl font-bold flex items-center">
-          <PlusCircleIcon className="mr-2 h-6 w-6 text-primary" /> Post a New Job
+          <PlusCircleIcon className="mr-2 h-6 w-6 text-primary" /> Post a New Job (DEPRECATED VIEW)
         </CardTitle>
         <CardDescription>
-          Fill in the details to find the perfect candidate. (For Company use only)
+          This view is likely deprecated. Use the modal for posting jobs.
         </CardDescription>
       </CardHeader>
       <ScrollArea className="flex-1">
         <CardContent className="p-4 md:p-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              {/* Job Details Section */}
               <section className="space-y-6 p-4 border rounded-lg shadow-sm bg-card">
                 <h3 className="text-lg font-semibold flex items-center"><BriefcaseIcon className="mr-2 h-5 w-5 text-muted-foreground"/>Job Details</h3>
                 <FormField control={form.control} name="jobTitle" render={({ field }) => ( <FormItem> <FormLabel>Job Title</FormLabel> <FormControl><Input placeholder="e.g., Senior Frontend Developer" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -115,16 +114,18 @@ export default function PostJobView() {
                 <FormField control={form.control} name="location" render={({ field }) => ( <FormItem> <FormLabel>Location</FormLabel> <FormControl><Input placeholder="e.g., Remote / Bangalore / Hybrid" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                  <FormField control={form.control} name="jobCategory" render={({ field }) => ( <FormItem> <FormLabel>Job Category</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger></FormControl> <SelectContent> {jobCategories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
                  <FormField control={form.control} name="requiredSkills" render={({ field }) => ( <FormItem> <FormLabel className="flex items-center"><TagIcon className="mr-2 h-4 w-4 text-muted-foreground"/>Required Skills</FormLabel> <FormControl><Textarea placeholder="e.g., React, TypeScript, Node.js, Python (comma-separated)" {...field} className="min-h-[60px]"/> </FormControl> <FormMessage /> </FormItem> )} />
-                <FormField control={form.control} name="assessmentRequired" render={({ field }) => ( <FormItem className="space-y-3"> <FormLabel>Assessment Required?</FormLabel> <FormControl> <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-3"> <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="Yes" /></FormControl> <FormLabel className="font-normal">Yes (e.g., attach LeetCode-style challenge)</FormLabel> </FormItem> <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="No" /></FormControl> <FormLabel className="font-normal">No</FormLabel> </FormItem> </RadioGroup> </FormControl> <FormMessage /> </FormItem> )} />
+                <FormField control={form.control} name="assessmentRequired" render={({ field }) => ( <FormItem className="space-y-3"> <FormLabel>Assessment Required?</FormLabel> 
+                  <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-3"> 
+                    <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="Yes" id="assessmentYes" /></FormControl> <Label htmlFor="assessmentYes" className="font-normal">Yes (e.g., attach LeetCode-style challenge)</Label> </FormItem> 
+                    <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="No" id="assessmentNo" /></FormControl> <Label htmlFor="assessmentNo" className="font-normal">No</Label> </FormItem> 
+                  </RadioGroup> <FormMessage /> </FormItem> )} />
               </section>
 
-              {/* Description Section */}
               <section className="space-y-6 p-4 border rounded-lg shadow-sm bg-card">
                  <h3 className="text-lg font-semibold flex items-center"><FileTextIcon className="mr-2 h-5 w-5 text-muted-foreground"/>Job Description</h3>
                  <FormField control={form.control} name="jobDescription" render={({ field }) => ( <FormItem> <FormLabel>Full Job Description</FormLabel> <FormControl><Textarea placeholder="Provide a detailed description of the role, responsibilities, company culture, perks, growth opportunities, etc." className="min-h-[200px] resize-y" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
               </section>
 
-              {/* Additional Section */}
               <section className="space-y-6 p-4 border rounded-lg shadow-sm bg-card">
                  <h3 className="text-lg font-semibold flex items-center"><ListChecksIcon className="mr-2 h-5 w-5 text-muted-foreground"/>Additional Information</h3>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -146,4 +147,3 @@ export default function PostJobView() {
     </Card>
   );
 }
-
