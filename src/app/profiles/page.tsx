@@ -35,7 +35,8 @@ import {
   TwitterIcon,
   PhoneIcon,
   LinkIcon as LinkIconLucide,
-  ExternalLinkIcon, // Added ExternalLinkIcon
+  ExternalLinkIcon,
+  Edit3Icon, // Added Edit3Icon
 } from "lucide-react";
 import { cn } from '@/lib/utils';
 
@@ -57,7 +58,7 @@ interface WorkExperienceEntry {
   id: string;
   title: string;
   company: string;
-  logoUrl?: string; // Optional company logo
+  logoUrl?: string;
   logoAiHint?: string;
   duration: string;
   location?: string;
@@ -68,16 +69,16 @@ interface EducationEntry {
   id: string;
   degree: string;
   institution: string;
-  logoUrl?: string; // Optional institution logo
+  logoUrl?: string;
   logoAiHint?: string;
-  duration?: string; // Replaces 'year' for more flexibility
+  duration?: string;
   notes?: string;
 }
 
 interface SkillEntry {
   id: string;
   name: string;
-  endorsements?: number; // Conceptual
+  endorsements?: number;
 }
 
 interface ProjectEntry {
@@ -105,7 +106,7 @@ interface RecommendationEntry {
   recommenderAvatarUrl?: string;
   recommenderAvatarAiHint?: string;
   text: string;
-  timestamp?: string; // Date of recommendation
+  timestamp?: string;
 }
 
 type UserRole = 'Developer' | 'Entrepreneur' | 'Investor' | 'General';
@@ -131,19 +132,11 @@ interface Profile {
   projects?: ProjectEntry[];
   certifications?: CertificationEntry[];
   recommendationsReceived?: RecommendationEntry[];
-  // recommendationsGiven?: RecommendationEntry[]; // For future use
   interests?: string[];
-
-  // Fields from previous versions, can be mapped or removed if fully covered by new structure
-  title?: string; // Covered by headline
-  developerProfile?: { skills?: string[]; tools?: string[]; projects?: string[]; };
-  entrepreneurProfile?: { startupName?: string; ideaSummary?: string; pitchDeckUrl?: string; };
-  investorProfile?: { investmentInterests?: string[]; pastInvestments?: string[]; };
 }
 
-// --- Enhanced Sample Data for a Single Profile (Dr. Elara Vance) ---
 const userProfileData: Profile = {
-  id: "1",
+  id: "1", // Assuming Dr. Vance is the "current logged-in user" for this view
   name: "Dr. Elara Vance",
   headline: "Lead AI Researcher & Ethical AI Advocate @ Innovatech AI Labs",
   avatarUrl: "https://placehold.co/150x150.png?p=1",
@@ -199,29 +192,33 @@ const userProfileData: Profile = {
   interests: ["Ethical Technology", "Astrophotography", "Open Source Contribution", "Hiking", "Science Fiction Literature"],
 };
 
+// For demonstration purposes, assuming "1" is the ID of the currently logged-in user.
+const MOCK_CURRENT_USER_ID = "1";
 
 export default function ProfileViewPage() {
-  const profile = userProfileData; // Using Dr. Vance's data directly
+  const profile = userProfileData; 
   const [isBioExpanded, setIsBioExpanded] = React.useState(false);
 
   if (!profile) {
-    return <div>Loading profile...</div>; // Or a more sophisticated loading state
+    return <div>Loading profile...</div>; 
   }
 
   const toggleBio = () => setIsBioExpanded(!isBioExpanded);
+  const isOwnProfile = profile.id === MOCK_CURRENT_USER_ID;
 
   return (
     <div className="bg-muted/30 min-h-screen">
       <div className="container mx-auto max-w-5xl py-8 px-2 sm:px-4 lg:px-6">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-sm text-primary hover:underline">
-            <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back to Activity Feed
-          </Link>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/">
+              <ArrowLeftIcon className="mr-2 h-4 w-4" />
+              Back to Activity Feed
+            </Link>
+          </Button>
         </div>
 
         <Card className="overflow-hidden shadow-xl rounded-xl">
-          {/* --- Banner and Header --- */}
           <div className="relative">
             <div className="h-48 md:h-64 bg-gradient-to-r from-primary/50 to-accent/50 w-full">
               {profile.bannerUrl && (
@@ -244,18 +241,26 @@ export default function ProfileViewPage() {
                 {profile.location && <p className="text-sm text-muted-foreground mt-0.5 flex items-center"><MapPinIcon className="h-4 w-4 mr-1.5"/>{profile.location}</p>}
               </div>
               <div className="flex gap-2 mt-4 md:mt-0">
-                <Button><UserPlusIcon className="mr-2 h-4 w-4"/> Connect</Button>
-                <Button variant="outline"><RssIcon className="mr-2 h-4 w-4"/> Follow</Button>
-                <Button variant="outline" size="icon"><MessageSquareIcon className="h-4 w-4"/></Button>
+                {isOwnProfile ? (
+                  <Button asChild>
+                    <Link href="/profiles/edit">
+                      <Edit3Icon className="mr-2 h-4 w-4"/> Edit Profile
+                    </Link>
+                  </Button>
+                ) : (
+                  <>
+                    <Button><UserPlusIcon className="mr-2 h-4 w-4"/> Connect</Button>
+                    <Button variant="outline"><RssIcon className="mr-2 h-4 w-4"/> Follow</Button>
+                    <Button variant="outline" size="icon"><MessageSquareIcon className="h-4 w-4"/></Button>
+                  </>
+                )}
               </div>
             </div>
           </CardHeader>
           
           <Separator />
 
-          {/* --- Main Content Sections --- */}
           <div className="p-6 md:p-8 space-y-8">
-            {/* About Section */}
             {profile.bio && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><BookOpenTextIcon className="mr-2 h-5 w-5 text-primary"/>About</CardTitle></CardHeader>
@@ -263,7 +268,7 @@ export default function ProfileViewPage() {
                   <p className={cn("text-sm text-muted-foreground whitespace-pre-line", !isBioExpanded && "line-clamp-3")}>
                     {profile.bio}
                   </p>
-                  {profile.bio.split('\n').length > 3 && ( // Or check character count
+                  {profile.bio.split('\n').length > 3 && ( 
                     <Button variant="link" onClick={toggleBio} className="p-0 h-auto text-sm mt-2">
                       {isBioExpanded ? "See less" : "See more"}
                       {isBioExpanded ? <ChevronUpIcon className="ml-1 h-4 w-4"/> : <ChevronDownIcon className="ml-1 h-4 w-4"/>}
@@ -273,7 +278,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Contact & Social Links Section */}
              <Card className="shadow-lg rounded-lg">
               <CardHeader><CardTitle className="text-xl flex items-center"><MailIcon className="mr-2 h-5 w-5 text-primary"/>Contact & Socials</CardTitle></CardHeader>
               <CardContent className="space-y-3 text-sm">
@@ -310,8 +314,6 @@ export default function ProfileViewPage() {
               </CardContent>
             </Card>
 
-
-            {/* Experience Section */}
             {profile.workExperience && profile.workExperience.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><BriefcaseIcon className="mr-2 h-5 w-5 text-primary"/>Experience</CardTitle></CardHeader>
@@ -332,7 +334,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Education Section */}
             {profile.education && profile.education.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><GraduationCapIcon className="mr-2 h-5 w-5 text-primary"/>Education</CardTitle></CardHeader>
@@ -353,7 +354,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Skills Section */}
             {profile.skills && profile.skills.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><LightbulbIcon className="mr-2 h-5 w-5 text-primary"/>Skills</CardTitle></CardHeader>
@@ -361,14 +361,12 @@ export default function ProfileViewPage() {
                   {profile.skills.map(skill => (
                     <Badge key={skill.id} variant="secondary" className="text-sm py-1 px-3">
                       {skill.name} 
-                      {/* Conceptual: {skill.endorsements && <span className="ml-1.5 text-xs opacity-70">({skill.endorsements})</span>} */}
                     </Badge>
                   ))}
                 </CardContent>
               </Card>
             )}
 
-            {/* Projects Section */}
             {profile.projects && profile.projects.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><FileTextIcon className="mr-2 h-5 w-5 text-primary"/>Projects</CardTitle></CardHeader>
@@ -393,7 +391,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Certifications Section */}
             {profile.certifications && profile.certifications.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><AwardIcon className="mr-2 h-5 w-5 text-primary"/>Licenses & Certifications</CardTitle></CardHeader>
@@ -415,7 +412,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Recommendations Received Section */}
             {profile.recommendationsReceived && profile.recommendationsReceived.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><MessageSquareIcon className="mr-2 h-5 w-5 text-primary"/>Recommendations Received</CardTitle></CardHeader>
@@ -435,7 +431,6 @@ export default function ProfileViewPage() {
               </Card>
             )}
 
-            {/* Interests Section */}
             {profile.interests && profile.interests.length > 0 && (
               <Card className="shadow-lg rounded-lg">
                 <CardHeader><CardTitle className="text-xl flex items-center"><SparklesIcon className="mr-2 h-5 w-5 text-primary"/>Interests</CardTitle></CardHeader>
@@ -452,5 +447,3 @@ export default function ProfileViewPage() {
     </div>
   );
 }
-
-    
