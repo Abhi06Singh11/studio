@@ -15,25 +15,25 @@ import {
   Share2Icon,
   BriefcaseIcon,
   LayoutDashboardIcon,
-  SettingsIcon, 
-  Edit3Icon, 
+  SettingsIcon,
+  Edit3Icon,
 } from 'lucide-react';
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [ // Export this array so AppHeader can use it
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
-  { href: '/profiles', label: 'Profiles', icon: UsersIcon }, // Changed href back
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
+  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
   // Example: { href: '/settings', label: 'Settings', icon: SettingsIcon },
 ];
 
 interface AppSidebarContentProps {
-  onLinkClick?: () => void; 
+  onLinkClick?: () => void;
 }
 
 // This component now just renders the navigation list,
@@ -52,7 +52,7 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
         {allNavItems.map((item) => (
           <Link
-            key={item.href}
+            key={item.label} // Changed key to item.label as hrefs might change but label is more stable for display
             href={item.href}
             onClick={onLinkClick}
             className={cn(
@@ -72,4 +72,3 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
     </div>
   );
 }
-
