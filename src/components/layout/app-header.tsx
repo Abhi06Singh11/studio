@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from "react"; // Changed import
+import React, { useState } from "react";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,19 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuGroup,
+  DropdownMenuTrigger, // Ensured this is present
+} from '@/components/ui/dropdown-menu';
 import {
   Share2Icon,
   SearchIcon,
@@ -38,21 +51,9 @@ import {
   BellIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuGroup,
-} from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems } from './app-sidebar';
+import AppSidebarContent, { allNavItems } from './app-sidebar'; // Assuming allNavItems is exported from app-sidebar
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 
@@ -70,7 +71,7 @@ const sampleUser = {
 
 export default function AppHeader() {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Changed to use useState directly
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <TooltipProvider delayDuration={100}>
@@ -98,7 +99,6 @@ export default function AppHeader() {
           ))}
         </nav>
         
-        {/* Search Bar and User Profile Dropdown - pushed to the right */}
         <div className="flex items-center ml-auto gap-x-2">
           <div className="relative flex-1 max-w-[180px] sm:max-w-xs">
             <SearchIcon className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -228,7 +228,6 @@ export default function AppHeader() {
             </DropdownMenu>
         </div>
 
-        {/* Mobile Menu Trigger - now clearly separated and last element in the main flex container */}
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -246,5 +245,3 @@ export default function AppHeader() {
     </TooltipProvider>
   );
 }
-
-    
