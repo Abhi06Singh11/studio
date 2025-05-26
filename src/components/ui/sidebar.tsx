@@ -252,12 +252,12 @@ Sidebar.displayName = "Sidebar"
 
 const SidebarTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button> // Includes asChild, children, className, onClick, etc.
->(({ className, onClick: onClickProp, children, asChild = false, ...otherButtonProps }, ref) => {
+  React.ComponentProps<typeof Button>
+>(({ className, onClick: onClickProp, children, asChild = false, ...props }, ref) => {
   const { toggleSidebar } = useSidebar();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onClickProp?.(event); // Call the onClick passed to SidebarTrigger, if any
+    onClickProp?.(event);
     toggleSidebar();
   };
 
@@ -268,12 +268,18 @@ const SidebarTrigger = React.forwardRef<
       ref={ref}
       onClick={handleClick}
       data-sidebar="trigger"
-      // If asChild is true, Slot receives SidebarTrigger's className. Slot will merge it with its child's className.
-      // If asChild is false, Button receives its default style + SidebarTrigger's className.
-      className={cn(asChild ? className : "h-7 w-7", asChild ? undefined : className)}
-      {...otherButtonProps} // Spread other props. Slot passes them to its child. Button uses them directly.
+      // Apply default styles only if not `asChild`.
+      // If `asChild`, the child component is responsible for its own styling.
+      // The `className` prop passed to `SidebarTrigger` will be merged by `Slot` or `Button`.
+      variant={asChild ? undefined : (props.variant || "ghost")}
+      size={asChild ? undefined : (props.size || "icon")}
+      className={cn(
+        asChild ? "" : "h-7 w-7", // Default structural classes if not asChild
+        className // className from <SidebarTrigger className="foo">
+      )}
+      {...props} // Spread remaining props like `type`, `disabled`, etc.
     >
-      {asChild ? children : ( // If Slot, children is the child passed to SidebarTrigger. If Button, these are default children.
+      {asChild && children ? children : ( // If asChild, render the passed child. Otherwise, render default content.
         <>
           <PanelLeft />
           <span className="sr-only">Toggle Sidebar</span>
@@ -753,7 +759,7 @@ export {
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
-  _sidebarMenuButtonVariants as sidebarMenuButtonVariants,
+  _sidebarMenuButtonVariants, // Exporting the cva for external use if needed
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarMenuSub,
@@ -766,4 +772,7 @@ export {
   useSidebar,
 }
 
+// Re-export original name for consistency if needed elsewhere
 export { _sidebarMenuButtonVariants as sidebarMenuButtonVariantsCVA };
+
+    
