@@ -4,7 +4,7 @@ import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Code2Icon, ZapIcon, BarChart3Icon, TrophyIcon, ArrowRightIcon, FilterIcon, SearchIcon } from "lucide-react";
+import { Code2Icon, ZapIcon, BarChart3Icon, TrophyIcon, ArrowRightIcon, FilterIcon, SearchIcon, ListChecksIcon } from "lucide-react"; // Added ListChecksIcon
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -170,3 +170,4 @@ export default function AllChallengesView() {
     </div>
   );
 }
+
