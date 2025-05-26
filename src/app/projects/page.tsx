@@ -121,22 +121,38 @@ export default function ProjectsPage() {
               and a dedicated comment section (view and add comments) for discussions.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={() => setIsJoinProjectModalOpen(true)}>
-              <LogInIcon className="mr-2 h-5 w-5" /> Join Project
-            </Button>
-             <Button onClick={() => setIsJoinWorkspaceModalOpen(true)}>
-              <UsersIcon className="mr-2 h-5 w-5" /> Join Workspace
-            </Button>
-            <Button onClick={() => setIsCreateOrgModalOpen(true)} variant="outline">
-              <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/projects/create-personal">
-                <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
-              </Link>
-            </Button>
-          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="shadow-lg rounded-xl">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">Start Something New</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col sm:flex-row gap-3">
+              <Button onClick={() => setIsCreateOrgModalOpen(true)} variant="outline" className="w-full">
+                <BuildingIcon className="mr-2 h-5 w-5" /> Create New Organization
+              </Button>
+              <Button variant="outline" asChild className="w-full">
+                <Link href="/projects/create-personal">
+                  <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg rounded-xl">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">Join an Existing Team</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col sm:flex-row gap-3">
+               <Button onClick={() => setIsJoinWorkspaceModalOpen(true)} className="w-full">
+                <UsersIcon className="mr-2 h-5 w-5" /> Join Organization
+              </Button>
+              <Button onClick={() => setIsJoinProjectModalOpen(true)} className="w-full">
+                <LogInIcon className="mr-2 h-5 w-5" /> Join Existing Project
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <CreateOrganizationModal
@@ -151,10 +167,9 @@ export default function ProjectsPage() {
         <JoinWorkspaceModal
           isOpen={isJoinWorkspaceModalOpen}
           onOpenChange={setIsJoinWorkspaceModalOpen}
-          // You might want to pass sample organization data here
         />
 
-
+        <h2 className="text-2xl font-semibold tracking-tight pt-6">Your Projects & Workspaces</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sampleProjects.map((project) => (
             <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl hover:shadow-2xl transition-shadow duration-300">
@@ -169,7 +184,7 @@ export default function ProjectsPage() {
                   <CardTitle className="text-lg font-semibold truncate">{project.name}</CardTitle>
                 </div>
                 {project.organization && (
-                  <Link href={`/organizations/${project.organization.id}`} className="group">
+                   <Link href={`/organizations/${project.organization.id}`} className="group">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1 hover:text-primary hover:underline">
                       {project.organization.logoUrl && (
                         <Image
@@ -272,5 +287,3 @@ export default function ProjectsPage() {
     </TooltipProvider>
   );
 }
-
-    
