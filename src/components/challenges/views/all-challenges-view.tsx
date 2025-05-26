@@ -143,7 +143,7 @@ export default function AllChallengesView() {
                <div className="mt-1.5 flex flex-wrap gap-1">
                 {challenge.tags.map(tag => <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>)}
                </div>
-               {challenge.status && <p className="text-xs mt-1.5">Status: <Badge variant={challenge.status === "Solved" ? "default" : "secondary"}>{challenge.status}</Badge></p>}
+               {challenge.status && <div className="text-xs mt-1.5">Status: <Badge variant={challenge.status === "Solved" ? "default" : "secondary"}>{challenge.status}</Badge></div>}
             </CardHeader>
             <CardContent className="flex-grow">
               <p className="text-sm text-muted-foreground mb-3">{challenge.description}</p>
