@@ -13,6 +13,9 @@ import ViewInvitationsView from "@/components/jobs/views/view-invitations-view";
 import SavedPostsView from "@/components/jobs/views/saved-posts-view";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { MenuIcon } from "lucide-react";
+
 
 export type JobsProjectsWorkspaceView =
   | "post-job" // This will now trigger a modal
@@ -27,6 +30,8 @@ export default function JobsProjectsWorkspacePage() {
   const router = useRouter();
   const [activeView, setActiveView] = React.useState<JobsProjectsWorkspaceView>("view-posted-jobs");
   const [isCreateJobModalOpen, setIsCreateJobModalOpen] = React.useState(false);
+  // Conceptual: state to manage mobile sidebar visibility
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
   const handleSetActiveView = (view: JobsProjectsWorkspaceView) => {
     if (view === "post-job") {
@@ -82,8 +87,19 @@ export default function JobsProjectsWorkspacePage() {
   return (
     <TooltipProvider>
       <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your app header */}
+        {/* 
+          Conceptual: If isMobileSidebarOpen is true, render sidebar differently
+          For now, JobsProjectsSidebar has `hidden md:flex` to hide on small screens.
+        */}
         <JobsProjectsSidebar activeView={activeView} setActiveView={handleSetActiveView} />
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
+          {/* Conceptual button to toggle sidebar on mobile */}
+          <div className="md:hidden mb-4">
+            <Button variant="outline" size="sm" onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}>
+              <MenuIcon className="h-4 w-4 mr-2" />
+              Menu (Toggle Placeholder)
+            </Button>
+          </div>
           {renderActiveView()}
         </main>
       </div>

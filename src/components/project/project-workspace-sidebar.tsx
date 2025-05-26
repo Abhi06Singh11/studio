@@ -80,7 +80,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
   const [isProjectsOrgExpanded, setIsProjectsOrgExpanded] = React.useState(true);
 
   return (
-    <aside className="w-64 md:w-72 bg-muted/40 border-r flex flex-col h-full">
+    <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
       <div className="p-3 border-b flex justify-between items-center">
         <Button variant="ghost" asChild className="justify-start h-9 p-2 text-base">
           <Link href="/" className="flex items-center gap-2">
@@ -128,15 +128,19 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                             variant="ghost"
                             className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground"
                         >
-                            <Avatar className="h-4 w-4 mr-2">
-                                <AvatarImage src={subItem.avatar} alt={subItem.label} data-ai-hint={subItem.dataAiHint} />
-                                <AvatarFallback>{subItem.label.substring(0,1)}</AvatarFallback>
-                            </Avatar>
-                           {subItem.label}
+                           <span className="flex items-center gap-2.5">
+                                <Avatar className="h-4 w-4 mr-0">
+                                    <AvatarImage src={subItem.avatar} alt={subItem.label} data-ai-hint={subItem.dataAiHint} />
+                                    <AvatarFallback>{subItem.label.substring(0,1)}</AvatarFallback>
+                                </Avatar>
+                            {subItem.label}
+                           </span>
                         </Button>
                     ))}
                      <Button variant="ghost" className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground">
-                        <PlusIcon className="mr-2 h-3.5 w-3.5"/> Add Teammates
+                       <span className="flex items-center gap-2.5">
+                            <PlusIcon className="h-3.5 w-3.5"/> Add Teammates
+                        </span>
                     </Button>
                 </div>
               )}
@@ -151,10 +155,12 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               className="flex-1 justify-start text-sm h-8 font-semibold"
               onClick={() => setIsChannelsExpanded(!isChannelsExpanded)}
             >
-              <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isChannelsExpanded && "-rotate-90")} />
-              Channels
+                <span className="flex items-center gap-2.5">
+                    <ChevronDownIcon className={cn("h-4 w-4 transition-transform", !isChannelsExpanded && "-rotate-90")} />
+                    Channels
+                </span>
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
+            <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
                 <PlusIcon className="h-4 w-4"/>
                 <span className="sr-only">Create Channel</span>
             </Button>
@@ -171,8 +177,10 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                   )}
                    onClick={() => setActiveView('channels')}
                 >
-                  {channel.isPrivate ? <LockIcon className="mr-2 h-3 w-3" /> : <span className="mr-2 font-bold text-muted-foreground/70">#</span>}
-                  <span className="truncate">{channel.name}</span>
+                  <span className="flex items-center gap-2.5">
+                    {channel.isPrivate ? <LockIcon className="h-3 w-3" /> : <span className="mr-0 font-bold text-muted-foreground/70">#</span>}
+                    <span className="truncate">{channel.name}</span>
+                  </span>
                 </Button>
               ))}
             </div>
@@ -184,7 +192,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
             className="w-full justify-between text-sm h-8 font-semibold"
             onClick={() => setIsOrgsExpanded(!isOrgsExpanded)}
           >
-            <span className="flex items-center">
+            <span className="flex items-center gap-2.5">
               <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isOrgsExpanded && "-rotate-90")} />
               Organizations
             </span>
@@ -212,7 +220,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
             className="w-full justify-between text-sm h-8 font-semibold"
             onClick={() => setIsProjectsOrgExpanded(!isProjectsOrgExpanded)}
           >
-            <span className="flex items-center">
+            <span className="flex items-center gap-2.5">
               <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isProjectsOrgExpanded && "-rotate-90")} />
               Projects (Org)
             </span>
@@ -255,6 +263,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
       <div className="p-2 border-t mt-auto">
         <Button variant="ghost" className="w-full justify-start h-10 p-2" asChild>
             <Link href={`/profiles?returnTo=/projects`} className="flex items-center gap-2 w-full">
+               <span className="flex items-center gap-2.5">
                 <Avatar className="h-8 w-8">
                     <AvatarImage src="https://placehold.co/100x100.png?p=1" alt="Current User" data-ai-hint="user avatar" />
                     <AvatarFallback>U</AvatarFallback>
@@ -263,7 +272,8 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                     <p className="text-sm font-medium text-foreground">Dr. Elara Vance</p>
                     <p className="text-xs text-muted-foreground">Online</p>
                 </div>
-                <CircleEllipsisIcon className="h-4 w-4 text-muted-foreground"/>
+                </span>
+                <CircleEllipsisIcon className="h-4 w-4 text-muted-foreground ml-auto"/>
             </Link>
         </Button>
       </div>

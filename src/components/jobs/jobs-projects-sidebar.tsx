@@ -47,7 +47,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
   const [isSavedPostsExpanded, setIsSavedPostsExpanded] = React.useState(true);
 
   return (
-    <aside className="w-64 md:w-72 bg-muted/40 border-r flex flex-col h-full">
+    <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
       <div className="p-3 border-b">
         <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
           <Link href="/">

@@ -5,7 +5,7 @@ import * as React from "react";
 import ProjectWorkspaceSidebar from "@/components/project/project-workspace-sidebar";
 import ThreadsView from "@/components/project/views/threads-view";
 import ChannelsView from "@/components/project/views/channels-view";
-import CreateChannelView from "@/components/project/views/create-channel-view"; // Import new view
+import CreateChannelView from "@/components/project/views/create-channel-view";
 import DirectMessagesView from "@/components/project/views/direct-messages-view";
 import MentionsActivityView from "@/components/project/views/mentions-activity-view";
 import FilesView from "@/components/project/views/files-view";
@@ -18,16 +18,18 @@ import CreateProjectInOrgView from "@/components/project/views/create-project-or
 import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
 import CreateActionsModal from "@/components/project/create-actions-modal"; 
+import { Button } from "@/components/ui/button";
+import { MenuIcon } from "lucide-react";
 
 export type ProjectWorkspaceView = 
   | "threads" 
   | "channels" 
-  | "create-channel" // Add new view type
+  | "create-channel"
   | "dms" 
   | "activity" 
   | "files" 
   | "settings"
-  // New Organization and Project views
+  // Organization and Project views
   | "create-organization"
   | "join-organization"
   | "my-organizations"
@@ -38,6 +40,8 @@ export type ProjectWorkspaceView =
 export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
   const [isCreateActionsModalOpen, setIsCreateActionsModalOpen] = React.useState(false);
+  // Conceptual: state to manage mobile sidebar visibility
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
 
   const renderActiveView = () => {
@@ -46,7 +50,7 @@ export default function ProjectsPage() {
         return <ThreadsView />;
       case "channels":
         return <ChannelsView />;
-      case "create-channel": // Add case for new view
+      case "create-channel": 
         return <CreateChannelView setActiveView={setActiveView} />;
       case "dms":
         return <DirectMessagesView />;
@@ -76,13 +80,24 @@ export default function ProjectsPage() {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your header */}
+      <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your app header */}
+        {/* 
+          Conceptual: If isMobileSidebarOpen is true, render sidebar differently (e.g., as a Sheet or absolutely positioned)
+          For now, ProjectWorkspaceSidebar has `hidden md:flex` to hide on small screens.
+        */}
         <ProjectWorkspaceSidebar 
           activeView={activeView} 
           setActiveView={setActiveView}
           onOpenCreateActionsModal={() => setIsCreateActionsModalOpen(true)} 
         />
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
+          {/* Conceptual button to toggle sidebar on mobile */}
+          <div className="md:hidden mb-4">
+            <Button variant="outline" size="sm" onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}>
+              <MenuIcon className="h-4 w-4 mr-2" />
+              Menu (Toggle Placeholder)
+            </Button>
+          </div>
           {renderActiveView()}
         </main>
       </div>
@@ -94,3 +109,4 @@ export default function ProjectsPage() {
   );
 }
 
+    
