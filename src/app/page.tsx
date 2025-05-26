@@ -1,11 +1,14 @@
 
+"use client"; // Added "use client" for useState hook
+
+import * as React from "react"; // Import React for useState
+import Link from "next/link"; // Import Link for navigation
 import ActivityFeedItem from '@/components/activity-feed-item';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PaperclipIcon, SendIcon, HashIcon, VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react'; // Added VideoIcon, ImageIcon, FileTextIcon
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input'; // Added Input for consistency, though might not be used in the final version of this simplified trigger
+import { VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react';
+import CreatePostModal from "@/components/post/create-post-modal"; // Import the modal
 
 const feedItems = [
   {
@@ -47,29 +50,30 @@ const feedItems = [
   },
 ];
 
-// Sample user data (replace with actual data or context in a real app)
 const currentUser = {
-  name: "Elara Vance", // Or fetch dynamically
-  avatarUrl: "https://placehold.co/100x100.png?a=user",
-  avatarAiHint: "user icon"
+  name: "Dr. Elara Vance", // Sample user
+  avatarUrl: "https://placehold.co/100x100.png?p=1", // Matching profile page sample data
+  avatarAiHint: "scientist woman"
 };
 
 export default function ActivityFeedPage() {
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
+
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4">
-      {/* LinkedIn-style "Start a Post" Card */}
       <Card className="mb-6 shadow-lg rounded-xl">
         <CardContent className="p-4">
           <div className="flex items-start space-x-3">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
-              <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
-            </Avatar>
-            {/* Placeholder for "Start a post" input - clicking this would open a modal/expanded view */}
-            <Button 
-              variant="outline" 
+            <Link href="/profiles/edit" passHref>
+              <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
+                <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
+              </Avatar>
+            </Link>
+            <Button
+              variant="outline"
               className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-              // onClick={() => console.log("Open post creation modal/editor")} // Conceptual action
+              onClick={() => setIsCreatePostModalOpen(true)}
             >
               Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
             </Button>
@@ -88,7 +92,12 @@ export default function ActivityFeedPage() {
         </CardContent>
       </Card>
 
-      {/* Activity Feed Items */}
+      <CreatePostModal
+        isOpen={isCreatePostModalOpen}
+        onOpenChange={setIsCreatePostModalOpen}
+        currentUser={currentUser}
+      />
+
       <div className="space-y-6">
         {feedItems.map((item) => (
           <ActivityFeedItem key={item.id} {...item} />
