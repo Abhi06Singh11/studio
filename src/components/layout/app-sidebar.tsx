@@ -22,13 +22,13 @@ import {
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [ // Export this array so AppHeader can use it
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
-  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
+  { href: '/profiles/edit', label: 'Profiles', icon: UsersIcon }, // Changed href
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
-  { href: '/profiles/edit', label: 'Edit Profile', icon: Edit3Icon },
+  // { href: '/profiles/edit', label: 'Edit Profile', icon: Edit3Icon }, // Removed this line
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
   // Example: { href: '/settings', label: 'Settings', icon: SettingsIcon },
 ];
@@ -73,3 +73,4 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
     </div>
   );
 }
+

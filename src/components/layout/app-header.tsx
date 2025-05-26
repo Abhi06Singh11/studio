@@ -21,7 +21,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuGroup,
-  DropdownMenuTrigger, // Ensured this is present
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Share2Icon,
@@ -53,7 +53,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems } from './app-sidebar'; // Assuming allNavItems is exported from app-sidebar
+import AppSidebarContent, { allNavItems } from './app-sidebar'; 
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 
@@ -85,17 +85,24 @@ export default function AppHeader() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {allNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "px-2.5 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
-                (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) && "bg-primary/10 text-primary font-semibold"
-              )}
-              aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined}
-            >
-              {item.label}
-            </Link>
+            <Tooltip key={item.label}>
+              <TooltipTrigger asChild>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "px-2.5 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
+                    (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) && "bg-primary/10 text-primary font-semibold"
+                  )}
+                  aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined}
+                >
+                   <item.icon className="h-5 w-5 md:hidden" />
+                   <span className="hidden md:inline">{item.label}</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{item.label}</p>
+              </TooltipContent>
+            </Tooltip>
           ))}
         </nav>
         
