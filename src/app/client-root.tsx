@@ -7,6 +7,8 @@ import AppHeader from '@/components/layout/app-header';
 import { Toaster } from "@/components/ui/toaster";
 import Preloader from '@/components/layout/preloader'; // Import preloader
 import { useState, useEffect } from 'react';       // Import hooks
+import { usePathname } from 'next/navigation'; // Import usePathname
+import { cn } from '@/lib/utils'; // Import cn for conditional classes
 
 export default function ClientRoot({
   children,
@@ -14,6 +16,7 @@ export default function ClientRoot({
   children: React.ReactNode;
 }>) {
   const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname(); // Get the current pathname to use as a key
 
   useEffect(() => {
     // Simulate a delay for the preloader to be visible
@@ -33,8 +36,14 @@ export default function ClientRoot({
         <AppSidebar />
         <div className="flex flex-col flex-1 min-h-screen md:peer-data-[state=open]:[grid-area:main]">
           <AppHeader />
-          <main className="flex-1 p-4 md:p-6 bg-background">
-            {children}
+          <main className={cn(
+            "flex-1 p-4 md:p-6 bg-background overflow-hidden", // Added overflow-hidden
+            // Hide main content container while preloader is active to prevent flash of unstyled/old content
+            isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
+          )}>
+            <div key={pathname} className={!isLoading ? "animate-fadeInPage" : ""}> {/* Apply animation class and key */}
+              {children}
+            </div>
           </main>
         </div>
         <Toaster />
