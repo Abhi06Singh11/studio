@@ -204,17 +204,40 @@ export default function ProjectsPage() {
                     <p>View team, connect &amp; collaborate</p>
                   </TooltipContent>
                 </Tooltip>
-                <Button variant="outline" size="sm" className="w-full">
-                  <MessageSquareIcon className="mr-1 h-4 w-4" /> Comment
-                </Button>
-                <Button variant="outline" size="sm" className="w-full">
-                  <FileTextIcon className="mr-1 h-4 w-4" /> Files
-                </Button>
-                <Button variant="outline" size="sm" asChild className="w-full">
-                  <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
-                    <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
-                  </Link>
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full" asChild>
+                      <Link href={`/projects/${project.id}/comments`}>
+                        <MessageSquareIcon className="mr-1 h-4 w-4" /> Comment
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>View and add comments</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full"> {/* Conceptual: Link to files page */}
+                      <FileTextIcon className="mr-1 h-4 w-4" /> Files
+                    </Button>
+                  </TooltipTrigger>
+                   <TooltipContent>
+                    <p>View project files (conceptual)</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" asChild className="w-full">
+                      <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
+                        <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Open full project workspace</p>
+                  </TooltipContent>
+                </Tooltip>
               </CardFooter>
             </Card>
           ))}
@@ -223,3 +246,4 @@ export default function ProjectsPage() {
     </TooltipProvider>
   );
 }
+
