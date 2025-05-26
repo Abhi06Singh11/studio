@@ -1,9 +1,6 @@
 
 "use client";
 
-// SidebarProvider is still useful if other parts of the app (like OrganizationLayout)
-// use the Sidebar component from ui/sidebar for their specific sidebars.
-// For the main mobile navigation, AppHeader now manages its own Sheet.
 import { SidebarProvider } from '@/components/ui/sidebar'; 
 import AppHeader from '@/components/layout/app-header';
 import { Toaster } from "@/components/ui/toaster";
@@ -18,9 +15,11 @@ export default function ClientRoot({
   children: React.ReactNode;
 }>) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false); // New state for mount status
   const pathname = usePathname();
 
   useEffect(() => {
+    setIsMounted(true); // Set to true once component mounts on client
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -31,22 +30,21 @@ export default function ClientRoot({
   return (
     <>
       {isLoading && <Preloader />}
-      {/* SidebarProvider is kept in case other parts of the app use its context,
-          but it's not directly controlling the main app navigation sidebar anymore. */}
-      <SidebarProvider defaultOpen={false}> {/* `defaultOpen` is less relevant here now */}
+      <SidebarProvider defaultOpen={false}>
         <div className="flex flex-col flex-1 min-h-screen">
-          {/* AppHeader now contains the primary desktop navigation (icons)
-              and the trigger for the mobile navigation drawer (Sheet). */}
           <AppHeader /> 
           <main className={cn(
             "flex-1 bg-background overflow-hidden",
-            pathname !== '/' && "px-4 sm:px-6 lg:px-8", // Apply horizontal padding to all pages except the activity feed
+            // Apply conditional padding only after mount if pathname is not '/'
+            isMounted && pathname !== '/' && "px-4 sm:px-6 lg:px-8", 
+            // Opacity based on loading state
             isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
           )}>
             {/* Page content is injected here */}
             <div key={pathname} className={cn(
               "h-full py-8", // Apply consistent vertical padding to all pages
-              !isLoading ? "animate-fadeInPage" : ""
+              // Apply animation only after mount and when not loading
+              isMounted && !isLoading ? "animate-fadeInPage" : "" 
             )}>
               {children}
             </div>
@@ -57,5 +55,3 @@ export default function ClientRoot({
     </>
   );
 }
-
-    
