@@ -8,153 +8,110 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRightIcon, ChevronDownIcon, LightbulbIcon, NewspaperIcon, PuzzleIcon, InfoIcon, SettingsIcon } from "lucide-react";
+import { 
+  BookmarkIcon, 
+  Users2Icon, 
+  MailIcon, 
+  CalendarCheck2Icon, 
+  ExternalLinkIcon, 
+  BarChart3Icon, 
+  StarIcon,
+  ChevronRightIcon
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface TopStory {
-  id: string;
-  headline: string;
-  summary: string;
-  timestamp: string;
-  engagement: string; // e.g., "1.2k readers" or "300 likes"
-  author?: {
-    name: string;
-    avatarUrl?: string;
-    avatarAiHint?: string;
-  };
-  imageUrl?: string;
-  imageAiHint?: string;
-  link: string;
-}
-
-const sampleTopStories: TopStory[] = [
-  {
-    id: "ts1",
-    headline: "The Future of AI in Collaborative Coding",
-    summary: "Explore how next-gen AI tools are revolutionizing team workflows and code generation.",
-    timestamp: "18h ago",
-    engagement: "2.5k readers",
-    author: { name: "CodeSphere Insights" },
-    link: "#",
-    imageUrl: "https://placehold.co/300x150.png?story=1",
-    imageAiHint: "ai technology"
-  },
-  {
-    id: "ts2",
-    headline: "VC Funding Trends for Dev-Focused Startups in 2024",
-    summary: "What investors are looking for in the current market. Key insights for entrepreneurs.",
-    timestamp: "1d ago",
-    engagement: "1.8k readers",
-    link: "#",
-    imageUrl: "https://placehold.co/300x150.png?story=2",
-    imageAiHint: "financial chart"
-  },
-  {
-    id: "ts3",
-    headline: "Mastering Serverless Architectures with Next.js",
-    summary: "A deep dive into building scalable serverless applications.",
-    timestamp: "3d ago",
-    engagement: "980 readers",
-    link: "#",
-  },
-  {
-    id: "ts4",
-    headline: "Ethical Considerations in AI Product Development",
-    summary: "Navigating the complex landscape of AI ethics for responsible innovation.",
-    timestamp: "5d ago",
-    engagement: "1.1k readers",
-    link: "#",
-  }
-];
-
-const samplePuzzle = {
-  id: "pz1",
-  title: "Today's Logic Puzzle",
-  description: "A new algorithm challenge is up! Test your skills and climb the leaderboard.",
-  link: "/challenges"
+const currentUserProfile = {
+  name: "Dr. Elara Vance",
+  avatarUrl: "https://placehold.co/100x100.png?p=1",
+  avatarAiHint: "scientist woman",
+  title: "Lead AI Researcher @ Innovatech AI",
+  location: "San Francisco, CA",
 };
 
+const quickAccessLinks = [
+  { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '#' },
+  { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '#' },
+  { id: 'newsletters', label: 'Newsletters', icon: MailIcon, href: '#' },
+  { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '#' },
+];
+
 export default function ActivityFeedSidebar() {
-  const [showMoreStories, setShowMoreStories] = React.useState(false);
-  const storiesToShow = showMoreStories ? sampleTopStories : sampleTopStories.slice(0, 2);
-
   return (
-    <aside className="w-full lg:w-80 xl:w-96 space-y-6 shrink-0">
-      {/* Top Stories Section */}
-      <Card className="shadow-lg rounded-xl">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold flex items-center">
-            <NewspaperIcon className="mr-2 h-5 w-5 text-primary" />
-            CodeSphere Top Stories
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {storiesToShow.map((story) => (
-            <div key={story.id} className="group">
-              <Link href={story.link} className="block hover:bg-muted/50 p-2 rounded-md transition-colors">
-                {story.imageUrl && (
-                  <div className="relative h-32 w-full rounded-md overflow-hidden mb-2 border">
-                    <Image src={story.imageUrl} alt={story.headline} layout="fill" objectFit="cover" data-ai-hint={story.imageAiHint || "news image"}/>
-                  </div>
-                )}
-                <h4 className="text-sm font-semibold group-hover:text-primary">{story.headline}</h4>
-                {story.author?.name && (
-                   <div className="flex items-center text-xs text-muted-foreground mt-0.5">
-                        {story.author.avatarUrl && (
-                             <Avatar className="h-4 w-4 mr-1.5">
-                                <AvatarImage src={story.author.avatarUrl} data-ai-hint={story.author.avatarAiHint}/>
-                                <AvatarFallback>{story.author.name.substring(0,1)}</AvatarFallback>
-                             </Avatar>
-                        )}
-                       <span>{story.author.name}</span>
-                   </div>
-                )}
-                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{story.summary}</p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
-                  <span>{story.timestamp}</span>
-                  <span>{story.engagement}</span>
-                </div>
-              </Link>
-              <Separator className="my-2 group-last:hidden" />
-            </div>
-          ))}
+    <aside className="w-full lg:w-72 xl:w-80 space-y-6 shrink-0">
+      {/* User Profile Card Section */}
+      <Card className="shadow-lg rounded-xl overflow-hidden">
+        <div className="relative h-20 bg-gradient-to-br from-primary/30 to-accent/30">
+           {/* Placeholder banner image or gradient */}
+        </div>
+        <CardContent className="text-center -mt-10 p-4">
+          <Link href="/profiles/edit" passHref>
+            <Avatar className="h-20 w-20 mx-auto border-4 border-card shadow-md cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+              <AvatarImage src={currentUserProfile.avatarUrl} alt={currentUserProfile.name} data-ai-hint={currentUserProfile.avatarAiHint} />
+              <AvatarFallback>{currentUserProfile.name?.substring(0, 1) || 'U'}</AvatarFallback>
+            </Avatar>
+          </Link>
+          <Link href="/profiles/edit" passHref>
+            <CardTitle className="mt-3 text-lg hover:underline cursor-pointer">{currentUserProfile.name}</CardTitle>
+          </Link>
+          <CardDescription className="text-xs mt-0.5">{currentUserProfile.title}</CardDescription>
+          <CardDescription className="text-xs text-muted-foreground mt-0.5">{currentUserProfile.location}</CardDescription>
         </CardContent>
-        {sampleTopStories.length > 2 && (
-          <CardFooter className="p-3 border-t">
-            <Button
-              variant="ghost"
-              className="w-full text-sm text-primary hover:text-primary/90"
-              onClick={() => setShowMoreStories(!showMoreStories)}
-            >
-              {showMoreStories ? "Show less" : "Show more"}
-              <ChevronDownIcon className={cn("ml-1 h-4 w-4 transition-transform", showMoreStories && "rotate-180")} />
-            </Button>
-          </CardFooter>
-        )}
-      </Card>
-
-      {/* Today's Puzzle/Challenge Section */}
-      <Card className="shadow-lg rounded-xl">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold flex items-center">
-            <PuzzleIcon className="mr-2 h-5 w-5 text-primary" />
-            Today's Quick Challenge
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm font-semibold">{samplePuzzle.title}</p>
-          <CardDescription className="text-sm mt-1">{samplePuzzle.description}</CardDescription>
-        </CardContent>
-        <CardFooter className="p-3 border-t">
-          <Button variant="outline" className="w-full" asChild>
-            <Link href={samplePuzzle.link}>
-              Take the Challenge <ArrowRightIcon className="ml-2 h-4 w-4" />
+        <Separator />
+        <CardContent className="p-3 text-xs space-y-1.5">
+            <Link href="#" className="flex justify-between items-center text-muted-foreground hover:text-primary hover:bg-muted/50 p-1.5 rounded-md">
+                <span>Who's viewed your profile</span>
+                <span className="font-semibold text-primary">123</span>
             </Link>
-          </Button>
+            <Link href="#" className="flex justify-between items-center text-muted-foreground hover:text-primary hover:bg-muted/50 p-1.5 rounded-md">
+                <span>Impressions of your posts</span>
+                <span className="font-semibold text-primary">1,450</span>
+            </Link>
+             <Link href="#" className="block text-center text-xs text-muted-foreground hover:underline pt-1">
+                View all analytics
+            </Link>
+        </CardContent>
+        <Separator />
+        <CardFooter className="p-3">
+             <Link href="https://codesphere.com" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline flex items-center w-full justify-center">
+                Visit CodeSphere.com <ExternalLinkIcon className="ml-1 h-3 w-3"/>
+            </Link>
         </CardFooter>
       </Card>
+
+      {/* Career Goals / Premium Section */}
+      <Card className="shadow-lg rounded-xl">
+        <CardContent className="p-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Achieve your career goals faster with CodeSphere Premium.
+          </p>
+          <Button variant="outline" size="sm" className="mt-2 w-full hover:bg-amber-400/10 hover:border-amber-500 hover:text-amber-600">
+            <StarIcon className="mr-2 h-4 w-4 text-amber-500" /> Try Premium for Free
+          </Button>
+        </CardContent>
+      </Card>
       
-      {/* Footer Links */}
+      {/* Quick Access Links Section */}
+      <Card className="shadow-lg rounded-xl">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-base font-semibold">Quick Access</CardTitle>
+        </CardHeader>
+        <CardContent className="p-2">
+          <ul className="space-y-1">
+            {quickAccessLinks.map((item) => (
+              <li key={item.id}>
+                <Link href={item.href} passHref>
+                  <Button variant="ghost" className="w-full justify-start text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 h-9 px-2">
+                    <item.icon className="mr-2.5 h-4 w-4 flex-shrink-0" />
+                    {item.label}
+                  </Button>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+      
+       {/* Footer Links */}
       <div className="text-center text-xs text-muted-foreground space-x-2 p-4">
         <Link href="#" className="hover:underline">About</Link>
         <Link href="#" className="hover:underline">Accessibility</Link>
@@ -164,4 +121,3 @@ export default function ActivityFeedSidebar() {
       </div>
     </aside>
   );
-}
