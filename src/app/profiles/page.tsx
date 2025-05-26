@@ -35,6 +35,7 @@ import {
   TwitterIcon,
   PhoneIcon,
   LinkIcon as LinkIconLucide,
+  ExternalLinkIcon, // Added ExternalLinkIcon
 } from "lucide-react";
 import { cn } from '@/lib/utils';
 
