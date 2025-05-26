@@ -7,9 +7,7 @@ import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon, HashIcon } from 'lucide-react'; // Added HashIcon
-import { Textarea } from '@/components/ui/textarea'; // Added Textarea
-import { Input } from '@/components/ui/input'; // Added Input for hashtags
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon } from 'lucide-react';
 import CreatePostModal from "@/components/post/create-post-modal"; 
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
@@ -68,7 +66,7 @@ export default function ActivityFeedPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Left Sidebar (User Profile & Quick Access) - visible on lg and up */}
-        <div className="hidden lg:block lg:col-span-3">
+        <div className="hidden lg:block lg:col-span-3"> {/* Removed redundant space-y-6 */}
           <ActivityFeedSidebar />
         </div>
 
@@ -119,7 +117,7 @@ export default function ActivityFeedPage() {
         </main>
 
         {/* Right Sidebar (Newsletter) - visible on lg and up */}
-        <div className="hidden lg:block lg:col-span-3">
+        <div className="hidden lg:block lg:col-span-3"> {/* Removed redundant space-y-6 */}
           <NewsletterSidebar />
         </div>
 
