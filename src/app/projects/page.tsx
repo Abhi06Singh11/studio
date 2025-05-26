@@ -10,6 +10,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
 import Image from "next/image";
 import CreateOrganizationModal from "@/components/organization/create-organization-modal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ProjectMember {
   name: string;
@@ -52,11 +57,11 @@ const sampleProjects: SampleProject[] = [
     tags: ["Next.js", "TypeScript", "AI", "Collaboration"],
     imageUrl: "https://placehold.co/400x200.png?prj=1",
     imageAiHint: "team working",
-    organization: { 
-      id: "org_123", 
-      name: "Innovatech Solutions", 
-      logoUrl: "https://placehold.co/32x32.png?text=IS", 
-      logoAiHint: "company logo abstract" 
+    organization: {
+      id: "org_123",
+      name: "Innovatech Solutions",
+      logoUrl: "https://placehold.co/32x32.png?text=IS",
+      logoAiHint: "company logo abstract"
     }
   },
   {
@@ -87,9 +92,9 @@ const sampleProjects: SampleProject[] = [
     tags: ["React Native", "iOS", "Android", "Mobile UX"],
     imageUrl: "https://placehold.co/400x200.png?prj=3",
     imageAiHint: "mobile app",
-    organization: { 
-      id: "org_456", 
-      name: "GreenFuture 🌱", 
+    organization: {
+      id: "org_456",
+      name: "GreenFuture 🌱",
       logoUrl: "https://placehold.co/32x32.png?text=GF",
       logoAiHint: "nature logo"
     }
@@ -105,8 +110,8 @@ export default function ProjectsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
           <p className="text-muted-foreground">
-            Collaborate, manage tasks, share files, and discuss your projects. 
-            Each project card provides entry points to view team details, comment, access files, and open the full project.
+            Collaborate, manage tasks, share files, and comment on your projects.
+            Each project card provides entry points to view team details (connect, collaborate), access discussions, manage files, and open the full project workspace.
           </p>
         </div>
         <div className="flex gap-2">
@@ -121,19 +126,11 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      <CreateOrganizationModal 
-        isOpen={isCreateOrgModalOpen} 
-        onOpenChange={setIsCreateOrgModalOpen} 
+      <CreateOrganizationModal
+        isOpen={isCreateOrgModalOpen}
+        onOpenChange={setIsCreateOrgModalOpen}
       />
 
-      {/* Project cards display various project information and actions.
-          - Team: Shows member avatars; "Team" button conceptually leads to detailed team view/management.
-          - Comment: Button allows users to access project-specific discussions.
-          - Files: Button leads to project file viewing/management, with access control handled by backend.
-          - Open Project: Button navigates to the detailed project page, respecting access levels.
-          The specific UIs for these deeper interactions (e.g., comment threads, file lists, connection requests)
-          would be built on the respective linked pages or modals.
-      */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sampleProjects.map((project) => (
           <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl">
@@ -150,13 +147,13 @@ export default function ProjectsPage() {
               {project.organization && (
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
                   {project.organization.logoUrl && (
-                    <Image 
-                      src={project.organization.logoUrl} 
-                      alt={`${project.organization.name} logo`} 
+                    <Image
+                      src={project.organization.logoUrl}
+                      alt={`${project.organization.name} logo`}
                       data-ai-hint={project.organization.logoAiHint || "logo"}
-                      width={16} 
-                      height={16} 
-                      className="rounded-sm" 
+                      width={16}
+                      height={16}
+                      className="rounded-sm"
                     />
                   )}
                   <span>From: {project.organization.name}</span>
@@ -193,10 +190,23 @@ export default function ProjectsPage() {
               </div>
             </CardContent>
             <CardFooter className="grid grid-cols-2 gap-2 p-2 border-t bg-muted/30">
-              <Button variant="outline" size="sm"><UsersIcon className="mr-1 h-4 w-4" /> Team</Button>
-              <Button variant="outline" size="sm"><MessageSquareIcon className="mr-1 h-4 w-4" /> Comment</Button>
-              <Button variant="outline" size="sm"><FileTextIcon className="mr-1 h-4 w-4" /> Files</Button>
-              <Button variant="outline" size="sm" asChild>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm" className="w-full">
+                    <UsersIcon className="mr-1 h-4 w-4" /> Team
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>View team, connect &amp; collaborate</p>
+                </TooltipContent>
+              </Tooltip>
+              <Button variant="outline" size="sm" className="w-full">
+                <MessageSquareIcon className="mr-1 h-4 w-4" /> Comment
+              </Button>
+              <Button variant="outline" size="sm" className="w-full">
+                <FileTextIcon className="mr-1 h-4 w-4" /> Files
+              </Button>
+              <Button variant="outline" size="sm" asChild className="w-full">
                 <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
                   <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
                 </Link>
@@ -208,4 +218,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-
