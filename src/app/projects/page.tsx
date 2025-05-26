@@ -112,8 +112,8 @@ export default function ProjectsPage() {
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
             <p className="text-muted-foreground">
-              Collaborate, manage tasks, share files, and comment on your projects.
-              Each project card provides entry points to view team details (connect, collaborate), access discussions and files (with permissions), and open the full project workspace.
+              Browse projects, manage your work, or create new initiatives. 
+              Each project provides access to its team, files, and discussions (comments).
             </p>
           </div>
           <div className="flex gap-2">
@@ -147,19 +147,21 @@ export default function ProjectsPage() {
                   <CardTitle className="text-lg truncate">{project.name}</CardTitle>
                 </div>
                 {project.organization && (
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                    {project.organization.logoUrl && (
-                      <Image
-                        src={project.organization.logoUrl}
-                        alt={`${project.organization.name} logo`}
-                        data-ai-hint={project.organization.logoAiHint || "logo"}
-                        width={16}
-                        height={16}
-                        className="rounded-sm"
-                      />
-                    )}
-                    <span>From: {project.organization.name}</span>
-                  </div>
+                  <Link href={`/organizations/${project.organization.id}`} className="group">
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1 hover:text-primary hover:underline">
+                      {project.organization.logoUrl && (
+                        <Image
+                          src={project.organization.logoUrl}
+                          alt={`${project.organization.name} logo`}
+                          data-ai-hint={project.organization.logoAiHint || "logo"}
+                          width={16}
+                          height={16}
+                          className="rounded-sm"
+                        />
+                      )}
+                      <span>From: {project.organization.name}</span>
+                    </div>
+                  </Link>
                 )}
                 <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis">{project.description}</CardDescription>
               </CardHeader>
@@ -237,7 +239,7 @@ export default function ProjectsPage() {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Open full project workspace</p>
+                    <p>{project.organization ? "Open Organization Workspace" : "View Project Details"}</p>
                   </TooltipContent>
                 </Tooltip>
               </CardFooter>
@@ -249,3 +251,4 @@ export default function ProjectsPage() {
   );
 }
 
+    
