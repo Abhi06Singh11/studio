@@ -1,11 +1,11 @@
 
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PaperclipIcon, SendIcon, HashIcon } from 'lucide-react';
+import { PaperclipIcon, SendIcon, HashIcon, VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react'; // Added VideoIcon, ImageIcon, FileTextIcon
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input'; // Added Input for consistency, though might not be used in the final version of this simplified trigger
 
 const feedItems = [
   {
@@ -47,39 +47,48 @@ const feedItems = [
   },
 ];
 
+// Sample user data (replace with actual data or context in a real app)
+const currentUser = {
+  name: "Elara Vance", // Or fetch dynamically
+  avatarUrl: "https://placehold.co/100x100.png?a=user",
+  avatarAiHint: "user icon"
+};
+
 export default function ActivityFeedPage() {
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4">
-      <Card className="mb-6 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg">Create Post</CardTitle>
-        </CardHeader>
-        <CardContent>
+      {/* LinkedIn-style "Start a Post" Card */}
+      <Card className="mb-6 shadow-lg rounded-xl">
+        <CardContent className="p-4">
           <div className="flex items-start space-x-3">
-            <Avatar>
-              <AvatarImage src="https://placehold.co/100x100.png?a=user" data-ai-hint="user icon"/>
-              <AvatarFallback>U</AvatarFallback>
+            <Avatar className="h-12 w-12">
+              <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
+              <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
             </Avatar>
-            <div className="flex-1 space-y-3">
-              <Textarea placeholder="What's on your mind?" className="resize-y min-h-[100px] bg-background" />
-              <div className="relative">
-                <HashIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Add hashtags (e.g., #innovation #tech)" className="pl-8 bg-background" />
-              </div>
-              <div className="flex justify-between items-center">
-                <Button variant="ghost" size="icon">
-                  <PaperclipIcon className="h-5 w-5 text-muted-foreground" />
-                  <span className="sr-only">Attach media</span>
-                </Button>
-                <Button>
-                  <SendIcon className="mr-2 h-4 w-4" /> Post
-                </Button>
-              </div>
-            </div>
+            {/* Placeholder for "Start a post" input - clicking this would open a modal/expanded view */}
+            <Button 
+              variant="outline" 
+              className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+              // onClick={() => console.log("Open post creation modal/editor")} // Conceptual action
+            >
+              Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
+            </Button>
+          </div>
+          <div className="mt-3 flex justify-around pt-3 border-t">
+            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+              <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
+            </Button>
+            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+              <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
+            </Button>
+            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+              <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
+            </Button>
           </div>
         </CardContent>
       </Card>
 
+      {/* Activity Feed Items */}
       <div className="space-y-6">
         {feedItems.map((item) => (
           <ActivityFeedItem key={item.id} {...item} />
