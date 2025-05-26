@@ -106,14 +106,14 @@ export default function ProjectsPage() {
   const [isCreateOrgModalOpen, setIsCreateOrgModalOpen] = React.useState(false);
 
   return (
-    <TooltipProvider> {/* Wrap with TooltipProvider */}
+    <TooltipProvider>
       <div className="space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
             <p className="text-muted-foreground">
               Collaborate, manage tasks, share files, and comment on your projects.
-              Each project card provides entry points to view team details (connect, collaborate), access discussions, manage files, and open the full project workspace.
+              Each project card provides entry points to view team details (connect, collaborate), access discussions and files (with permissions), and open the full project workspace.
             </p>
           </div>
           <div className="flex gap-2">
@@ -218,12 +218,14 @@ export default function ProjectsPage() {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm" className="w-full"> {/* Conceptual: Link to files page */}
-                      <FileTextIcon className="mr-1 h-4 w-4" /> Files
+                    <Button variant="outline" size="sm" className="w-full" asChild>
+                        <Link href={`/projects/${project.id}/files`}>
+                            <FileTextIcon className="mr-1 h-4 w-4" /> Files
+                        </Link>
                     </Button>
                   </TooltipTrigger>
                    <TooltipContent>
-                    <p>View project files (conceptual)</p>
+                    <p>View project files</p>
                   </TooltipContent>
                 </Tooltip>
                 <Tooltip>
