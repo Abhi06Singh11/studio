@@ -1,7 +1,7 @@
 
 "use client";
 
-import * as React from "react"; // Ensure React is imported
+import * as React from "react";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -68,21 +68,24 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
+// Primary navigation links for the desktop header (LinkedIn style)
 const headerNavLinks = [
-  { href: '/', label: 'Home', icon: HomeIcon },
-  { href: '/profiles', label: 'Network', icon: UsersIcon },
-  { href: '/jobs', label: 'Jobs', icon: BriefcaseIcon },
-  { href: '/messages', label: 'Messaging', icon: MessageSquareIcon },
+  { href: '/', label: 'Home', icon: HomeIcon, pageName: 'Activity Feed' }, // 'Home' is the Activity Feed
+  { href: '/profiles', label: 'Network', icon: UsersIcon, pageName: 'Profiles' },
+  { href: '/jobs', label: 'Jobs', icon: BriefcaseIcon, pageName: 'Job & Project Board' },
+  { href: '/messages', label: 'Messaging', icon: MessageSquareIcon, pageName: 'Direct Messages' },
+  { href: '/notifications', label: 'Notifications', icon: BellIcon, pageName: 'Notifications' }, // Added to array
 ];
 
 interface NavigationLinkProps {
   href: string;
-  label: string;
+  label: string; // Text below the icon
+  tooltipText: string; // Text for the tooltip
   icon: React.ElementType;
   isActive: boolean;
 }
 
-const NavigationLink: React.FC<NavigationLinkProps> = ({ href, label, icon: Icon, isActive }) => (
+const NavigationLink: React.FC<NavigationLinkProps> = ({ href, label, tooltipText, icon: Icon, isActive }) => (
   <Tooltip>
     <TooltipTrigger asChild>
       <Link
@@ -98,7 +101,7 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({ href, label, icon: Icon
       </Link>
     </TooltipTrigger>
     <TooltipContent side="bottom">
-      <p>{label}</p>
+      <p>{tooltipText}</p>
     </TooltipContent>
   </Tooltip>
 );
@@ -127,28 +130,22 @@ export default function AppHeader() {
           />
         </div>
         
-        {/* Desktop Navigation Icons - hidden on mobile (handled by Sheet) */}
+        {/* Desktop Navigation Icons */}
         <nav className="hidden md:flex h-full items-center gap-x-0 ml-auto">
           {headerNavLinks.map((item) => (
             <NavigationLink
               key={item.href}
               href={item.href}
               label={item.label}
+              tooltipText={item.pageName} // Use pageName for tooltip
               icon={item.icon}
               isActive={item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)}
             />
           ))}
-           <NavigationLink
-              href="#" // Placeholder
-              label="Notifications"
-              icon={BellIcon}
-              isActive={pathname.startsWith('/notifications')} // Example
-            />
         </nav>
 
-        {/* User Profile Dropdown - always visible at the end */}
+        {/* User Profile Dropdown */}
         <div className={cn("flex items-center", {"ml-auto md:ml-0": headerNavLinks.length === 0})}>
-            {/* Separator before user profile - only on desktop if nav icons are present */}
             <div className="hidden md:block h-7 w-px bg-border mx-1 lg:mx-2"></div>
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -243,7 +240,7 @@ export default function AppHeader() {
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                            <DropdownMenuItem>View Joined Projects</DropdownMenuItem>
+                            <DropdownMenuItem asChild><Link href="/projects">View Joined Projects</Link></DropdownMenuItem>
                             <DropdownMenuItem>View Created Projects</DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
@@ -270,7 +267,7 @@ export default function AppHeader() {
             </DropdownMenu>
         </div>
 
-        {/* Mobile Menu Trigger - This is for the main navigation drawer */}
+        {/* Mobile Menu Trigger */}
         <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden ml-2">

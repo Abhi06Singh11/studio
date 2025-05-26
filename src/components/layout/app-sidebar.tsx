@@ -1,9 +1,6 @@
 
 "use client";
 
-// This component IS NOW the CONTENT for the MOBILE navigation drawer.
-// It is NOT a persistent desktop sidebar.
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -18,27 +15,26 @@ import {
   Share2Icon,
   BriefcaseIcon,
   LayoutDashboardIcon,
-  SettingsIcon, // Added for potential settings link
-  Edit3Icon, // Added for edit profile
+  SettingsIcon, 
+  Edit3Icon, 
 } from 'lucide-react';
 
-// These are the items that will appear in the mobile drawer
-const mobileNavItems = [
+// Comprehensive list of navigation items for the mobile drawer
+const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
-  { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
+  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon }, // General Project Workspace
+  { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon }, // Job & Project Board
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
   { href: '/profiles/edit', label: 'Edit Profile', icon: Edit3Icon },
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
-  // Add a general settings link if needed
-  // { href: '/settings', label: 'Settings', icon: SettingsIcon },
+  // Example: { href: '/settings', label: 'Settings', icon: SettingsIcon },
 ];
 
 interface AppSidebarContentProps {
-  onLinkClick?: () => void; // To close mobile menu on navigation
+  onLinkClick?: () => void; 
 }
 
 export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProps) {
@@ -53,7 +49,7 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
         </Link>
       </div>
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
-        {mobileNavItems.map((item) => (
+        {allNavItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -72,12 +68,6 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
           </Link>
         ))}
       </nav>
-      {/* Optional footer for the mobile drawer */}
-      {/* <div className="mt-auto p-4 border-t">
-        <Button variant="outline" className="w-full">Logout</Button>
-      </div> */}
     </div>
   );
 }
-
-    
