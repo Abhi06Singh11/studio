@@ -16,17 +16,17 @@ import {
   FileTextIcon,
   SettingsIcon,
   Share2Icon,
-  SquarePenIcon, 
+  SquarePenIcon,
   ChevronDownIcon,
   PlusIcon,
   CircleEllipsisIcon,
   LockIcon,
   SearchIcon,
-  BuildingIcon, 
-  FolderKanbanIcon, 
-  LayoutGridIcon, 
-  LogInIcon, 
-  FolderPlusIcon, 
+  BuildingIcon,
+  FolderKanbanIcon,
+  LayoutGridIcon,
+  LogInIcon,
+  FolderPlusIcon,
   ListChecksIcon,
   PlusCircleIcon,
 } from "lucide-react";
@@ -35,7 +35,7 @@ import type { ProjectWorkspaceView } from "@/app/projects/page";
 interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
   setActiveView: (view: ProjectWorkspaceView) => void;
-  onOpenCreateActionsModal: () => void; 
+  onOpenCreateActionsModal: () => void;
 }
 
 const mainNavItems = [
@@ -49,8 +49,8 @@ const mainNavItems = [
 ];
 
 const channelCategories = [
-    { 
-        name: "Channels", 
+    {
+        name: "Channels",
         channels: [
             { id: "ch-general", name: "general", isPrivate: false },
             { id: "ch-random", name: "random", isPrivate: false },
@@ -68,23 +68,26 @@ const orgMenuItems = [
 
 const projectOrgMenuItems = [
     { id: "create-project-org", label: "Create Project", icon: FolderPlusIcon },
-    { id: "join-project-org", label: "Join Project", icon: ListChecksIcon }, 
+    { id: "join-project-org", label: "Join Project", icon: ListChecksIcon },
     { id: "my-projects-org", label: "My Projects", icon: FolderKanbanIcon },
 ];
 
 
 export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal }: ProjectWorkspaceSidebarProps) {
   const [isChannelsExpanded, setIsChannelsExpanded] = React.useState(true);
+  const [isDmsExpanded, setIsDmsExpanded] = React.useState(true);
   const [isOrgsExpanded, setIsOrgsExpanded] = React.useState(true);
   const [isProjectsOrgExpanded, setIsProjectsOrgExpanded] = React.useState(true);
 
   return (
     <aside className="w-64 md:w-72 bg-muted/40 border-r flex flex-col h-full">
       <div className="p-3 border-b flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <Share2Icon className="h-6 w-6 text-primary" />
-          <span className="font-semibold text-lg">CodeSphere</span>
-        </Link>
+        <Button variant="ghost" asChild className="justify-start h-9 p-2 text-base">
+          <Link href="/" className="flex items-center gap-2">
+            <Share2Icon className="h-5 w-5 text-primary" />
+            <span className="font-semibold">CodeSphere</span>
+          </Link>
+        </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onOpenCreateActionsModal} title="Create or Join">
           <SquarePenIcon className="h-4 w-4" />
           <span className="sr-only">Create or Join Actions</span>
@@ -99,14 +102,25 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                 variant="ghost"
                 className={cn(
                   "w-full justify-start text-sm h-8",
-                  activeView === item.id && "bg-primary/10 text-primary font-semibold"
+                  activeView === item.id && "bg-primary/10 text-primary font-semibold",
+                  item.id === 'dms' && "justify-between" // For adding chevron to DMs
                 )}
-                onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
+                onClick={() => {
+                  if (item.id === 'dms') {
+                    setIsDmsExpanded(!isDmsExpanded);
+                  }
+                  setActiveView(item.id as ProjectWorkspaceView);
+                }}
               >
-                <item.icon className="mr-2.5 h-4 w-4" />
-                {item.label}
+                <span className="flex items-center">
+                  <item.icon className="mr-2.5 h-4 w-4" />
+                  {item.label}
+                </span>
+                {item.id === 'dms' && (
+                  <ChevronDownIcon className={cn("h-4 w-4 transition-transform", !isDmsExpanded && "-rotate-90")} />
+                )}
               </Button>
-              {item.id === 'dms' && item.subItems && (
+              {item.id === 'dms' && item.subItems && isDmsExpanded && (
                  <div className="pl-5 space-y-0.5">
                     {item.subItems.map(subItem => (
                         <Button
@@ -128,24 +142,24 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               )}
             </React.Fragment>
           ))}
-          
+
           <Separator className="my-2" />
 
           {/* Channels Section */}
-          <Button 
-            variant="ghost" 
-            className="w-full justify-between text-sm h-8 font-semibold"
-            onClick={() => setIsChannelsExpanded(!isChannelsExpanded)}
-          >
-            <span className="flex items-center">
+          <div className="flex items-center justify-between pr-1">
+            <Button
+              variant="ghost"
+              className="flex-1 justify-start text-sm h-8 font-semibold"
+              onClick={() => setIsChannelsExpanded(!isChannelsExpanded)}
+            >
               <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isChannelsExpanded && "-rotate-90")} />
               Channels
-            </span>
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
                 <PlusIcon className="h-4 w-4"/>
                 <span className="sr-only">Create Channel</span>
             </Button>
-          </Button>
+          </div>
           {isChannelsExpanded && channelCategories.map(category => (
             <div key={category.name} className="pl-3 space-y-0.5">
               {category.channels.map(channel => (
@@ -154,9 +168,9 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
-                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold" 
+                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold"
                   )}
-                   onClick={() => setActiveView('channels')} 
+                   onClick={() => setActiveView('channels')}
                 >
                   {channel.isPrivate ? <LockIcon className="mr-2 h-3 w-3" /> : <span className="mr-2 font-bold text-muted-foreground/70">#</span>}
                   <span className="truncate">{channel.name}</span>
@@ -167,8 +181,8 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
           <Separator className="my-2"/>
 
           {/* Organizations Section */}
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full justify-between text-sm h-8 font-semibold"
             onClick={() => setIsOrgsExpanded(!isOrgsExpanded)}
           >
@@ -182,7 +196,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               key={item.id}
               variant="ghost"
               className={cn(
-                "w-full justify-start text-sm h-8 pl-7", 
+                "w-full justify-start text-sm h-8 pl-7",
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
@@ -194,8 +208,8 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
           <Separator className="my-2"/>
 
           {/* Projects (Org) Section */}
-           <Button 
-            variant="ghost" 
+           <Button
+            variant="ghost"
             className="w-full justify-between text-sm h-8 font-semibold"
             onClick={() => setIsProjectsOrgExpanded(!isProjectsOrgExpanded)}
           >
@@ -209,7 +223,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               key={item.id}
               variant="ghost"
               className={cn(
-                "w-full justify-start text-sm h-8 pl-7", 
+                "w-full justify-start text-sm h-8 pl-7",
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
