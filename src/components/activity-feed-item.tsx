@@ -69,25 +69,25 @@ export default function ActivityFeedItem({
       </CardContent>
       <CardFooter className="flex flex-col items-start p-4 border-t space-y-2">
         <div className="flex justify-between w-full">
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+          <Button variant="ghost" size="sm">
             <HeartIcon className="mr-2 h-4 w-4" /> {likes} Likes
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+          <Button variant="ghost" size="sm">
             <MessageCircleIcon className="mr-2 h-4 w-4" /> {comments} Comments
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+          <Button variant="ghost" size="sm">
             <Share2Icon className="mr-2 h-4 w-4" /> {shares} Shares
           </Button>
         </div>
         <div className="flex items-center space-x-1 pt-1 w-full border-t mt-2">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary h-8 w-8">
+            <Button variant="ghost" size="icon" className="h-8 w-8">
                 <SmilePlusIcon className="h-5 w-5"/>
                 <span className="sr-only">Add reaction</span>
             </Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">👍</Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">🎉</Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">❤️</Button>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary h-8 px-2">🤔</Button>
+            <Button variant="ghost" size="sm" className="h-8 px-2">👍</Button>
+            <Button variant="ghost" size="sm" className="h-8 px-2">🎉</Button>
+            <Button variant="ghost" size="sm" className="h-8 px-2">❤️</Button>
+            <Button variant="ghost" size="sm" className="h-8 px-2">🤔</Button>
         </div>
       </CardFooter>
     </Card>
