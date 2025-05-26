@@ -2,58 +2,97 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link"; // Import Link
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, SettingsIcon, BuildingIcon } from "lucide-react";
+import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
 import Image from "next/image";
 import CreateOrganizationModal from "@/components/organization/create-organization-modal";
 
-const sampleProjects = [
+interface ProjectMember {
+  name: string;
+  src: string;
+  dataAiHint?: string;
+}
+
+interface OrganizationInfo {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  logoAiHint?: string;
+}
+
+interface SampleProject {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+  progress: number;
+  team: ProjectMember[];
+  tags: string[];
+  imageUrl?: string;
+  imageAiHint?: string;
+  organization?: OrganizationInfo; // Optional organization info
+}
+
+const sampleProjects: SampleProject[] = [
   {
-    id: "1",
-    name: "CodeSphere Platform",
+    id: "prj_codesphere",
+    name: "CodeSphere Platform Core",
     description: "Developing the core platform for developer collaboration and networking. Focus on scalability and user experience.",
     status: "In Progress",
     progress: 75,
     team: [
-      { name: "A", src: "https://placehold.co/50x50.png?t=1", dataAiHint: "person" },
-      { name: "B", src: "https://placehold.co/50x50.png?t=2", dataAiHint: "person" },
-      { name: "C", src: "https://placehold.co/50x50.png?t=3", dataAiHint: "person" },
+      { name: "EV", src: "https://placehold.co/50x50.png?t=1", dataAiHint: "person avatar" },
+      { name: "MC", src: "https://placehold.co/50x50.png?t=2", dataAiHint: "person avatar" },
+      { name: "AK", src: "https://placehold.co/50x50.png?t=3", dataAiHint: "person avatar" },
     ],
     tags: ["Next.js", "TypeScript", "AI", "Collaboration"],
     imageUrl: "https://placehold.co/400x200.png?prj=1",
-    imageAiHint: "team working"
+    imageAiHint: "team working",
+    organization: { 
+      id: "org_123", 
+      name: "Innovatech Solutions", 
+      logoUrl: "https://placehold.co/32x32.png?text=IS", 
+      logoAiHint: "company logo abstract" 
+    }
   },
   {
-    id: "2",
+    id: "prj_ai_engine",
     name: "AI Recommendation Engine",
     description: "Building an advanced recommendation system using collaborative filtering and LLMs for personalized suggestions.",
     status: "Planning",
     progress: 20,
     team: [
-      { name: "D", src: "https://placehold.co/50x50.png?t=4", dataAiHint: "person" },
-      { name: "E", src: "https://placehold.co/50x50.png?t=5", dataAiHint: "person" },
+      { name: "SJ", src: "https://placehold.co/50x50.png?t=4", dataAiHint: "person avatar" },
+      { name: "RD", src: "https://placehold.co/50x50.png?t=5", dataAiHint: "person avatar" },
     ],
     tags: ["Python", "Machine Learning", "LLM", "Big Data"],
     imageUrl: "https://placehold.co/400x200.png?prj=2",
     imageAiHint: "network algorithm"
+    // This is a personal/general project, no organization field
   },
   {
-    id: "3",
+    id: "prj_mobile_app",
     name: "Mobile App Companion",
     description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications.",
     status: "Completed",
     progress: 100,
     team: [
-      { name: "F", src: "https://placehold.co/50x50.png?t=6", dataAiHint: "person" },
-      { name: "G", src: "https://placehold.co/50x50.png?t=7", dataAiHint: "person" },
-      { name: "H", src: "https://placehold.co/50x50.png?t=8", dataAiHint: "person" },
+      { name: "LG", src: "https://placehold.co/50x50.png?t=6", dataAiHint: "person avatar" },
+      { name: "PB", src: "https://placehold.co/50x50.png?t=7", dataAiHint: "person avatar" },
     ],
     tags: ["React Native", "iOS", "Android", "Mobile UX"],
     imageUrl: "https://placehold.co/400x200.png?prj=3",
-    imageAiHint: "mobile app"
+    imageAiHint: "mobile app",
+    organization: { 
+      id: "org_456", 
+      name: "GreenFuture 🌱", 
+      logoUrl: "https://placehold.co/32x32.png?text=GF",
+      logoAiHint: "nature logo"
+    }
   }
 ];
 
@@ -71,8 +110,10 @@ export default function ProjectsPage() {
           <Button onClick={() => setIsCreateOrgModalOpen(true)}>
             <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
           </Button>
-          <Button variant="outline">
-            <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
+          <Button variant="outline" asChild>
+            <Link href="/projects/create-personal">
+              <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
+            </Link>
           </Button>
         </div>
       </div>
@@ -91,9 +132,25 @@ export default function ProjectsPage() {
               </div>
             )}
             <CardHeader className="pt-4">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <FolderKanbanIcon className="h-5 w-5 text-primary" /> {project.name}
-              </CardTitle>
+              <div className="flex items-center gap-2 mb-1">
+                <FolderKanbanIcon className="h-5 w-5 text-primary flex-shrink-0" />
+                <CardTitle className="text-lg truncate">{project.name}</CardTitle>
+              </div>
+              {project.organization && (
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+                  {project.organization.logoUrl && (
+                    <Image 
+                      src={project.organization.logoUrl} 
+                      alt={`${project.organization.name} logo`} 
+                      data-ai-hint={project.organization.logoAiHint || "logo"}
+                      width={16} 
+                      height={16} 
+                      className="rounded-sm" 
+                    />
+                  )}
+                  <span>From: {project.organization.name}</span>
+                </div>
+              )}
               <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis">{project.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
@@ -128,7 +185,11 @@ export default function ProjectsPage() {
               <Button variant="outline" size="sm"><UsersIcon className="mr-1 h-4 w-4" /> Team</Button>
               <Button variant="outline" size="sm"><MessageSquareIcon className="mr-1 h-4 w-4" /> Discuss</Button>
               <Button variant="outline" size="sm"><FileTextIcon className="mr-1 h-4 w-4" /> Files</Button>
-              <Button variant="outline" size="sm"><SettingsIcon className="mr-1 h-4 w-4" /> Settings</Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
+                  <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
+                </Link>
+              </Button>
             </CardFooter>
           </Card>
         ))}
