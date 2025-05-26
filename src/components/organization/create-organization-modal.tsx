@@ -14,7 +14,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -26,16 +25,58 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { BuildingIcon } from "lucide-react";
+
+const standardIndustries = [
+  "Technology",
+  "Healthcare",
+  "Finance",
+  "Education",
+  "Manufacturing",
+  "Retail",
+  "Construction",
+  "Transportation & Logistics",
+  "Energy & Utilities",
+  "Media & Entertainment",
+  "Real Estate",
+  "Government & Public Sector",
+  "Hospitality & Tourism",
+  "Legal Services",
+  "Non-Profit / NGO",
+  "Agriculture",
+  "Telecommunications",
+  "Insurance",
+  "Pharmaceuticals",
+  "Automotive",
+  "Other", // Added "Other" for custom input
+];
 
 const organizationFormSchema = z.object({
   name: z.string().min(2, {
     message: "Organization name must be at least 2 characters.",
   }),
-  industry: z.string().min(2, {
-    message: "Industry must be at least 2 characters.",
+  industry: z.string({
+    required_error: "Please select an industry.",
   }),
+  customIndustry: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.industry === "Other") {
+    if (!data.customIndustry || data.customIndustry.trim().length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Custom industry name must be at least 2 characters.",
+        path: ["customIndustry"],
+      });
+    }
+  }
 });
 
 type OrganizationFormValues = z.infer<typeof organizationFormSchema>;
@@ -54,27 +95,30 @@ export default function CreateOrganizationModal({ isOpen, onOpenChange }: Create
     defaultValues: {
       name: "",
       industry: "",
+      customIndustry: "",
     },
   });
 
+  const watchedIndustry = form.watch("industry");
+
   function onSubmit(data: OrganizationFormValues) {
-    // In a real app, you would call a Firebase function here
-    // For now, we'll log the conceptual data structure
+    const industryValue = data.industry === "Other" ? data.customIndustry : data.industry;
+
     const newOrgId = `org_${Date.now()}`; // Simulate generating an ID
     const organizationData = {
       id: newOrgId,
       name: data.name,
-      industry: data.industry,
-      ownerId: MOCK_USER_ID, // Replace with actual authenticated user ID
-      createdAt: new Date().toISOString(), // Conceptual: use serverTimestamp in Firestore
+      industry: industryValue,
+      ownerId: MOCK_USER_ID, 
+      createdAt: new Date().toISOString(), 
       members: {
-        [MOCK_USER_ID]: "owner", // Add creator as owner
+        [MOCK_USER_ID]: "owner",
       },
     };
 
     const userProfileUpdate = {
       userId: MOCK_USER_ID,
-      orgIds_add: newOrgId, // Conceptual: use arrayUnion(newOrgId) in Firestore
+      orgIds_add: newOrgId, 
     };
 
     console.log("Conceptual Firestore: Create Organization Document (/organizations):", organizationData);
@@ -84,12 +128,12 @@ export default function CreateOrganizationModal({ isOpen, onOpenChange }: Create
       title: "Organization Created (Conceptually)!",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify({ name: data.name, industry: data.industry }, null, 2)}</code>
+          <code className="text-white">{JSON.stringify({ name: data.name, industry: industryValue }, null, 2)}</code>
         </pre>
       ),
     });
-    onOpenChange(false); // Close modal on submit
-    form.reset(); // Reset form
+    onOpenChange(false); 
+    form.reset(); 
   }
 
   return (
@@ -128,16 +172,42 @@ export default function CreateOrganizationModal({ isOpen, onOpenChange }: Create
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Industry</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Technology, Finance, Healthcare" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your organization's industry" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {standardIndustries.map((industryName) => (
+                        <SelectItem key={industryName} value={industryName}>
+                          {industryName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormDescription>
-                    What industry does your organization operate in?
+                    Which industry does your organization belong to?
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {watchedIndustry === "Other" && (
+              <FormField
+                control={form.control}
+                name="customIndustry"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Custom Industry</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your organization's industry" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
