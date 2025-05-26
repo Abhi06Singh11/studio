@@ -40,10 +40,14 @@ export default function ClientRoot({
           <AppHeader /> 
           <main className={cn(
             "flex-1 bg-background overflow-hidden",
+            pathname !== '/' && "px-4 sm:px-6 lg:px-8", // Apply horizontal padding to all pages except the activity feed
             isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
           )}>
             {/* Page content is injected here */}
-            <div key={pathname} className={cn("h-full", !isLoading ? "animate-fadeInPage" : "")}>
+            <div key={pathname} className={cn(
+              "h-full py-8", // Apply consistent vertical padding to all pages
+              !isLoading ? "animate-fadeInPage" : ""
+            )}>
               {children}
             </div>
           </main>
