@@ -1,7 +1,7 @@
 
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react"; // Changed import
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  CircleUserRound,
+  Share2Icon,
   SearchIcon,
   User,
   Mail,
@@ -34,7 +34,6 @@ import {
   Code2Icon,
   SparklesIcon,
   LayoutDashboardIcon,
-  Share2Icon,
   PanelLeft,
   BellIcon,
 } from 'lucide-react';
@@ -45,7 +44,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -54,8 +52,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent from './app-sidebar';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import AppSidebarContent, { allNavItems } from './app-sidebar';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+
 
 // Sample User Data
 const sampleUser = {
@@ -68,93 +67,55 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
-// Primary navigation links for the desktop header (LinkedIn style)
-const headerNavLinks = [
-  { href: '/', label: 'Home', icon: HomeIcon, pageName: 'Activity Feed' }, // 'Home' is the Activity Feed
-  { href: '/profiles', label: 'Network', icon: UsersIcon, pageName: 'Profiles' },
-  { href: '/jobs', label: 'Jobs', icon: BriefcaseIcon, pageName: 'Job & Project Board' },
-  { href: '/messages', label: 'Messaging', icon: MessageSquareIcon, pageName: 'Direct Messages' },
-  { href: '/notifications', label: 'Notifications', icon: BellIcon, pageName: 'Notifications' }, // Added to array
-];
-
-interface NavigationLinkProps {
-  href: string;
-  label: string; // Text below the icon
-  tooltipText: string; // Text for the tooltip
-  icon: React.ElementType;
-  isActive: boolean;
-}
-
-const NavigationLink: React.FC<NavigationLinkProps> = ({ href, label, tooltipText, icon: Icon, isActive }) => (
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <Link
-        href={href}
-        className={cn(
-          "flex flex-col items-center justify-center px-1 py-1.5 text-xs font-medium text-muted-foreground hover:text-primary h-full w-20",
-          isActive && "text-primary relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-primary"
-        )}
-        aria-current={isActive ? "page" : undefined}
-      >
-        <Icon className="h-5 w-5" />
-        <span className="mt-1 text-[11px] leading-tight">{label}</span>
-      </Link>
-    </TooltipTrigger>
-    <TooltipContent side="bottom">
-      <p>{tooltipText}</p>
-    </TooltipContent>
-  </Tooltip>
-);
-
 
 export default function AppHeader() {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Changed to use useState directly
 
   return (
     <TooltipProvider delayDuration={100}>
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-x-3 border-b bg-card px-4 shadow-sm sm:px-6">
+      <header className="sticky top-0 z-30 flex h-16 items-center gap-x-3 border-b bg-card px-4 shadow-sm sm:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 text-lg font-semibold text-primary mr-2 shrink-0">
+        <Link href="/" className="flex items-center gap-1.5 text-lg font-semibold text-primary mr-4 shrink-0">
           <Share2Icon className="h-7 w-7" />
-          {/* <span className="hidden sm:inline">CodeSphere</span> */}
+          <span className="hidden sm:inline">CodeSphere</span>
         </Link>
 
-        {/* Search Bar */}
-        <div className="relative flex-1 max-w-[220px] sm:max-w-xs">
-          <SearchIcon className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search"
-            className="w-full rounded-md bg-background/70 pl-8 pr-3 h-8 text-sm focus:bg-background"
-          />
-        </div>
-        
-        {/* Desktop Navigation Icons */}
-        <nav className="hidden md:flex h-full items-center gap-x-0 ml-auto">
-          {headerNavLinks.map((item) => (
-            <NavigationLink
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+          {allNavItems.map((item) => (
+            <Link
               key={item.href}
               href={item.href}
-              label={item.label}
-              tooltipText={item.pageName} // Use pageName for tooltip
-              icon={item.icon}
-              isActive={item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)}
-            />
+              className={cn(
+                "px-2.5 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
+                (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) && "bg-primary/10 text-primary font-semibold"
+              )}
+              aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
           ))}
         </nav>
-
-        {/* User Profile Dropdown */}
-        <div className={cn("flex items-center", {"ml-auto md:ml-0": headerNavLinks.length === 0})}>
-            <div className="hidden md:block h-7 w-px bg-border mx-1 lg:mx-2"></div>
-            <DropdownMenu>
+        
+        {/* Search Bar and User Profile Dropdown - pushed to the right */}
+        <div className="flex items-center ml-auto gap-x-2">
+          <div className="relative flex-1 max-w-[180px] sm:max-w-xs">
+            <SearchIcon className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search"
+              className="w-full rounded-md bg-background/70 pl-8 pr-3 h-9 text-sm focus:bg-background"
+            />
+          </div>
+        
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-full w-auto px-1 py-0 flex flex-col items-center justify-center text-muted-foreground hover:text-primary group">
-                    <Avatar className="h-6 w-6">
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-8 w-8">
                         <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint} />
                         <AvatarFallback>{sampleUser.name.substring(0, 1)}</AvatarFallback>
                     </Avatar>
-                    <span className="hidden md:block text-[11px] leading-tight mt-1 group-hover:text-primary">Me ▼</span>
                     <span className="sr-only">Open user menu</span>
                 </Button>
             </DropdownMenuTrigger>
@@ -267,19 +228,23 @@ export default function AppHeader() {
             </DropdownMenu>
         </div>
 
-        {/* Mobile Menu Trigger */}
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden ml-2">
-              <PanelLeft className="h-6 w-6" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 w-72 bg-card">
-            <AppSidebarContent onLinkClick={() => setIsMobileMenuOpen(false)} />
-          </SheetContent>
-        </Sheet>
+        {/* Mobile Menu Trigger - now clearly separated and last element in the main flex container */}
+        <div className="md:hidden">
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <PanelLeft className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-72 bg-card">
+              <AppSidebarContent onLinkClick={() => setIsMobileMenuOpen(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
       </header>
     </TooltipProvider>
   );
 }
+
+    

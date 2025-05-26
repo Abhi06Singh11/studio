@@ -19,13 +19,13 @@ import {
   Edit3Icon, 
 } from 'lucide-react';
 
-// Comprehensive list of navigation items for the mobile drawer
-const allNavItems = [
+// Comprehensive list of navigation items for the mobile drawer AND desktop header
+export const allNavItems = [ // Export this array so AppHeader can use it
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon }, // General Project Workspace
-  { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon }, // Job & Project Board
+  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
+  { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
   { href: '/profiles/edit', label: 'Edit Profile', icon: Edit3Icon },
@@ -37,6 +37,8 @@ interface AppSidebarContentProps {
   onLinkClick?: () => void; 
 }
 
+// This component now just renders the navigation list,
+// to be used inside the mobile SheetContent.
 export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProps) {
   const pathname = usePathname();
 
