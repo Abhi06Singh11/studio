@@ -1,6 +1,7 @@
 
 "use client";
 
+import * as React from "react"; // Ensure React is imported
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ import {
   LayoutDashboardIcon,
   Share2Icon,
   PanelLeft,
-  BellIcon, 
+  BellIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
@@ -53,7 +54,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent from './app-sidebar'; // Renamed AppSidebar to AppSidebarContent
+import AppSidebarContent from './app-sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // Sample User Data
@@ -68,8 +69,8 @@ const sampleUser = {
 };
 
 const headerNavLinks = [
-  { href: '/', label: 'Home', icon: HomeIcon }, // Changed label for brevity
-  { href: '/profiles', label: 'Network', icon: UsersIcon }, // Changed label
+  { href: '/', label: 'Home', icon: HomeIcon },
+  { href: '/profiles', label: 'Network', icon: UsersIcon },
   { href: '/jobs', label: 'Jobs', icon: BriefcaseIcon },
   { href: '/messages', label: 'Messaging', icon: MessageSquareIcon },
 ];
@@ -285,5 +286,3 @@ export default function AppHeader() {
     </TooltipProvider>
   );
 }
-
-    
