@@ -10,22 +10,22 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary hover:text-white",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90", // text-primary-foreground is white
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive hover:text-white",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90", // text-destructive-foreground is light
         outline:
-          "border border-input bg-background text-foreground hover:bg-background hover:text-white",
+          "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground", // text-accent-foreground is white
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary hover:text-white",
-        ghost: "text-primary hover:text-white",
-        link: "text-primary underline-offset-4 hover:underline hover:text-white",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-primary-foreground", // explicit white text on hover
+        ghost: "text-primary hover:bg-accent hover:text-accent-foreground", // text-accent-foreground is white
+        link: "text-primary underline-offset-4 hover:underline hover:text-primary-foreground", // explicit white text on hover
       },
       size: {
         default: "h-10 px-4 py-2 [&_svg]:size-4",
         sm: "h-9 rounded-md px-3 [&_svg]:size-4",
         lg: "h-11 rounded-md px-8 [&_svg]:size-5",
         icon: "h-10 w-10 [&_svg]:size-5",
-        "icon-sm": "h-8 w-8 [&_svg]:size-4", 
+        "icon-sm": "h-8 w-8 [&_svg]:size-4",
       },
     },
     defaultVariants: {
