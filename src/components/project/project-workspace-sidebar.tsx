@@ -16,25 +16,26 @@ import {
   FileTextIcon,
   SettingsIcon,
   Share2Icon,
-  SquarePenIcon, // Changed from EditIcon for "New Message / Create"
+  SquarePenIcon, 
   ChevronDownIcon,
   PlusIcon,
   CircleEllipsisIcon,
   LockIcon,
   SearchIcon,
-  BuildingIcon, // For Organizations section
-  FolderKanbanIcon, // For Projects section
-  LayoutGridIcon, // For My Organizations / My Projects
-  LogInIcon, // For Join actions
-  FolderPlusIcon, // For Create Project
-  ListChecksIcon, // For Join Project
+  BuildingIcon, 
+  FolderKanbanIcon, 
+  LayoutGridIcon, 
+  LogInIcon, 
+  FolderPlusIcon, 
+  ListChecksIcon,
+  PlusCircleIcon, // Added missing import
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
 
 interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
   setActiveView: (view: ProjectWorkspaceView) => void;
-  onOpenCreateActionsModal: () => void; // New prop
+  onOpenCreateActionsModal: () => void; 
 }
 
 const mainNavItems = [
@@ -67,7 +68,7 @@ const orgMenuItems = [
 
 const projectOrgMenuItems = [
     { id: "create-project-org", label: "Create Project", icon: FolderPlusIcon },
-    { id: "join-project-org", label: "Join Project", icon: ListChecksIcon }, // Changed icon
+    { id: "join-project-org", label: "Join Project", icon: ListChecksIcon }, 
     { id: "my-projects-org", label: "My Projects", icon: FolderKanbanIcon },
 ];
 
@@ -181,7 +182,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               key={item.id}
               variant="ghost"
               className={cn(
-                "w-full justify-start text-sm h-8 pl-7", // Indent items
+                "w-full justify-start text-sm h-8 pl-7", 
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
@@ -208,7 +209,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               key={item.id}
               variant="ghost"
               className={cn(
-                "w-full justify-start text-sm h-8 pl-7", // Indent items
+                "w-full justify-start text-sm h-8 pl-7", 
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
@@ -250,3 +251,4 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
     </aside>
   );
 }
+
