@@ -1,14 +1,15 @@
 
-"use client"; // Added "use client" for useState hook
+"use client"; 
 
-import * as React from "react"; // Import React for useState
-import Link from "next/link"; // Import Link for navigation
+import * as React from "react"; 
+import Link from "next/link"; 
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react';
-import CreatePostModal from "@/components/post/create-post-modal"; // Import the modal
+import CreatePostModal from "@/components/post/create-post-modal"; 
+import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar"; // Import the new sidebar
 
 const feedItems = [
   {
@@ -51,8 +52,8 @@ const feedItems = [
 ];
 
 const currentUser = {
-  name: "Dr. Elara Vance", // Sample user
-  avatarUrl: "https://placehold.co/100x100.png?p=1", // Matching profile page sample data
+  name: "Dr. Elara Vance", 
+  avatarUrl: "https://placehold.co/100x100.png?p=1", 
   avatarAiHint: "scientist woman"
 };
 
@@ -60,48 +61,56 @@ export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
 
   return (
-    <div className="container mx-auto max-w-3xl py-8 px-4">
-      <Card className="mb-6 shadow-lg rounded-xl">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <Link href="/profiles/edit" passHref>
-              <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
-                <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
-                <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
-              </Avatar>
-            </Link>
-            <Button
-              variant="outline"
-              className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-              onClick={() => setIsCreatePostModalOpen(true)}
-            >
-              Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
-            </Button>
-          </div>
-          <div className="mt-3 flex justify-around pt-3 border-t">
-            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
-              <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
-            </Button>
-            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
-              <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
-            </Button>
-            <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
-              <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="container mx-auto px-2 sm:px-4 py-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Main Content Area (Feed) */}
+        <main className="flex-1 lg:max-w-2xl xl:max-w-3xl space-y-6">
+          <Card className="shadow-lg rounded-xl">
+            <CardContent className="p-4">
+              <div className="flex items-start space-x-3">
+                <Link href="/profiles/edit" passHref>
+                  <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                    <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
+                    <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Button
+                  variant="outline"
+                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  onClick={() => setIsCreatePostModalOpen(true)}
+                >
+                  Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
+                </Button>
+              </div>
+              <div className="mt-3 flex justify-around pt-3 border-t">
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                  <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
+                </Button>
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                  <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
+                </Button>
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                  <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-      <CreatePostModal
-        isOpen={isCreatePostModalOpen}
-        onOpenChange={setIsCreatePostModalOpen}
-        currentUser={currentUser}
-      />
+          <CreatePostModal
+            isOpen={isCreatePostModalOpen}
+            onOpenChange={setIsCreatePostModalOpen}
+            currentUser={currentUser}
+          />
 
-      <div className="space-y-6">
-        {feedItems.map((item) => (
-          <ActivityFeedItem key={item.id} {...item} />
-        ))}
+          <div className="space-y-6">
+            {feedItems.map((item) => (
+              <ActivityFeedItem key={item.id} {...item} />
+            ))}
+          </div>
+        </main>
+
+        {/* Sidebar Area */}
+        <ActivityFeedSidebar />
       </div>
     </div>
   );
