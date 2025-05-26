@@ -183,7 +183,7 @@ export default function ProjectsPage() {
             </CardContent>
             <CardFooter className="grid grid-cols-2 gap-2 p-2 border-t bg-muted/30">
               <Button variant="outline" size="sm"><UsersIcon className="mr-1 h-4 w-4" /> Team</Button>
-              <Button variant="outline" size="sm"><MessageSquareIcon className="mr-1 h-4 w-4" /> Discuss</Button>
+              <Button variant="outline" size="sm"><MessageSquareIcon className="mr-1 h-4 w-4" /> Comment</Button>
               <Button variant="outline" size="sm"><FileTextIcon className="mr-1 h-4 w-4" /> Files</Button>
               <Button variant="outline" size="sm" asChild>
                 <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
@@ -197,3 +197,4 @@ export default function ProjectsPage() {
     </div>
   );
 }
+
