@@ -7,13 +7,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon } from "lucide-react";
+import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon, LogInIcon } from "lucide-react";
 import Image from "next/image";
 import CreateOrganizationModal from "@/components/organization/create-organization-modal";
+import JoinProjectModal from "@/components/project/join-project-modal"; // New Import
+import JoinWorkspaceModal from "@/components/workspace/join-workspace-modal"; // New Import
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider, // Ensure TooltipProvider is imported
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
@@ -40,14 +42,14 @@ interface SampleProject {
   tags: string[];
   imageUrl?: string;
   imageAiHint?: string;
-  organization?: OrganizationInfo; // Optional organization info
+  organization?: OrganizationInfo;
 }
 
 const sampleProjects: SampleProject[] = [
   {
     id: "prj_codesphere",
     name: "CodeSphere Platform Core",
-    description: "Developing the core platform for developer collaboration and networking. Focus on scalability and user experience.",
+    description: "Developing the core platform for developer collaboration and networking. Focus on scalability and user experience. Includes features like real-time messaging, project management tools, and AI-driven recommendations.",
     status: "In Progress",
     progress: 75,
     team: [
@@ -55,7 +57,7 @@ const sampleProjects: SampleProject[] = [
       { name: "MC", src: "https://placehold.co/50x50.png?t=2", dataAiHint: "person avatar" },
       { name: "AK", src: "https://placehold.co/50x50.png?t=3", dataAiHint: "person avatar" },
     ],
-    tags: ["Next.js", "TypeScript", "AI", "Collaboration"],
+    tags: ["Next.js", "TypeScript", "AI", "Collaboration", "Full-Stack"],
     imageUrl: "https://placehold.co/400x200.png?prj=1",
     imageAiHint: "team working",
     organization: {
@@ -68,29 +70,28 @@ const sampleProjects: SampleProject[] = [
   {
     id: "prj_ai_engine",
     name: "AI Recommendation Engine",
-    description: "Building an advanced recommendation system using collaborative filtering and LLMs for personalized suggestions.",
+    description: "Building an advanced recommendation system using collaborative filtering and LLMs for personalized suggestions. This engine will power connection and content suggestions across the platform.",
     status: "Planning",
     progress: 20,
     team: [
       { name: "SJ", src: "https://placehold.co/50x50.png?t=4", dataAiHint: "person avatar" },
       { name: "RD", src: "https://placehold.co/50x50.png?t=5", dataAiHint: "person avatar" },
     ],
-    tags: ["Python", "Machine Learning", "LLM", "Big Data"],
+    tags: ["Python", "Machine Learning", "LLM", "Big Data", "Data Science"],
     imageUrl: "https://placehold.co/400x200.png?prj=2",
     imageAiHint: "network algorithm"
-    // This is a personal/general project, no organization field
   },
   {
     id: "prj_mobile_app",
     name: "Mobile App Companion",
-    description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications.",
+    description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications. Will be available on iOS and Android.",
     status: "Completed",
     progress: 100,
     team: [
       { name: "LG", src: "https://placehold.co/50x50.png?t=6", dataAiHint: "person avatar" },
       { name: "PB", src: "https://placehold.co/50x50.png?t=7", dataAiHint: "person avatar" },
     ],
-    tags: ["React Native", "iOS", "Android", "Mobile UX"],
+    tags: ["React Native", "iOS", "Android", "Mobile UX", "Firebase"],
     imageUrl: "https://placehold.co/400x200.png?prj=3",
     imageAiHint: "mobile app",
     organization: {
@@ -104,6 +105,8 @@ const sampleProjects: SampleProject[] = [
 
 export default function ProjectsPage() {
   const [isCreateOrgModalOpen, setIsCreateOrgModalOpen] = React.useState(false);
+  const [isJoinProjectModalOpen, setIsJoinProjectModalOpen] = React.useState(false);
+  const [isJoinWorkspaceModalOpen, setIsJoinWorkspaceModalOpen] = React.useState(false);
 
   return (
     <TooltipProvider>
@@ -113,11 +116,17 @@ export default function ProjectsPage() {
             <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
             <p className="text-muted-foreground">
               Browse projects, manage your work, or create new initiatives. 
-              Each project provides access to its team, files, and discussions (comments).
+              Each project provides access to its team details, files (with access controls), and a dedicated comment section for discussions.
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button onClick={() => setIsCreateOrgModalOpen(true)}>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={() => setIsJoinProjectModalOpen(true)}>
+              <LogInIcon className="mr-2 h-5 w-5" /> Join Project
+            </Button>
+             <Button onClick={() => setIsJoinWorkspaceModalOpen(true)}>
+              <UsersIcon className="mr-2 h-5 w-5" /> Join Workspace
+            </Button>
+            <Button onClick={() => setIsCreateOrgModalOpen(true)} variant="outline">
               <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
             </Button>
             <Button variant="outline" asChild>
@@ -132,6 +141,17 @@ export default function ProjectsPage() {
           isOpen={isCreateOrgModalOpen}
           onOpenChange={setIsCreateOrgModalOpen}
         />
+        <JoinProjectModal
+          isOpen={isJoinProjectModalOpen}
+          onOpenChange={setIsJoinProjectModalOpen}
+          currentProjects={sampleProjects}
+        />
+        <JoinWorkspaceModal
+          isOpen={isJoinWorkspaceModalOpen}
+          onOpenChange={setIsJoinWorkspaceModalOpen}
+          // You might want to pass sample organization data here
+        />
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sampleProjects.map((project) => (
@@ -232,14 +252,14 @@ export default function ProjectsPage() {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm" asChild className="w-full">
-                      <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
-                        <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
-                      </Link>
+                     <Button variant="outline" size="sm" asChild className="w-full">
+                        <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
+                            <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
+                        </Link>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{project.organization ? "Open Organization Workspace" : "View Project Details"}</p>
+                     <p>{project.organization ? "Open Organization Workspace" : "View Project Details"}</p>
                   </TooltipContent>
                 </Tooltip>
               </CardFooter>
