@@ -11,7 +11,7 @@ import { VideoIcon, ImageIcon, FileTextIcon, HashIcon } from 'lucide-react';
 import CreatePostModal from "@/components/post/create-post-modal"; 
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-import FooterContent from "@/components/layout/footer-content"; // Import the new footer component
+// FooterContent is removed as it's replaced by AppFooter in ClientRoot
 
 const feedItems = [
   {
@@ -66,12 +66,10 @@ export default function ActivityFeedPage() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left Sidebar (User Profile & Quick Access) - visible on lg and up */}
         <div className="hidden lg:block lg:col-span-3">
           <ActivityFeedSidebar />
         </div>
 
-        {/* Main Content Area (Feed) */}
         <main className="col-span-1 lg:col-span-6 space-y-6">
           <Card className="shadow-lg rounded-xl">
             <CardContent className="p-4">
@@ -117,17 +115,15 @@ export default function ActivityFeedPage() {
           </div>
         </main>
 
-        {/* Right Sidebar (Newsletter & Footer) - visible on lg and up */}
         <div className="hidden lg:block lg:col-span-3">
           <NewsletterSidebar />
-          <FooterContent /> {/* Footer content moved here for desktop */}
+          {/* FooterContent removed from here */}
         </div>
 
-        {/* Sidebars and Footer stacked below for smaller screens */}
         <div className="lg:hidden col-span-1 space-y-8 mt-8">
           <ActivityFeedSidebar /> 
           <NewsletterSidebar />
-          <FooterContent /> {/* Footer content moved here for mobile */}
+          {/* FooterContent removed from here */}
         </div>
       </div>
     </div>
