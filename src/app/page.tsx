@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { VideoIcon, ImageIcon, FileTextIcon } from 'lucide-react';
 import CreatePostModal from "@/components/post/create-post-modal"; 
-import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar"; // Import the new sidebar
+import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
+import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar"; // Import the new NewsletterSidebar
 
 const feedItems = [
   {
@@ -61,10 +62,16 @@ export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* Left Sidebar (Newsletter) - visible on lg and up */}
+        <div className="hidden lg:block lg:col-span-3">
+          <NewsletterSidebar />
+        </div>
+
         {/* Main Content Area (Feed) */}
-        <main className="flex-1 lg:max-w-2xl xl:max-w-3xl space-y-6">
+        <main className="col-span-1 lg:col-span-6 space-y-6">
           <Card className="shadow-lg rounded-xl">
             <CardContent className="p-4">
               <div className="flex items-start space-x-3">
@@ -76,20 +83,20 @@ export default function ActivityFeedPage() {
                 </Link>
                 <Button
                   variant="outline"
-                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground"
                   onClick={() => setIsCreatePostModalOpen(true)}
                 >
                   Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
                 </Button>
               </div>
               <div className="mt-3 flex justify-around pt-3 border-t">
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
                   <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
                   <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground flex-1">
                   <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
                 </Button>
               </div>
@@ -109,8 +116,16 @@ export default function ActivityFeedPage() {
           </div>
         </main>
 
-        {/* Sidebar Area */}
-        <ActivityFeedSidebar />
+        {/* Right Sidebar (Profile & Quick Access) - visible on lg and up */}
+        <div className="hidden lg:block lg:col-span-3">
+          <ActivityFeedSidebar />
+        </div>
+
+        {/* Sidebars stacked below for smaller screens */}
+        <div className="lg:hidden col-span-1 space-y-8 mt-8">
+          <NewsletterSidebar />
+          <ActivityFeedSidebar />
+        </div>
       </div>
     </div>
   );
