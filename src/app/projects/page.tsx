@@ -2,13 +2,13 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link"; // Import Link
+import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon, LogInIcon } from "lucide-react";
-import Image from "next/image";
 import CreateOrganizationModal from "@/components/organization/create-organization-modal";
 import JoinProjectModal from "@/components/project/join-project-modal";
 import JoinWorkspaceModal from "@/components/workspace/join-workspace-modal";
@@ -159,14 +159,14 @@ export default function ProjectsPage() {
           {sampleProjects.map((project) => (
             <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl hover:shadow-2xl transition-shadow duration-300">
               {project.imageUrl && (
-                <div className="relative h-48 w-full"> {/* Increased height for better image visibility */}
+                <div className="relative h-48 w-full">
                   <Image src={project.imageUrl} alt={project.name} layout="fill" objectFit="cover" data-ai-hint={project.imageAiHint}/>
                 </div>
               )}
-              <CardHeader className="pt-4 pb-2"> {/* Adjusted padding */}
+              <CardHeader className="pt-4 pb-2">
                 <div className="flex items-center gap-2 mb-1">
                   <FolderKanbanIcon className="h-5 w-5 text-primary flex-shrink-0" />
-                  <CardTitle className="text-lg font-semibold truncate">{project.name}</CardTitle> {/* Added font-semibold */}
+                  <CardTitle className="text-lg font-semibold truncate">{project.name}</CardTitle>
                 </div>
                 {project.organization && (
                   <Link href={`/organizations/${project.organization.id}`} className="group">
@@ -185,21 +185,21 @@ export default function ProjectsPage() {
                     </div>
                   </Link>
                 )}
-                <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis line-clamp-3">{project.description}</CardDescription> {/* Ensured line-clamp for consistency */}
+                <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis line-clamp-3">{project.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow pt-2"> {/* Adjusted padding */}
-                <div className="mb-4"> {/* Increased margin bottom */}
+              <CardContent className="flex-grow pt-2">
+                <div className="mb-4">
                   <div className="flex justify-between items-center text-xs text-muted-foreground mb-1">
                     <span>Progress</span>
                     <span>{project.progress}%</span>
                   </div>
                   <Progress value={project.progress} aria-label={`${project.progress}% complete`} />
                 </div>
-                <div className="mb-4"> {/* Increased margin bottom */}
-                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Team</h4> {/* Increased margin bottom */}
+                <div className="mb-4">
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Team</h4>
                   <div className="flex -space-x-2">
                     {project.team.map(member => (
-                      <Avatar key={member.name} className="h-8 w-8 border-2 border-card"> {/* Increased avatar size */}
+                      <Avatar key={member.name} className="h-8 w-8 border-2 border-card">
                         <AvatarImage src={member.src} data-ai-hint={member.dataAiHint}/>
                         <AvatarFallback>{member.name}</AvatarFallback>
                       </Avatar>
@@ -207,15 +207,15 @@ export default function ProjectsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Tags</h4> {/* Increased margin bottom */}
-                  <div className="flex flex-wrap gap-1.5"> {/* Increased gap */}
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Tags</h4>
+                  <div className="flex flex-wrap gap-1.5">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium">{tag}</span> {/* Adjusted padding and font weight */}
+                      <span key={tag} className="px-2 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium">{tag}</span>
                     ))}
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="grid grid-cols-2 gap-2 p-3 border-t bg-muted/30"> {/* Adjusted padding */}
+              <CardFooter className="grid grid-cols-2 gap-2 p-3 border-t bg-muted/30">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline" size="sm" className="w-full" asChild>
@@ -273,3 +273,4 @@ export default function ProjectsPage() {
   );
 }
 
+    
