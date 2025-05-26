@@ -104,7 +104,10 @@ export default function ProjectsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
-          <p className="text-muted-foreground">Collaborate, manage tasks, and share files for your projects.</p>
+          <p className="text-muted-foreground">
+            Collaborate, manage tasks, share files, and discuss your projects. 
+            Each project card provides entry points to view team details, comment, access files, and open the full project.
+          </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setIsCreateOrgModalOpen(true)}>
@@ -123,6 +126,14 @@ export default function ProjectsPage() {
         onOpenChange={setIsCreateOrgModalOpen} 
       />
 
+      {/* Project cards display various project information and actions.
+          - Team: Shows member avatars; "Team" button conceptually leads to detailed team view/management.
+          - Comment: Button allows users to access project-specific discussions.
+          - Files: Button leads to project file viewing/management, with access control handled by backend.
+          - Open Project: Button navigates to the detailed project page, respecting access levels.
+          The specific UIs for these deeper interactions (e.g., comment threads, file lists, connection requests)
+          would be built on the respective linked pages or modals.
+      */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sampleProjects.map((project) => (
           <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl">
