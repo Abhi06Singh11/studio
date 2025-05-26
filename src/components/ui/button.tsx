@@ -10,22 +10,22 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:bg-primary hover:text-white",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground hover:bg-destructive hover:text-white",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-background text-foreground hover:bg-background hover:text-white",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground hover:bg-secondary hover:text-white",
+        ghost: "text-primary hover:text-white",
+        link: "text-primary underline-offset-4 hover:underline hover:text-white",
       },
       size: {
         default: "h-10 px-4 py-2 [&_svg]:size-4",
         sm: "h-9 rounded-md px-3 [&_svg]:size-4",
         lg: "h-11 rounded-md px-8 [&_svg]:size-5",
         icon: "h-10 w-10 [&_svg]:size-5",
-        "icon-sm": "h-8 w-8 [&_svg]:size-4", // Added icon-sm
+        "icon-sm": "h-8 w-8 [&_svg]:size-4", 
       },
     },
     defaultVariants: {
@@ -45,18 +45,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     
-    // Determine children for Comp
     let childrenForComp = children;
     if (!asChild && Comp === "button" && React.Children.count(children) === 0) {
       // Default content for button if no children provided and not asChild
-      // This part can be customized or removed if not needed
-      // For SidebarTrigger, it expects children to be passed or its default.
     }
     
     if (asChild) {
-      // If asChild is true, Slot should have exactly one child.
-      // The props (including className, variant, size) are passed to Slot,
-      // which then merges them onto its direct child.
       return (
         <Slot
           ref={ref}
