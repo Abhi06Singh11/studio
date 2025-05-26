@@ -6,6 +6,10 @@ import { usePathname } from 'next/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
+  SheetHeader, // Added
+  SheetTitle,  // Added
+} from '@/components/ui/sheet';
+import {
   HomeIcon,
   UsersIcon,
   MessageSquareIcon,
@@ -20,7 +24,7 @@ import {
 } from 'lucide-react';
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
-export const allNavItems = [ // Export this array so AppHeader can use it
+export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
@@ -29,8 +33,8 @@ export const allNavItems = [ // Export this array so AppHeader can use it
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
-  // Example: { href: '/settings', label: 'Settings', icon: SettingsIcon },
 ];
+
 
 interface AppSidebarContentProps {
   onLinkClick?: () => void;
@@ -43,16 +47,16 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
 
   return (
     <div className="flex flex-col h-full bg-card text-card-foreground">
-      <div className="flex h-14 items-center border-b px-4 shrink-0">
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-primary" onClick={onLinkClick}>
+      <SheetHeader className="border-b"> {/* Use SheetHeader for proper structure */}
+        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-primary px-4 h-14" onClick={onLinkClick}>
           <Share2Icon className="h-6 w-6" />
-          <span className="font-semibold">CodeSphere</span>
+          <SheetTitle className="font-semibold text-lg text-primary">CodeSphere</SheetTitle> {/* Use SheetTitle for accessibility */}
         </Link>
-      </div>
+      </SheetHeader>
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
         {allNavItems.map((item) => (
           <Link
-            key={item.label} // Changed key to item.label as hrefs might change but label is more stable for display
+            key={item.label}
             href={item.href}
             onClick={onLinkClick}
             className={cn(
