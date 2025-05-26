@@ -103,7 +103,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                 className={cn(
                   "w-full justify-start text-sm h-8",
                   activeView === item.id && "bg-primary/10 text-primary font-semibold",
-                  item.id === 'dms' && "justify-between" // For adding chevron to DMs
+                  item.id === 'dms' && "justify-between" 
                 )}
                 onClick={() => {
                   if (item.id === 'dms') {
@@ -112,8 +112,8 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                   setActiveView(item.id as ProjectWorkspaceView);
                 }}
               >
-                <span className="flex items-center">
-                  <item.icon className="mr-2.5 h-4 w-4" />
+                <span className="flex items-center gap-2.5">
+                  <item.icon className="h-4 w-4" />
                   {item.label}
                 </span>
                 {item.id === 'dms' && (
@@ -145,7 +145,6 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
 
           <Separator className="my-2" />
 
-          {/* Channels Section */}
           <div className="flex items-center justify-between pr-1">
             <Button
               variant="ghost"
@@ -168,7 +167,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
-                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold"
+                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold" 
                   )}
                    onClick={() => setActiveView('channels')}
                 >
@@ -180,7 +179,6 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
           ))}
           <Separator className="my-2"/>
 
-          {/* Organizations Section */}
           <Button
             variant="ghost"
             className="w-full justify-between text-sm h-8 font-semibold"
@@ -201,13 +199,14 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
             >
-              <item.icon className="mr-2.5 h-4 w-4" />
-              {item.label}
+              <span className="flex items-center gap-2.5">
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </span>
             </Button>
           ))}
           <Separator className="my-2"/>
 
-          {/* Projects (Org) Section */}
            <Button
             variant="ghost"
             className="w-full justify-between text-sm h-8 font-semibold"
@@ -228,8 +227,10 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               )}
               onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
             >
-              <item.icon className="mr-2.5 h-4 w-4" />
-              {item.label}
+              <span className="flex items-center gap-2.5">
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </span>
             </Button>
           ))}
 
@@ -243,26 +244,31 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
             )}
             onClick={() => setActiveView("settings")}
           >
-            <SettingsIcon className="mr-2.5 h-4 w-4" />
-            Settings
+            <span className="flex items-center gap-2.5">
+              <SettingsIcon className="h-4 w-4" />
+              Settings
+            </span>
           </Button>
         </nav>
       </ScrollArea>
 
       <div className="p-2 border-t mt-auto">
-        <Button variant="ghost" className="w-full justify-start h-10">
-            <Avatar className="h-8 w-8 mr-2">
-                <AvatarImage src="https://placehold.co/100x100.png?p=1" alt="Current User" data-ai-hint="user avatar" />
-                <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 truncate">
-                <p className="text-sm font-medium text-foreground">Dr. Elara Vance</p>
-                <p className="text-xs text-muted-foreground">Online</p>
-            </div>
-            <CircleEllipsisIcon className="h-4 w-4 text-muted-foreground"/>
+        <Button variant="ghost" className="w-full justify-start h-10 p-2" asChild>
+            <Link href={`/profiles?returnTo=/projects`} className="flex items-center gap-2 w-full">
+                <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://placehold.co/100x100.png?p=1" alt="Current User" data-ai-hint="user avatar" />
+                    <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 truncate">
+                    <p className="text-sm font-medium text-foreground">Dr. Elara Vance</p>
+                    <p className="text-xs text-muted-foreground">Online</p>
+                </div>
+                <CircleEllipsisIcon className="h-4 w-4 text-muted-foreground"/>
+            </Link>
         </Button>
       </div>
     </aside>
   );
 }
 
+    
