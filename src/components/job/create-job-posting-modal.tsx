@@ -45,14 +45,18 @@ import { BriefcaseIcon, UploadCloudIcon, CalendarIcon, MapPinIcon, DollarSignIco
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
+const jobTypes = ["Full-Time", "Part-Time", "Contract", "Internship", "Freelance", "Temporary"] as const;
+const experienceLevels = ["Entry-level", "Mid-level", "Senior-level", "Lead", "Manager", "Director", "Executive"] as const;
+
+
 const jobPostingFormSchema = z.object({
   jobTitle: z.string().min(3, "Job title must be at least 3 characters."),
   companyName: z.string().min(2, "Company name is required."),
   location: z.string().min(2, "Location is required."),
-  jobType: z.enum(["Full-Time", "Part-Time", "Contract", "Internship", "Freelance", "Temporary"], {
+  jobType: z.enum(jobTypes, {
     required_error: "Please select a job type.",
   }),
-  experienceLevel: z.enum(["Entry-level", "Mid-level", "Senior-level", "Lead", "Manager", "Director", "Executive"], {
+  experienceLevel: z.enum(experienceLevels, {
     required_error: "Please select an experience level.",
   }),
   salaryRange: z.string().optional().or(z.literal('')),
@@ -70,9 +74,11 @@ type JobPostingFormValues = z.infer<typeof jobPostingFormSchema>;
 interface CreateJobPostingModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  // Callback to add the new job posting to the parent page's list
+  onJobPosted?: (newJob: any) => void; 
 }
 
-export default function CreateJobPostingModal({ isOpen, onOpenChange }: CreateJobPostingModalProps) {
+export default function CreateJobPostingModal({ isOpen, onOpenChange, onJobPosted }: CreateJobPostingModalProps) {
   const form = useForm<JobPostingFormValues>({
     resolver: zodResolver(jobPostingFormSchema),
     defaultValues: {
@@ -90,18 +96,37 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange }: CreateJo
   });
 
   function onSubmit(data: JobPostingFormValues) {
-    const finalData = {
+    const newJobPosting = {
       ...data,
+      id: `job_${Date.now()}`, // simple unique ID
       keySkills: data.keySkills.split(',').map(skill => skill.trim()).filter(Boolean),
       applicationDeadline: data.applicationDeadline ? format(data.applicationDeadline, "yyyy-MM-dd") : undefined,
-      postedBy: "current_user_id_placeholder", // Replace with actual user ID
+      postedBy: "current_user_id_placeholder", 
       postedAt: new Date().toISOString(),
+      // For direct use in JobPostingCardProps, ensure alignment
+      title: data.jobTitle,
+      company: data.companyName,
+      type: 'Job' as 'Job' | 'Project', // Primary type
+      employmentType: data.jobType,
+      description: data.jobDescription,
+      skills: data.keySkills.split(',').map(skill => skill.trim()).filter(Boolean),
+      budget: data.salaryRange,
+      timeline: data.applicationDeadline ? `Apply by ${format(data.applicationDeadline, "PPP")}` : "Ongoing",
+      imageUrl: data.companyLogoUrl || "https://placehold.co/400x200.png?text=No+Logo", // Placeholder if no logo
+      imageAiHint: data.companyLogoUrl ? "company logo" : "office building",
+      tags: [data.jobType, data.experienceLevel, data.location.includes("Remote") ? "Remote" : ""].filter(Boolean),
     };
-    console.log("Job Posting Data (Conceptual Firestore Write):", finalData);
+
+    console.log("Job Posting Data (Conceptual Firestore Write):", newJobPosting);
     toast({
       title: "Opportunity Posted (Conceptually)!",
       description: `Your posting for "${data.jobTitle}" has been created.`,
     });
+    
+    if (onJobPosted) {
+      onJobPosted(newJobPosting);
+    }
+
     onOpenChange(false);
     form.reset();
   }
@@ -154,7 +179,7 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange }: CreateJo
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl><SelectTrigger><SelectValue placeholder="Select job type" /></SelectTrigger></FormControl>
                             <SelectContent>
-                            {["Full-Time", "Part-Time", "Contract", "Internship", "Freelance", "Temporary"].map(type => (
+                            {jobTypes.map(type => (
                                 <SelectItem key={type} value={type}>{type}</SelectItem>
                             ))}
                             </SelectContent>
@@ -168,7 +193,7 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange }: CreateJo
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl><SelectTrigger><SelectValue placeholder="Select experience level" /></SelectTrigger></FormControl>
                             <SelectContent>
-                            {["Entry-level", "Mid-level", "Senior-level", "Lead", "Manager", "Director", "Executive"].map(level => (
+                            {experienceLevels.map(level => (
                                 <SelectItem key={level} value={level}>{level}</SelectItem>
                             ))}
                             </SelectContent>
@@ -279,5 +304,3 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange }: CreateJo
     </Dialog>
   );
 }
-
-    
