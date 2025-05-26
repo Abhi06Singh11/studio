@@ -10,8 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FolderKanbanIcon, PlusCircleIcon, UsersIcon, MessageSquareIcon, FileTextIcon, ArrowRightIcon, BuildingIcon, LogInIcon } from "lucide-react";
 import Image from "next/image";
 import CreateOrganizationModal from "@/components/organization/create-organization-modal";
-import JoinProjectModal from "@/components/project/join-project-modal"; // New Import
-import JoinWorkspaceModal from "@/components/workspace/join-workspace-modal"; // New Import
+import JoinProjectModal from "@/components/project/join-project-modal";
+import JoinWorkspaceModal from "@/components/workspace/join-workspace-modal";
 import {
   Tooltip,
   TooltipContent,
@@ -53,18 +53,18 @@ const sampleProjects: SampleProject[] = [
     status: "In Progress",
     progress: 75,
     team: [
-      { name: "EV", src: "https://placehold.co/50x50.png?t=1", dataAiHint: "person avatar" },
-      { name: "MC", src: "https://placehold.co/50x50.png?t=2", dataAiHint: "person avatar" },
-      { name: "AK", src: "https://placehold.co/50x50.png?t=3", dataAiHint: "person avatar" },
+      { name: "EV", src: "https://placehold.co/50x50.png?t=1", dataAiHint: "female developer" },
+      { name: "MC", src: "https://placehold.co/50x50.png?t=2", dataAiHint: "male entrepreneur" },
+      { name: "AK", src: "https://placehold.co/50x50.png?t=3", dataAiHint: "female investor" },
     ],
     tags: ["Next.js", "TypeScript", "AI", "Collaboration", "Full-Stack"],
     imageUrl: "https://placehold.co/400x200.png?prj=1",
-    imageAiHint: "team working",
+    imageAiHint: "modern office collaboration",
     organization: {
       id: "org_123",
       name: "Innovatech Solutions",
       logoUrl: "https://placehold.co/32x32.png?text=IS",
-      logoAiHint: "company logo abstract"
+      logoAiHint: "abstract tech logo"
     }
   },
   {
@@ -74,12 +74,12 @@ const sampleProjects: SampleProject[] = [
     status: "Planning",
     progress: 20,
     team: [
-      { name: "SJ", src: "https://placehold.co/50x50.png?t=4", dataAiHint: "person avatar" },
-      { name: "RD", src: "https://placehold.co/50x50.png?t=5", dataAiHint: "person avatar" },
+      { name: "SJ", src: "https://placehold.co/50x50.png?t=4", dataAiHint: "data scientist" },
+      { name: "RD", src: "https://placehold.co/50x50.png?t=5", dataAiHint: "ml engineer" },
     ],
     tags: ["Python", "Machine Learning", "LLM", "Big Data", "Data Science"],
     imageUrl: "https://placehold.co/400x200.png?prj=2",
-    imageAiHint: "network algorithm"
+    imageAiHint: "ai data visualization"
   },
   {
     id: "prj_mobile_app",
@@ -88,17 +88,17 @@ const sampleProjects: SampleProject[] = [
     status: "Completed",
     progress: 100,
     team: [
-      { name: "LG", src: "https://placehold.co/50x50.png?t=6", dataAiHint: "person avatar" },
-      { name: "PB", src: "https://placehold.co/50x50.png?t=7", dataAiHint: "person avatar" },
+      { name: "LG", src: "https://placehold.co/50x50.png?t=6", dataAiHint: "mobile developer" },
+      { name: "PB", src: "https://placehold.co/50x50.png?t=7", dataAiHint: "ux designer" },
     ],
     tags: ["React Native", "iOS", "Android", "Mobile UX", "Firebase"],
     imageUrl: "https://placehold.co/400x200.png?prj=3",
-    imageAiHint: "mobile app",
+    imageAiHint: "sleek mobile interface",
     organization: {
       id: "org_456",
       name: "GreenFuture 🌱",
       logoUrl: "https://placehold.co/32x32.png?text=GF",
-      logoAiHint: "nature logo"
+      logoAiHint: "eco tech logo"
     }
   }
 ];
@@ -116,7 +116,9 @@ export default function ProjectsPage() {
             <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
             <p className="text-muted-foreground">
               Browse projects, manage your work, or create new initiatives. 
-              Each project provides access to its team details, files (with access controls), and a dedicated comment section for discussions.
+              Each project card provides access to its team details (view team members, connect & collaborate), 
+              files (view project files with appropriate access controls), 
+              and a dedicated comment section (view and add comments) for discussions.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -155,16 +157,16 @@ export default function ProjectsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sampleProjects.map((project) => (
-            <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl">
+            <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl hover:shadow-2xl transition-shadow duration-300">
               {project.imageUrl && (
-                <div className="relative h-40 w-full">
+                <div className="relative h-48 w-full"> {/* Increased height for better image visibility */}
                   <Image src={project.imageUrl} alt={project.name} layout="fill" objectFit="cover" data-ai-hint={project.imageAiHint}/>
                 </div>
               )}
-              <CardHeader className="pt-4">
+              <CardHeader className="pt-4 pb-2"> {/* Adjusted padding */}
                 <div className="flex items-center gap-2 mb-1">
                   <FolderKanbanIcon className="h-5 w-5 text-primary flex-shrink-0" />
-                  <CardTitle className="text-lg truncate">{project.name}</CardTitle>
+                  <CardTitle className="text-lg font-semibold truncate">{project.name}</CardTitle> {/* Added font-semibold */}
                 </div>
                 {project.organization && (
                   <Link href={`/organizations/${project.organization.id}`} className="group">
@@ -183,21 +185,21 @@ export default function ProjectsPage() {
                     </div>
                   </Link>
                 )}
-                <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis">{project.description}</CardDescription>
+                <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis line-clamp-3">{project.description}</CardDescription> {/* Ensured line-clamp for consistency */}
               </CardHeader>
-              <CardContent className="flex-grow">
-                <div className="mb-3">
+              <CardContent className="flex-grow pt-2"> {/* Adjusted padding */}
+                <div className="mb-4"> {/* Increased margin bottom */}
                   <div className="flex justify-between items-center text-xs text-muted-foreground mb-1">
                     <span>Progress</span>
                     <span>{project.progress}%</span>
                   </div>
                   <Progress value={project.progress} aria-label={`${project.progress}% complete`} />
                 </div>
-                <div className="mb-3">
-                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Team</h4>
+                <div className="mb-4"> {/* Increased margin bottom */}
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Team</h4> {/* Increased margin bottom */}
                   <div className="flex -space-x-2">
                     {project.team.map(member => (
-                      <Avatar key={member.name} className="h-7 w-7 border-2 border-card">
+                      <Avatar key={member.name} className="h-8 w-8 border-2 border-card"> {/* Increased avatar size */}
                         <AvatarImage src={member.src} data-ai-hint={member.dataAiHint}/>
                         <AvatarFallback>{member.name}</AvatarFallback>
                       </Avatar>
@@ -205,15 +207,15 @@ export default function ProjectsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Tags</h4>
-                  <div className="flex flex-wrap gap-1">
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2">Tags</h4> {/* Increased margin bottom */}
+                  <div className="flex flex-wrap gap-1.5"> {/* Increased gap */}
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full text-xs">{tag}</span>
+                      <span key={tag} className="px-2 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium">{tag}</span> {/* Adjusted padding and font weight */}
                     ))}
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="grid grid-cols-2 gap-2 p-2 border-t bg-muted/30">
+              <CardFooter className="grid grid-cols-2 gap-2 p-3 border-t bg-muted/30"> {/* Adjusted padding */}
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline" size="sm" className="w-full" asChild>
@@ -271,4 +273,3 @@ export default function ProjectsPage() {
   );
 }
 
-    

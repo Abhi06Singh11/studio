@@ -38,7 +38,7 @@ const sampleWorkspaces: DiscoverableWorkspace[] = [
     ownerName: "Dr. Elara Vance",
     description: "Pioneering the future of AI-driven development tools and collaborative platforms. Join us to build the next generation of tech.",
     logoUrl: "https://placehold.co/64x64.png?text=IS",
-    logoAiHint: "company logo abstract",
+    logoAiHint: "abstract tech logo",
     memberCount: 25,
   },
   {
@@ -47,7 +47,7 @@ const sampleWorkspaces: DiscoverableWorkspace[] = [
     ownerName: "Marcus Chen",
     description: "Dedicated to building sustainable technology solutions for a greener tomorrow. Seeking passionate individuals.",
     logoUrl: "https://placehold.co/64x64.png?text=GF",
-    logoAiHint: "nature logo",
+    logoAiHint: "eco tech logo",
     memberCount: 12,
   },
   {
@@ -55,6 +55,7 @@ const sampleWorkspaces: DiscoverableWorkspace[] = [
     name: "Community Coders Hub",
     ownerName: "Aisha Khan",
     description: "An open community for developers of all levels to collaborate on open-source projects and learn together.",
+    logoAiHint: "community coding",
     memberCount: 150,
   },
 ];
@@ -107,25 +108,25 @@ export default function JoinWorkspaceModal({ isOpen, onOpenChange }: JoinWorkspa
             {filteredWorkspaces.length > 0 ? (
               <div className="space-y-3">
                 {filteredWorkspaces.map((ws) => (
-                  <Card key={ws.id} className="shadow-sm">
-                    <CardHeader className="pb-2">
+                  <Card key={ws.id} className="shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <CardHeader className="pb-2 pt-3">
                       <div className="flex items-center gap-3">
                         {ws.logoUrl ? (
-                           <Image src={ws.logoUrl} alt={`${ws.name} logo`} data-ai-hint={ws.logoAiHint || "logo"} width={32} height={32} className="rounded-sm border bg-card p-0.5" />
+                           <Image src={ws.logoUrl} alt={`${ws.name} logo`} data-ai-hint={ws.logoAiHint || "logo"} width={32} height={32} className="rounded-md border bg-card p-0.5" />
                         ) : (
-                            <div className="h-8 w-8 bg-muted rounded-sm flex items-center justify-center border">
+                            <div className="h-8 w-8 bg-muted rounded-md flex items-center justify-center border">
                                 <BuildingIcon className="h-5 w-5 text-muted-foreground" />
                             </div>
                         )}
-                        <CardTitle className="text-base">{ws.name}</CardTitle>
+                        <CardTitle className="text-base font-medium">{ws.name}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent className="text-xs text-muted-foreground pb-3 space-y-1.5">
                       <p className="line-clamp-2">{ws.description}</p>
-                      <p><span className="font-medium text-foreground">Owner:</span> {ws.ownerName}</p>
-                      {ws.memberCount && <p><span className="font-medium text-foreground">Members:</span> {ws.memberCount}</p>}
+                      <p><span className="font-semibold text-foreground">Owner:</span> {ws.ownerName}</p>
+                      {ws.memberCount !== undefined && <p><span className="font-semibold text-foreground">Members:</span> {ws.memberCount.toLocaleString()}</p>}
                     </CardContent>
-                    <CardContent className="p-3 border-t">
+                    <CardContent className="p-3 border-t bg-muted/20">
                       <Button size="sm" className="w-full" onClick={() => handleRequestAccess(ws.name)}>
                         <UsersIcon className="mr-2 h-4 w-4" /> Request Access
                       </Button>
@@ -149,5 +150,3 @@ export default function JoinWorkspaceModal({ isOpen, onOpenChange }: JoinWorkspa
     </Dialog>
   );
 }
-
-    
