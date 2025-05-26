@@ -13,6 +13,7 @@ import CreateOrganizationModal from "@/components/organization/create-organizati
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider, // Ensure TooltipProvider is imported
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
@@ -105,116 +106,120 @@ export default function ProjectsPage() {
   const [isCreateOrgModalOpen, setIsCreateOrgModalOpen] = React.useState(false);
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
-          <p className="text-muted-foreground">
-            Collaborate, manage tasks, share files, and comment on your projects.
-            Each project card provides entry points to view team details (connect, collaborate), access discussions, manage files, and open the full project workspace.
-          </p>
+    <TooltipProvider> {/* Wrap with TooltipProvider */}
+      <div className="space-y-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Project Workspaces</h1>
+            <p className="text-muted-foreground">
+              Collaborate, manage tasks, share files, and comment on your projects.
+              Each project card provides entry points to view team details (connect, collaborate), access discussions, manage files, and open the full project workspace.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={() => setIsCreateOrgModalOpen(true)}>
+              <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/projects/create-personal">
+                <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
+              </Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => setIsCreateOrgModalOpen(true)}>
-            <BuildingIcon className="mr-2 h-5 w-5" /> Create Organization
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/projects/create-personal">
-              <PlusCircleIcon className="mr-2 h-5 w-5" /> Create New Project
-            </Link>
-          </Button>
-        </div>
-      </div>
 
-      <CreateOrganizationModal
-        isOpen={isCreateOrgModalOpen}
-        onOpenChange={setIsCreateOrgModalOpen}
-      />
+        <CreateOrganizationModal
+          isOpen={isCreateOrgModalOpen}
+          onOpenChange={setIsCreateOrgModalOpen}
+        />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sampleProjects.map((project) => (
-          <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl">
-            {project.imageUrl && (
-              <div className="relative h-40 w-full">
-                <Image src={project.imageUrl} alt={project.name} layout="fill" objectFit="cover" data-ai-hint={project.imageAiHint}/>
-              </div>
-            )}
-            <CardHeader className="pt-4">
-              <div className="flex items-center gap-2 mb-1">
-                <FolderKanbanIcon className="h-5 w-5 text-primary flex-shrink-0" />
-                <CardTitle className="text-lg truncate">{project.name}</CardTitle>
-              </div>
-              {project.organization && (
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                  {project.organization.logoUrl && (
-                    <Image
-                      src={project.organization.logoUrl}
-                      alt={`${project.organization.name} logo`}
-                      data-ai-hint={project.organization.logoAiHint || "logo"}
-                      width={16}
-                      height={16}
-                      className="rounded-sm"
-                    />
-                  )}
-                  <span>From: {project.organization.name}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sampleProjects.map((project) => (
+            <Card key={project.id} className="flex flex-col overflow-hidden shadow-lg rounded-xl">
+              {project.imageUrl && (
+                <div className="relative h-40 w-full">
+                  <Image src={project.imageUrl} alt={project.name} layout="fill" objectFit="cover" data-ai-hint={project.imageAiHint}/>
                 </div>
               )}
-              <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis">{project.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <div className="mb-3">
-                <div className="flex justify-between items-center text-xs text-muted-foreground mb-1">
-                  <span>Progress</span>
-                  <span>{project.progress}%</span>
+              <CardHeader className="pt-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <FolderKanbanIcon className="h-5 w-5 text-primary flex-shrink-0" />
+                  <CardTitle className="text-lg truncate">{project.name}</CardTitle>
                 </div>
-                <Progress value={project.progress} aria-label={`${project.progress}% complete`} />
-              </div>
-              <div className="mb-3">
-                <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Team</h4>
-                <div className="flex -space-x-2">
-                  {project.team.map(member => (
-                    <Avatar key={member.name} className="h-7 w-7 border-2 border-card">
-                      <AvatarImage src={member.src} data-ai-hint={member.dataAiHint}/>
-                      <AvatarFallback>{member.name}</AvatarFallback>
-                    </Avatar>
-                  ))}
+                {project.organization && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
+                    {project.organization.logoUrl && (
+                      <Image
+                        src={project.organization.logoUrl}
+                        alt={`${project.organization.name} logo`}
+                        data-ai-hint={project.organization.logoAiHint || "logo"}
+                        width={16}
+                        height={16}
+                        className="rounded-sm"
+                      />
+                    )}
+                    <span>From: {project.organization.name}</span>
+                  </div>
+                )}
+                <CardDescription className="text-sm h-16 overflow-hidden text-ellipsis">{project.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <div className="mb-3">
+                  <div className="flex justify-between items-center text-xs text-muted-foreground mb-1">
+                    <span>Progress</span>
+                    <span>{project.progress}%</span>
+                  </div>
+                  <Progress value={project.progress} aria-label={`${project.progress}% complete`} />
                 </div>
-              </div>
-              <div>
-                <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Tags</h4>
-                <div className="flex flex-wrap gap-1">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full text-xs">{tag}</span>
-                  ))}
+                <div className="mb-3">
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Team</h4>
+                  <div className="flex -space-x-2">
+                    {project.team.map(member => (
+                      <Avatar key={member.name} className="h-7 w-7 border-2 border-card">
+                        <AvatarImage src={member.src} data-ai-hint={member.dataAiHint}/>
+                        <AvatarFallback>{member.name}</AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-            <CardFooter className="grid grid-cols-2 gap-2 p-2 border-t bg-muted/30">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <UsersIcon className="mr-1 h-4 w-4" /> Team
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>View team, connect &amp; collaborate</p>
-                </TooltipContent>
-              </Tooltip>
-              <Button variant="outline" size="sm" className="w-full">
-                <MessageSquareIcon className="mr-1 h-4 w-4" /> Comment
-              </Button>
-              <Button variant="outline" size="sm" className="w-full">
-                <FileTextIcon className="mr-1 h-4 w-4" /> Files
-              </Button>
-              <Button variant="outline" size="sm" asChild className="w-full">
-                <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
-                  <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-1">Tags</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full text-xs">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="grid grid-cols-2 gap-2 p-2 border-t bg-muted/30">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full" asChild>
+                      <Link href={`/projects/${project.id}/team`}>
+                        <UsersIcon className="mr-1 h-4 w-4" /> Team
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>View team, connect &amp; collaborate</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Button variant="outline" size="sm" className="w-full">
+                  <MessageSquareIcon className="mr-1 h-4 w-4" /> Comment
+                </Button>
+                <Button variant="outline" size="sm" className="w-full">
+                  <FileTextIcon className="mr-1 h-4 w-4" /> Files
+                </Button>
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  <Link href={project.organization ? `/organizations/${project.organization.id}` : `/projects/${project.id}`}>
+                    <ArrowRightIcon className="mr-1 h-4 w-4" /> Open Project
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
