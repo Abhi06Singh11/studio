@@ -28,7 +28,7 @@ import {
   LogInIcon, 
   FolderPlusIcon, 
   ListChecksIcon,
-  PlusCircleIcon, // Added missing import
+  PlusCircleIcon,
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
 
@@ -141,7 +141,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isChannelsExpanded && "-rotate-90")} />
               Channels
             </span>
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); setActiveView('channels'); }}>
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
                 <PlusIcon className="h-4 w-4"/>
                 <span className="sr-only">Create Channel</span>
             </Button>

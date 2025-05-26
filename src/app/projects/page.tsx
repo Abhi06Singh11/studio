@@ -5,6 +5,7 @@ import * as React from "react";
 import ProjectWorkspaceSidebar from "@/components/project/project-workspace-sidebar";
 import ThreadsView from "@/components/project/views/threads-view";
 import ChannelsView from "@/components/project/views/channels-view";
+import CreateChannelView from "@/components/project/views/create-channel-view"; // Import new view
 import DirectMessagesView from "@/components/project/views/direct-messages-view";
 import MentionsActivityView from "@/components/project/views/mentions-activity-view";
 import FilesView from "@/components/project/views/files-view";
@@ -21,6 +22,7 @@ import CreateActionsModal from "@/components/project/create-actions-modal";
 export type ProjectWorkspaceView = 
   | "threads" 
   | "channels" 
+  | "create-channel" // Add new view type
   | "dms" 
   | "activity" 
   | "files" 
@@ -44,6 +46,8 @@ export default function ProjectsPage() {
         return <ThreadsView />;
       case "channels":
         return <ChannelsView />;
+      case "create-channel": // Add case for new view
+        return <CreateChannelView setActiveView={setActiveView} />;
       case "dms":
         return <DirectMessagesView />;
       case "activity":
@@ -52,7 +56,7 @@ export default function ProjectsPage() {
         return <FilesView />;
       case "settings":
         return <ProjectSettingsView />;
-      // New views
+      // Organization and Project views
       case "create-organization":
         return <CreateOrganizationView />;
       case "join-organization":
@@ -89,3 +93,4 @@ export default function ProjectsPage() {
     </>
   );
 }
+
