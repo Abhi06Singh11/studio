@@ -6,8 +6,9 @@ import JobPostingCard, { type JobPostingCardProps } from "@/components/job-posti
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlusCircleIcon, SearchIcon, FilterIcon, BriefcaseIcon } from "lucide-react";
+import { PlusCircleIcon, SearchIcon, BriefcaseIcon } from "lucide-react"; // Removed FilterIcon as it's not used
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CreateJobPostingModal from "@/components/job/create-job-posting-modal"; // Import the new modal
 
 const sampleJobPostings: JobPostingCardProps[] = [
   {
@@ -68,13 +69,13 @@ const sampleJobPostings: JobPostingCardProps[] = [
 
 export default function JobsPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedRole, setSelectedRole] = React.useState("All"); // Example filter state
-  const [selectedSkill, setSelectedSkill] = React.useState("All"); // Example filter state
+  const [selectedType, setSelectedType] = React.useState("All");
+  const [selectedSkill, setSelectedSkill] = React.useState("All");
+  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false); // State for modal
 
-  // Placeholder for actual filtering logic
   const filteredPostings = sampleJobPostings.filter(posting => {
     const term = searchTerm.toLowerCase();
-    const roleMatch = selectedRole === "All" || posting.type.toLowerCase() === selectedRole.toLowerCase() || (selectedRole === "Jobs" && posting.type === "Job") || (selectedRole === "Projects" && posting.type === "Project");
+    const typeMatch = selectedType === "All" || posting.type.toLowerCase() === selectedType.toLowerCase();
     const skillMatch = selectedSkill === "All" || posting.skills.some(skill => skill.toLowerCase().includes(selectedSkill.toLowerCase()));
     const searchMatch = 
         posting.title.toLowerCase().includes(term) ||
@@ -83,90 +84,94 @@ export default function JobsPage() {
         posting.skills.some(skill => skill.toLowerCase().includes(term)) ||
         (posting.tags && posting.tags.some(tag => tag.toLowerCase().includes(term)));
     
-    return roleMatch && skillMatch && searchMatch;
+    return typeMatch && skillMatch && searchMatch;
   });
 
   const uniqueSkills = ["All", ...new Set(sampleJobPostings.flatMap(p => p.skills))];
 
-
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center">
-            <BriefcaseIcon className="mr-3 h-8 w-8 text-primary" />
-            Job & Project Board
-          </h1>
-          <p className="text-muted-foreground">Find your next opportunity or the perfect talent.</p>
+    <>
+      <div className="space-y-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center">
+              <BriefcaseIcon className="mr-3 h-8 w-8 text-primary" />
+              Job & Project Board
+            </h1>
+            <p className="text-muted-foreground">Find your next opportunity or the perfect talent.</p>
+          </div>
+          <Button onClick={() => setIsCreateModalOpen(true)}> {/* Open modal on click */}
+            <PlusCircleIcon className="mr-2 h-5 w-5" /> Post an Opportunity
+          </Button>
         </div>
-        <Button>
-          <PlusCircleIcon className="mr-2 h-5 w-5" /> Post an Opportunity
-        </Button>
-      </div>
 
-      {/* Search and Filters Bar */}
-      <Card className="p-4 sm:p-6 shadow-md rounded-xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
-          <div className="sm:col-span-2 md:col-span-1">
-            <label htmlFor="search-jobs" className="block text-sm font-medium text-muted-foreground mb-1">Search</label>
-            <div className="relative">
-              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="search-jobs"
-                placeholder="Keyword, skill, company, tag..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8 bg-background"
-              />
+        {/* Search and Filters Bar */}
+        <Card className="p-4 sm:p-6 shadow-md rounded-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
+            <div className="sm:col-span-2 md:col-span-1">
+              <label htmlFor="search-jobs" className="block text-sm font-medium text-muted-foreground mb-1">Search</label>
+              <div className="relative">
+                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="search-jobs"
+                  placeholder="Keyword, skill, company, tag..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8 bg-background"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="filter-type" className="block text-sm font-medium text-muted-foreground mb-1">Type</label>
+              <Select value={selectedType} onValueChange={setSelectedType}>
+                <SelectTrigger id="filter-type" className="bg-background">
+                  <SelectValue placeholder="Filter by type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Types</SelectItem>
+                  <SelectItem value="Job">Jobs</SelectItem>
+                  <SelectItem value="Project">Projects</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label htmlFor="filter-skill" className="block text-sm font-medium text-muted-foreground mb-1">Skill</label>
+              <Select value={selectedSkill} onValueChange={setSelectedSkill}>
+                <SelectTrigger id="filter-skill" className="bg-background">
+                  <SelectValue placeholder="Filter by skill" />
+                </SelectTrigger>
+                <SelectContent>
+                  {uniqueSkills.slice(0, 15).map(skill => <SelectItem key={skill} value={skill}>{skill}</SelectItem>)}
+                  {uniqueSkills.length > 15 && <SelectItem value="more" disabled>...more skills</SelectItem>}
+                </SelectContent>
+              </Select>
             </div>
           </div>
-          <div>
-            <label htmlFor="filter-type" className="block text-sm font-medium text-muted-foreground mb-1">Type</label>
-            <Select value={selectedRole} onValueChange={setSelectedRole}>
-              <SelectTrigger id="filter-type" className="bg-background">
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All Types</SelectItem>
-                <SelectItem value="Job">Jobs</SelectItem>
-                <SelectItem value="Project">Projects</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label htmlFor="filter-skill" className="block text-sm font-medium text-muted-foreground mb-1">Skill</label>
-            <Select value={selectedSkill} onValueChange={setSelectedSkill}>
-              <SelectTrigger id="filter-skill" className="bg-background">
-                <SelectValue placeholder="Filter by skill" />
-              </SelectTrigger>
-              <SelectContent>
-                {uniqueSkills.slice(0, 15).map(skill => <SelectItem key={skill} value={skill}>{skill}</SelectItem>)}
-                 {uniqueSkills.length > 15 && <SelectItem value="more" disabled>...more skills</SelectItem>}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </Card>
+        </Card>
 
-      {/* Job Postings Grid */}
-      {filteredPostings.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPostings.map((posting) => (
-            <JobPostingCard key={posting.id} {...posting} />
-          ))}
-        </div>
-      ) : (
-         <Card className="col-span-full mt-6">
-            <CardHeader>
-                <CardTitle>No Opportunities Found</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">
-                    Try adjusting your search or filter criteria, or check back later!
-                </p>
-            </CardContent>
-         </Card>
-      )}
-    </div>
+        {/* Job Postings Grid */}
+        {filteredPostings.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPostings.map((posting) => (
+              <JobPostingCard key={posting.id} {...posting} />
+            ))}
+          </div>
+        ) : (
+          <Card className="col-span-full mt-6">
+              <CardHeader>
+                  <CardTitle>No Opportunities Found</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <p className="text-muted-foreground">
+                      Try adjusting your search or filter criteria, or check back later!
+                  </p>
+              </CardContent>
+          </Card>
+        )}
+      </div>
+      <CreateJobPostingModal isOpen={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
+    </>
   );
 }
+
+    
