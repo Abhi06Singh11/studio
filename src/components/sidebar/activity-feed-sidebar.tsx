@@ -37,7 +37,7 @@ const quickAccessLinks = [
 
 export default function ActivityFeedSidebar() {
   return (
-    <aside className="w-full lg:w-72 xl:w-80 space-y-6 shrink-0">
+    <aside className="w-full space-y-6 shrink-0"> {/* Removed lg:w-72 xl:w-80 */}
       {/* User Profile Card Section */}
       <Card className="shadow-lg rounded-xl overflow-hidden">
         <div className="relative h-20 bg-gradient-to-br from-primary/30 to-accent/30">
@@ -121,3 +121,4 @@ export default function ActivityFeedSidebar() {
       </div>
     </aside>
   );
+}
