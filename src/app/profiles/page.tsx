@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon, SmileIcon, StarIcon, ExternalLinkIcon, BookOpenIcon, ListChecksIcon, PackageCheckIcon, BrainIcon, WandSparklesIcon, DollarSignIcon, SettingsIcon, ChevronRightIcon } from "lucide-react";
+import { MailIcon, LinkedinIcon, GithubIcon, BriefcaseIcon, MapPinIcon, UsersIcon, GraduationCapIcon, GlobeIcon, FileTextIcon, LightbulbIcon, TrendingUpIcon, BuildingIcon, UserPlusIcon, RssIcon, SearchIcon, SmileIcon, StarIcon, ExternalLinkIcon, BookOpenIcon, ListChecksIcon, PackageCheckIcon, BrainIcon, WandSparklesIcon, DollarSignIcon, SettingsIcon, ChevronRightIcon, UserIcon } from "lucide-react";
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils'; // Added cn import
 
 interface WorkExperienceEntry {
   id?: string;
@@ -418,3 +419,4 @@ function ProfileCard({ profile, onToggleStar }: ProfileCardProps) {
 // I will use existing `size="sm"` for the main button and `size="icon"` for icon buttons, but reduce overall padding on the footer, and use `h-4 w-4` for icons.
 
     
+
