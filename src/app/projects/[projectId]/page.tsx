@@ -76,7 +76,37 @@ const sampleProjectFullDetailsData: { [key: string]: ProjectFullDetails } = {
         {id: "pc2", userName: "DevAdvocate", userAvatar: "https://placehold.co/100x100.png?t=g2", dataAiHint: "person icon", text: "Excited to see Genkit being potentially used here. Any plans for open-sourcing parts of it?", timestamp: "1 day ago"},
     ]
   },
-  // Add more sample projects if needed
+   "prj_codesphere": {
+    id: "prj_codesphere",
+    name: "CodeSphere Platform Core",
+    description: "Developing the core platform for developer collaboration and networking. Focus on scalability and user experience.",
+    tags: ["Next.js", "TypeScript", "AI", "Collaboration"],
+    progress: 75,
+    imageUrl: "https://placehold.co/800x300.png?prj=codesphere_overview",
+    imageAiHint: "abstract network",
+    teamMembers: [
+      { id: "user_ev", name: "Dr. Elara Vance", avatarUrl: "https://placehold.co/100x100.png?t=1", dataAiHint: "scientist woman", role: "Lead AI Researcher" },
+      { id: "user_mc", name: "Marcus Chen", avatarUrl: "https://placehold.co/100x100.png?t=2", dataAiHint: "developer man", role: "Frontend Lead" },
+      { id: "user_ak", name: "Aisha Khan", avatarUrl: "https://placehold.co/100x100.png?t=3", dataAiHint: "backend engineer", role: "Backend Architect" },
+    ],
+    publicComments: [
+        {id: "pc3", userName: "TechEnthusiast", userAvatar: "https://placehold.co/100x100.png?t=g3", dataAiHint: "person technology", text: "Amazing platform! Looking forward to the launch.", timestamp: "5 days ago"},
+    ]
+  },
+  "prj_mobile_app": {
+    id: "prj_mobile_app",
+    name: "Mobile App Companion",
+    description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications for users.",
+    tags: ["React Native", "iOS", "Android", "Mobile UX"],
+    progress: 45,
+    imageUrl: "https://placehold.co/800x300.png?prj=mobile_overview",
+    imageAiHint: "mobile application design",
+    teamMembers: [
+      { id: "user_lg", name: "Liam Gallagher", avatarUrl: "https://placehold.co/100x100.png?t=6", dataAiHint: "mobile developer", role: "Mobile Lead" },
+      { id: "user_pb", name: "Priya Bhatt", avatarUrl: "https://placehold.co/100x100.png?t=7", dataAiHint: "ux designer", role: "UI/UX Designer" },
+    ],
+    publicComments: []
+  }
 };
 
 export default function ProjectOverviewPage() {
@@ -132,10 +162,10 @@ export default function ProjectOverviewPage() {
             Back to Project Workspace
           </Link>
         </Button>
-        {/* Conceptual Project Settings Button */}
+        {/* Conceptual Project Settings Button - would be visible only to team members/admins */}
         <Button variant="outline" size="icon" disabled>
             <SettingsIcon className="h-4 w-4"/>
-            <span className="sr-only">Project Settings</span>
+            <span className="sr-only">Project Settings (Team Only)</span>
         </Button>
       </div>
 
@@ -179,7 +209,7 @@ export default function ProjectOverviewPage() {
         <Card className="lg:col-span-2 shadow-lg rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center text-xl"><UsersIcon className="mr-2 h-6 w-6 text-primary"/>Project Team</CardTitle>
-            <CardDescription>Meet the core team members.</CardDescription>
+            <CardDescription>Meet the core team members. Feel free to send a connection request.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {project.teamMembers.map(member => (
@@ -209,7 +239,7 @@ export default function ProjectOverviewPage() {
         <Card className="shadow-lg rounded-xl">
             <CardHeader>
                 <CardTitle className="text-xl">Project Hub</CardTitle>
-                <CardDescription>Access different aspects of the project.</CardDescription>
+                <CardDescription>Explore different aspects of the project. Some areas may have limited access for outsiders.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
                  <Button variant="outline" className="w-full justify-start" asChild>
@@ -219,7 +249,7 @@ export default function ProjectOverviewPage() {
                 </Button>
                 <Button variant="outline" className="w-full justify-start" asChild>
                     <Link href={`/projects/${projectId}/files`}>
-                        <FileTextIcon className="mr-2 h-4 w-4" /> Project Files
+                        <FileTextIcon className="mr-2 h-4 w-4" /> Project Files (Limited Preview)
                     </Link>
                 </Button>
                 {/* Add other relevant links, e.g., to tasks, roadmap, settings etc. */}
@@ -274,5 +304,4 @@ export default function ProjectOverviewPage() {
     </div>
   );
 }
-
     
