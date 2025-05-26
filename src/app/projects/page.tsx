@@ -9,7 +9,14 @@ import DirectMessagesView from "@/components/project/views/direct-messages-view"
 import MentionsActivityView from "@/components/project/views/mentions-activity-view";
 import FilesView from "@/components/project/views/files-view";
 import ProjectSettingsView from "@/components/project/views/settings-view";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import CreateOrganizationView from "@/components/project/views/create-organization-view";
+import JoinOrganizationView from "@/components/project/views/join-organization-view";
+import MyOrganizationsView from "@/components/project/views/my-organizations-view";
+import CreateProjectInOrgView from "@/components/project/views/create-project-org-view";
+import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
+import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
+import CreateActionsModal from "@/components/project/create-actions-modal"; // New modal
 
 export type ProjectWorkspaceView = 
   | "threads" 
@@ -17,10 +24,19 @@ export type ProjectWorkspaceView =
   | "dms" 
   | "activity" 
   | "files" 
-  | "settings";
+  | "settings"
+  // New Organization and Project views
+  | "create-organization"
+  | "join-organization"
+  | "my-organizations"
+  | "create-project-org"
+  | "join-project-org"
+  | "my-projects-org";
 
 export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
+  const [isCreateActionsModalOpen, setIsCreateActionsModalOpen] = React.useState(false);
+
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -36,21 +52,40 @@ export default function ProjectsPage() {
         return <FilesView />;
       case "settings":
         return <ProjectSettingsView />;
+      // New views
+      case "create-organization":
+        return <CreateOrganizationView />;
+      case "join-organization":
+        return <JoinOrganizationView />;
+      case "my-organizations":
+        return <MyOrganizationsView setActiveView={setActiveView} />; // Pass setActiveView for navigation
+      case "create-project-org":
+        return <CreateProjectInOrgView />;
+      case "join-project-org":
+        return <JoinProjectOrgView />;
+      case "my-projects-org":
+        return <MyProjectsOrgView setActiveView={setActiveView} />; // Pass setActiveView for navigation
       default:
         return <ThreadsView />;
     }
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your header */}
-      <ProjectWorkspaceSidebar activeView={activeView} setActiveView={setActiveView} />
-      <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
-        {/* 
-          The "Back to Feed" button is assumed to be handled externally 
-          to toggle visibility of this entire workspace view.
-        */}
-        {renderActiveView()}
-      </main>
-    </div>
+    <>
+      <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your header */}
+        <ProjectWorkspaceSidebar 
+          activeView={activeView} 
+          setActiveView={setActiveView}
+          onOpenCreateActionsModal={() => setIsCreateActionsModalOpen(true)} // Pass handler
+        />
+        <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
+          {renderActiveView()}
+        </main>
+      </div>
+      <CreateActionsModal 
+        isOpen={isCreateActionsModalOpen}
+        onOpenChange={setIsCreateActionsModalOpen}
+      />
+    </>
   );
 }

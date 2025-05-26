@@ -16,18 +16,25 @@ import {
   FileTextIcon,
   SettingsIcon,
   Share2Icon,
-  EditIcon,
+  SquarePenIcon, // Changed from EditIcon for "New Message / Create"
   ChevronDownIcon,
   PlusIcon,
   CircleEllipsisIcon,
   LockIcon,
   SearchIcon,
+  BuildingIcon, // For Organizations section
+  FolderKanbanIcon, // For Projects section
+  LayoutGridIcon, // For My Organizations / My Projects
+  LogInIcon, // For Join actions
+  FolderPlusIcon, // For Create Project
+  ListChecksIcon, // For Join Project
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
 
 interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
   setActiveView: (view: ProjectWorkspaceView) => void;
+  onOpenCreateActionsModal: () => void; // New prop
 }
 
 const mainNavItems = [
@@ -38,7 +45,6 @@ const mainNavItems = [
   ]},
   { id: "activity", label: "Mentions & Activity", icon: AtSignIcon },
   { id: "files", label: "Files", icon: FileTextIcon },
-  // More, Saved items, etc. can be added here
 ];
 
 const channelCategories = [
@@ -53,9 +59,23 @@ const channelCategories = [
     },
 ];
 
+const orgMenuItems = [
+    { id: "create-organization", label: "Create Organization", icon: PlusCircleIcon },
+    { id: "join-organization", label: "Join Organization", icon: LogInIcon },
+    { id: "my-organizations", label: "My Organizations", icon: LayoutGridIcon },
+];
 
-export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: ProjectWorkspaceSidebarProps) {
+const projectOrgMenuItems = [
+    { id: "create-project-org", label: "Create Project", icon: FolderPlusIcon },
+    { id: "join-project-org", label: "Join Project", icon: ListChecksIcon }, // Changed icon
+    { id: "my-projects-org", label: "My Projects", icon: FolderKanbanIcon },
+];
+
+
+export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal }: ProjectWorkspaceSidebarProps) {
   const [isChannelsExpanded, setIsChannelsExpanded] = React.useState(true);
+  const [isOrgsExpanded, setIsOrgsExpanded] = React.useState(true);
+  const [isProjectsOrgExpanded, setIsProjectsOrgExpanded] = React.useState(true);
 
   return (
     <aside className="w-64 md:w-72 bg-muted/40 border-r flex flex-col h-full">
@@ -64,9 +84,9 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: P
           <Share2Icon className="h-6 w-6 text-primary" />
           <span className="font-semibold text-lg">CodeSphere</span>
         </Link>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <EditIcon className="h-4 w-4" />
-          <span className="sr-only">New Message / Create</span>
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onOpenCreateActionsModal} title="Create or Join">
+          <SquarePenIcon className="h-4 w-4" />
+          <span className="sr-only">Create or Join Actions</span>
         </Button>
       </div>
 
@@ -92,7 +112,6 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: P
                             key={subItem.id}
                             variant="ghost"
                             className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground"
-                            // onClick={() => console.log("Navigate to DM with", subItem.label)} // Conceptual navigation
                         >
                             <Avatar className="h-4 w-4 mr-2">
                                 <AvatarImage src={subItem.avatar} alt={subItem.label} data-ai-hint={subItem.dataAiHint} />
@@ -114,30 +133,29 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: P
           {/* Channels Section */}
           <Button 
             variant="ghost" 
-            className="w-full justify-between text-sm h-8"
+            className="w-full justify-between text-sm h-8 font-semibold"
             onClick={() => setIsChannelsExpanded(!isChannelsExpanded)}
           >
             <span className="flex items-center">
               <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isChannelsExpanded && "-rotate-90")} />
               Channels
             </span>
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); setActiveView('channels'); /* then open create modal */}}>
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); setActiveView('channels'); }}>
                 <PlusIcon className="h-4 w-4"/>
                 <span className="sr-only">Create Channel</span>
             </Button>
           </Button>
           {isChannelsExpanded && channelCategories.map(category => (
             <div key={category.name} className="pl-3 space-y-0.5">
-              {/* <p className="text-xs text-muted-foreground px-2 py-1">{category.name}</p> */}
               {category.channels.map(channel => (
                 <Button
                   key={channel.id}
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
-                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold" // Example active state for one channel
+                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold" 
                   )}
-                   onClick={() => setActiveView('channels')} // Conceptual: would navigate to this specific channel
+                   onClick={() => setActiveView('channels')} 
                 >
                   {channel.isPrivate ? <LockIcon className="mr-2 h-3 w-3" /> : <span className="mr-2 font-bold text-muted-foreground/70">#</span>}
                   <span className="truncate">{channel.name}</span>
@@ -145,6 +163,61 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: P
               ))}
             </div>
           ))}
+          <Separator className="my-2"/>
+
+          {/* Organizations Section */}
+          <Button 
+            variant="ghost" 
+            className="w-full justify-between text-sm h-8 font-semibold"
+            onClick={() => setIsOrgsExpanded(!isOrgsExpanded)}
+          >
+            <span className="flex items-center">
+              <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isOrgsExpanded && "-rotate-90")} />
+              Organizations
+            </span>
+          </Button>
+          {isOrgsExpanded && orgMenuItems.map((item) => (
+            <Button
+              key={item.id}
+              variant="ghost"
+              className={cn(
+                "w-full justify-start text-sm h-8 pl-7", // Indent items
+                activeView === item.id && "bg-primary/10 text-primary font-semibold"
+              )}
+              onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
+            >
+              <item.icon className="mr-2.5 h-4 w-4" />
+              {item.label}
+            </Button>
+          ))}
+          <Separator className="my-2"/>
+
+          {/* Projects (Org) Section */}
+           <Button 
+            variant="ghost" 
+            className="w-full justify-between text-sm h-8 font-semibold"
+            onClick={() => setIsProjectsOrgExpanded(!isProjectsOrgExpanded)}
+          >
+            <span className="flex items-center">
+              <ChevronDownIcon className={cn("mr-2 h-4 w-4 transition-transform", !isProjectsOrgExpanded && "-rotate-90")} />
+              Projects (Org)
+            </span>
+          </Button>
+          {isProjectsOrgExpanded && projectOrgMenuItems.map((item) => (
+            <Button
+              key={item.id}
+              variant="ghost"
+              className={cn(
+                "w-full justify-start text-sm h-8 pl-7", // Indent items
+                activeView === item.id && "bg-primary/10 text-primary font-semibold"
+              )}
+              onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
+            >
+              <item.icon className="mr-2.5 h-4 w-4" />
+              {item.label}
+            </Button>
+          ))}
+
 
           <Separator className="my-2" />
           <Button
@@ -161,7 +234,6 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView }: P
         </nav>
       </ScrollArea>
 
-      {/* User Profile / Footer Section (Conceptual) */}
       <div className="p-2 border-t mt-auto">
         <Button variant="ghost" className="w-full justify-start h-10">
             <Avatar className="h-8 w-8 mr-2">
