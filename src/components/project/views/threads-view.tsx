@@ -4,12 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, MessageSquareTextIcon } from "lucide-react";
 
-export default function ThreadsView() {
+interface ThreadsViewProps {
+  workspaceName?: string | null;
+}
+
+export default function ThreadsView({ workspaceName }: ThreadsViewProps) {
   return (
     <div className="space-y-6 h-full flex flex-col">
       <CardHeader className="pb-2 px-0 pt-0">
         <CardTitle className="text-2xl font-bold flex items-center">
-          <MessageSquareTextIcon className="mr-2 h-6 w-6 text-primary" /> All Threads
+          <MessageSquareTextIcon className="mr-2 h-6 w-6 text-primary" /> 
+          {workspaceName ? `${workspaceName} Threads` : "All Threads"}
         </CardTitle>
         <CardDescription>Review ongoing discussions and important conversation threads.</CardDescription>
       </CardHeader>
