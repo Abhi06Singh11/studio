@@ -50,7 +50,7 @@ import {
   PanelLeft,
   BellIcon,
   CalendarCheck2Icon,
-  MailCheckIcon, // Added for Newsletters
+  MailCheckIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -75,6 +75,11 @@ export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Filter items for the desktop header
+  const desktopHeaderNavItems = allNavItems.filter(
+    item => item.label !== 'Events' && item.label !== 'Newsletters'
+  );
+
   return (
     <TooltipProvider delayDuration={100}>
       <header className="sticky top-0 z-30 flex h-16 items-center gap-x-3 border-b bg-card px-4 shadow-sm sm:px-6">
@@ -86,7 +91,7 @@ export default function AppHeader() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {allNavItems.map((item) => (
+          {desktopHeaderNavItems.map((item) => ( // Use filtered items here
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link
@@ -97,7 +102,7 @@ export default function AppHeader() {
                   )}
                   aria-current={(pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined}
                 >
-                   <item.icon className="h-5 w-5 md:hidden" /> {/* This icon might not be visible with text also present */}
+                   <item.icon className="h-4 w-4 mr-1.5 md:mr-1 lg:mr-1.5 inline-block" />
                    <span className="hidden md:inline">{item.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -254,5 +259,3 @@ export default function AppHeader() {
     </TooltipProvider>
   );
 }
-
-    
