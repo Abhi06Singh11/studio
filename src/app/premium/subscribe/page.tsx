@@ -91,7 +91,7 @@ export default function SubscriptionFormPage() {
                       <FormItem className="flex-1">
                         <Label htmlFor="plan-trial" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
-                            <FormControl><RadioGroupItem value="trial" id="plan-trial" /></FormControl>
+                            <RadioGroupItem value="trial" id="plan-trial" />
                             <div className="text-sm">
                               <p className="font-semibold">14-Day Free Trial</p>
                               <p className="text-xs text-muted-foreground">Full access, no commitment.</p>
@@ -102,7 +102,7 @@ export default function SubscriptionFormPage() {
                       <FormItem className="flex-1">
                          <Label htmlFor="plan-monthly" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
-                            <FormControl><RadioGroupItem value="monthly" id="plan-monthly" /></FormControl>
+                            <RadioGroupItem value="monthly" id="plan-monthly" />
                             <div className="text-sm">
                               <p className="font-semibold">Monthly Plan</p>
                               <p className="text-xs text-muted-foreground">$19/month</p>
@@ -113,7 +113,7 @@ export default function SubscriptionFormPage() {
                       <FormItem className="flex-1">
                         <Label htmlFor="plan-yearly" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
-                            <FormControl><RadioGroupItem value="yearly" id="plan-yearly" /></FormControl>
+                            <RadioGroupItem value="yearly" id="plan-yearly" />
                              <div className="text-sm">
                               <p className="font-semibold">Yearly Plan</p>
                               <p className="text-xs text-muted-foreground">$199/year (Save 15%)</p>
