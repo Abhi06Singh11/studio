@@ -29,7 +29,7 @@ import {
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
+  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon }, // Changed "Projects" to "Workplace"
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
