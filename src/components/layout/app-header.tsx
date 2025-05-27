@@ -21,7 +21,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuGroup,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger, 
 } from '@/components/ui/dropdown-menu';
 import {
   Share2Icon,
@@ -49,6 +49,7 @@ import {
   LayoutDashboardIcon,
   PanelLeft,
   BellIcon,
+  CalendarCheck2Icon, // Added for Events
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -95,7 +96,7 @@ export default function AppHeader() {
                   )}
                   aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined}
                 >
-                   <item.icon className="h-5 w-5 md:hidden" />
+                   <item.icon className="h-5 w-5 md:hidden" /> {/* This icon might not be visible with text also present */}
                    <span className="hidden md:inline">{item.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -252,3 +253,5 @@ export default function AppHeader() {
     </TooltipProvider>
   );
 }
+
+    

@@ -30,9 +30,9 @@ const currentUserProfile = {
 
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
-  { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' }, // Updated href
+  { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' },
   { id: 'newsletters', label: 'Newsletters', icon: MailIcon, href: '#' },
-  { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '#' },
+  { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '/events' }, // Updated href
 ];
 
 export default function ActivityFeedSidebar() {
@@ -114,3 +114,5 @@ export default function ActivityFeedSidebar() {
     </aside>
   );
 }
+
+    

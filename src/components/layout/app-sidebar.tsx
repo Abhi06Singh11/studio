@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
-  SheetHeader, // Added
-  SheetTitle,  // Added
+  SheetHeader, 
+  SheetTitle,  
 } from '@/components/ui/sheet';
 import {
   HomeIcon,
@@ -21,6 +21,7 @@ import {
   LayoutDashboardIcon,
   SettingsIcon,
   Edit3Icon,
+  CalendarCheck2Icon, // Added for Events
 } from 'lucide-react';
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
@@ -30,6 +31,7 @@ export const allNavItems = [
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
+  { href: '/events', label: 'Events', icon: CalendarCheck2Icon }, // Added Events
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
@@ -47,10 +49,10 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
 
   return (
     <div className="flex flex-col h-full bg-card text-card-foreground">
-      <SheetHeader className="border-b"> {/* Use SheetHeader for proper structure */}
+      <SheetHeader className="border-b"> 
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-primary px-4 h-14" onClick={onLinkClick}>
           <Share2Icon className="h-6 w-6" />
-          <SheetTitle className="font-semibold text-lg text-primary">CodeSphere</SheetTitle> {/* Use SheetTitle for accessibility */}
+          <SheetTitle className="font-semibold text-lg text-primary">CodeSphere</SheetTitle> 
         </Link>
       </SheetHeader>
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
@@ -76,3 +78,5 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
     </div>
   );
 }
+
+    
