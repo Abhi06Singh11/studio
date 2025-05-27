@@ -21,6 +21,7 @@ import type { ChallengesWorkspaceView } from "@/app/challenges/page";
 interface ChallengesSidebarProps {
   activeView: ChallengesWorkspaceView;
   setActiveView: (view: ChallengesWorkspaceView) => void;
+  returnToPath?: string; 
 }
 
 const menuItems = [
@@ -30,14 +31,15 @@ const menuItems = [
   { id: "saved-challenges", label: "Saved Challenges", icon: BookmarkIcon },
 ];
 
-export default function ChallengesSidebar({ activeView, setActiveView }: ChallengesSidebarProps) {
+export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/" }: ChallengesSidebarProps) {
   return (
     <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
       <div className="p-3 border-b">
         <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
-          <Link href="/">
+          <Link href={returnToPath}>
             <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
-            Back to Feed
+            Back to Feed 
+            {/* Text "Back to Feed" remains, but link is dynamic */}
           </Link>
         </Button>
       </div>

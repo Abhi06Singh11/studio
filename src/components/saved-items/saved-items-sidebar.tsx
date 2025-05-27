@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 const sidebarNavItems = [
   { href: "/jobs?tab=posted", label: "Posted Jobs", icon: BriefcaseIcon, category: "Manage" },
   { href: "/jobs?tab=myjobs", label: "My Applied Jobs", icon: BriefcaseIcon, category: "Manage" },
-  { href: "/challenges?tab=learning", label: "My Learning", icon: BookOpenIcon, category: "Manage" },
+  { href: "/challenges?view=my-submissions&returnTo=/saved-items", label: "My Learning", icon: BookOpenIcon, category: "Manage" },
   { href: "/saved-items", label: "Saved Items", icon: BookmarkIcon, category: "My Items" },
   { href: "/profiles/edit", label: "Profile Settings", icon: UserCogIcon, category: "Settings" },
   { href: "#", label: "Account Settings", icon: SettingsIcon, category: "Settings" },
