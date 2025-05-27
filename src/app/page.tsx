@@ -1,19 +1,21 @@
 
-"use client"; 
+"use client";
 
-import * as React from "react"; 
-import Link from "next/link"; 
+import * as React from "react";
+import Link from "next/link";
+import { useRouter } from 'next/navigation'; // Added based on error context
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon, HashIcon } from 'lucide-react';
-import CreatePostModal from "@/components/post/create-post-modal"; 
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide-react'; // Added SearchIcon
+import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-// FooterContent is removed as it's replaced by AppFooter in ClientRoot
+import { Input } from "@/components/ui/input"; // Added Input for search
 
-const feedItems = [
+// Renamed from feedItems to initialFeedItems
+const initialFeedItems = [
   {
     id: '1',
     userName: 'Alice Wonderland',
@@ -54,18 +56,27 @@ const feedItems = [
 ];
 
 const currentUser = {
-  name: "Dr. Elara Vance", 
-  avatarUrl: "https://placehold.co/100x100.png?p=1", 
+  name: "Dr. Elara Vance",
+  avatarUrl: "https://placehold.co/100x100.png?p=1",
   avatarAiHint: "scientist woman"
 };
 
 export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
+  const router = useRouter(); // Assuming this might be used elsewhere or was part of the actual code
+  const [feedItems, setFeedItems] = React.useState(initialFeedItems); // State for feed items
+  const [searchTerm, setSearchTerm] = React.useState(""); // State for search term
+
+  // Filtering logic based on the error context
+  const filteredFeedItems = (feedItems || []).filter(item => // Added guard for feedItems
+    item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.userName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         <div className="hidden lg:block lg:col-span-3">
           <ActivityFeedSidebar />
         </div>
@@ -102,6 +113,18 @@ export default function ActivityFeedPage() {
             </CardContent>
           </Card>
 
+          {/* Search Bar for Feed */}
+          <div className="relative">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search feed by content or user..."
+              className="pl-10 w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
           <CreatePostModal
             isOpen={isCreatePostModalOpen}
             onOpenChange={setIsCreatePostModalOpen}
@@ -109,9 +132,16 @@ export default function ActivityFeedPage() {
           />
 
           <div className="space-y-6">
-            {feedItems.map((item) => (
+            {filteredFeedItems.map((item) => (
               <ActivityFeedItem key={item.id} {...item} />
             ))}
+             {filteredFeedItems.length === 0 && searchTerm && (
+              <Card>
+                <CardContent className="p-6 text-center text-muted-foreground">
+                  No posts found matching your search term.
+                </CardContent>
+              </Card>
+            )}
           </div>
         </main>
 
@@ -121,7 +151,7 @@ export default function ActivityFeedPage() {
 
         <div className="lg:hidden col-span-1 mt-8">
           <div className="space-y-6">
-            <ActivityFeedSidebar /> 
+            <ActivityFeedSidebar />
             <NewsletterSidebar />
           </div>
         </div>
