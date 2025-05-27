@@ -21,19 +21,21 @@ import {
   LayoutDashboardIcon,
   SettingsIcon,
   Edit3Icon,
-  CalendarCheck2Icon, // Added for Events
+  CalendarCheck2Icon,
+  MailCheckIcon, // Added for Newsletters
 } from 'lucide-react';
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
+  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
-  { href: '/events', label: 'Events', icon: CalendarCheck2Icon }, // Added Events
+  { href: '/events', label: 'Events', icon: CalendarCheck2Icon },
+  { href: '/newsletters', label: 'Newsletters', icon: MailCheckIcon }, // Added Newsletters
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
-  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
 ];
 
@@ -64,11 +66,11 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
             className={cn(
               buttonVariants({ variant: 'ghost' }),
               "w-full justify-start gap-x-3 text-sm h-10 px-3",
-              (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
+              (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
                 ? "bg-muted text-primary font-medium"
                 : "hover:bg-muted/50"
             )}
-            aria-current={ (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined }
+            aria-current={ (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined }
           >
             <item.icon className="h-5 w-5 text-muted-foreground" />
             {item.label}

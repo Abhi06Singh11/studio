@@ -16,7 +16,8 @@ import {
   ExternalLinkIcon, 
   BarChart3Icon, 
   StarIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  MailCheckIcon // Ensure MailCheckIcon is imported if used for Newsletters
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +32,8 @@ const currentUserProfile = {
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
   { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' },
-  { id: 'newsletters', label: 'Newsletters', icon: MailIcon, href: '#' },
-  { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '/events' }, // Updated href
+  { id: 'newsletters', label: 'Newsletters', icon: MailCheckIcon, href: '/newsletters' }, // Updated href
+  { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '/events' },
 ];
 
 export default function ActivityFeedSidebar() {

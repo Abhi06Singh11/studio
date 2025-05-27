@@ -49,7 +49,8 @@ import {
   LayoutDashboardIcon,
   PanelLeft,
   BellIcon,
-  CalendarCheck2Icon, // Added for Events
+  CalendarCheck2Icon,
+  MailCheckIcon, // Added for Newsletters
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -92,9 +93,9 @@ export default function AppHeader() {
                   href={item.href}
                   className={cn(
                     "px-2.5 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
-                    (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) && "bg-primary/10 text-primary font-semibold"
+                    (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) && "bg-primary/10 text-primary font-semibold"
                   )}
-                  aria-current={(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)) ? "page" : undefined}
+                  aria-current={(pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined}
                 >
                    <item.icon className="h-5 w-5 md:hidden" /> {/* This icon might not be visible with text also present */}
                    <span className="hidden md:inline">{item.label}</span>
