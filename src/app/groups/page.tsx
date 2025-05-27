@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import GroupCard from "@/components/groups/group-card";
 import { PlusCircleIcon, UsersIcon, SearchIcon } from "lucide-react";
+import { Input } from "@/components/ui/input"; // Added import
 
 const yourGroupsData = [
   { id: "grp1", name: "Cat Lovers Anonymous", memberCount: 5, imageUrl: "https://placehold.co/40x40.png?text=CLA", dataAiHint: "cat icon", actionText: "View" },
