@@ -13,7 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label"; 
 import { toast } from "@/hooks/use-toast";
 import { StarIcon, CreditCardIcon, LockIcon, ArrowLeftIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -83,13 +83,19 @@ export default function SubscriptionFormPage() {
               
               <Separator />
 
-              <FormField control={form.control} name="plan" render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel className="text-base font-medium">Choose Your Plan</FormLabel>
-                  <FormControl>
-                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <FormItem className="flex-1">
-                        <Label htmlFor="plan-trial" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
+              <FormField
+                control={form.control}
+                name="plan"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-base font-medium">Choose Your Plan</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value} // Changed from defaultValue to value
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                      >
+                        <Label htmlFor="plan-trial" className="flex-1 block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
                             <RadioGroupItem value="trial" id="plan-trial" />
                             <div className="text-sm">
@@ -98,9 +104,7 @@ export default function SubscriptionFormPage() {
                             </div>
                           </div>
                         </Label>
-                      </FormItem>
-                      <FormItem className="flex-1">
-                         <Label htmlFor="plan-monthly" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
+                        <Label htmlFor="plan-monthly" className="flex-1 block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
                             <RadioGroupItem value="monthly" id="plan-monthly" />
                             <div className="text-sm">
@@ -109,9 +113,7 @@ export default function SubscriptionFormPage() {
                             </div>
                           </div>
                         </Label>
-                      </FormItem>
-                      <FormItem className="flex-1">
-                        <Label htmlFor="plan-yearly" className="block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
+                        <Label htmlFor="plan-yearly" className="flex-1 block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
                           <div className="flex items-center space-x-3">
                             <RadioGroupItem value="yearly" id="plan-yearly" />
                              <div className="text-sm">
@@ -120,12 +122,12 @@ export default function SubscriptionFormPage() {
                             </div>
                           </div>
                         </Label>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {watchedPlan !== "trial" && (
                 <>
@@ -167,3 +169,4 @@ export default function SubscriptionFormPage() {
   );
 }
 
+    
