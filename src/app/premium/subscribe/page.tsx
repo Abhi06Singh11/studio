@@ -24,7 +24,6 @@ const subscriptionFormSchema = z.object({
   plan: z.enum(["trial", "monthly", "yearly"], {
     required_error: "Please select a plan.",
   }),
-  // Conceptual payment fields - not actually processed
   cardNumber: z.string().optional(),
   expiryDate: z.string().optional(),
   cvc: z.string().optional(),
@@ -53,7 +52,6 @@ export default function SubscriptionFormPage() {
   const watchedPlan = form.watch("plan");
 
   function onSubmit(data: SubscriptionFormValues) {
-    // Simulate successful subscription
     console.log("Subscription Data (Conceptual):", data);
     toast({
       title: "Subscription Started!",
@@ -92,7 +90,7 @@ export default function SubscriptionFormPage() {
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        value={field.value} // Changed from defaultValue to value
+                        value={field.value}
                         className="grid grid-cols-1 md:grid-cols-3 gap-4"
                       >
                         <Label htmlFor="plan-trial" className="flex-1 block cursor-pointer rounded-lg border bg-card p-4 hover:bg-muted has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
@@ -168,5 +166,3 @@ export default function SubscriptionFormPage() {
     </div>
   );
 }
-
-    
