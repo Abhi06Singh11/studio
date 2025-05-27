@@ -28,14 +28,14 @@ import {
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
-  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
   { href: '/projects', label: 'Projects', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
-  { href: '/events', label: 'Events', icon: CalendarCheck2Icon },
-  { href: '/newsletters', label: 'Newsletters', icon: MailCheckIcon }, // Added Newsletters
+  { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
+  { href: '/events', label: 'Events', icon: CalendarCheck2Icon },
+  { href: '/newsletters', label: 'Newsletters', icon: MailCheckIcon }, 
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboardIcon },
 ];
 
