@@ -33,7 +33,7 @@ export default function NewsletterSidebar() {
             </Link>
           ))}
           <Button variant="outline" className="w-full mt-3 text-sm" asChild>
-            <Link href="#">
+            <Link href="/newsletters">
               View All Newsletters <ArrowRightIcon className="ml-2 h-4 w-4" />
             </Link>
           </Button>
