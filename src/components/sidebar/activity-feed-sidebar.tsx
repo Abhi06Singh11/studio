@@ -30,7 +30,7 @@ const currentUserProfile = {
 
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
-  { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '#' },
+  { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' }, // Updated href
   { id: 'newsletters', label: 'Newsletters', icon: MailIcon, href: '#' },
   { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '#' },
 ];
