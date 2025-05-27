@@ -14,11 +14,6 @@ const sampleUserEvents = [
   { id: "ue2", title: "Team Sync: Project Alpha", attendees: 5, date: "June 12, 2025" },
 ];
 
-const samplePremiumEvents = [
-  { id: "pe1", title: "Exclusive: Future of Web3 Summit", organizer: "Blockchain Innovators", date: "July 5, 2025", time: "10:00 AM", location: "Virtual", attendeeCount: 500, imageUrl: "https://placehold.co/400x200.png?text=Web3", imageAiHint: "blockchain network" },
-  { id: "pe2", title: "Masterclass: Scaling SaaS Products", organizer: "Growth Gurus", date: "July 15, 2025", time: "2:00 PM", location: "Online", attendeeCount: 350, imageUrl: "https://placehold.co/400x200.png?text=SaaS", imageAiHint: "cloud software" },
-];
-
 const sampleRecommendedEvents = [
   { id: "re1", title: "AI Tools for Business Productivity", organizer: "Tech Solutions Inc.", date: "June 20, 2025", time: "9:00 AM", location: "Online Conference", attendeeCount: 120, imageUrl: "https://placehold.co/400x200.png?text=AI+Biz", imageAiHint: "business meeting" },
   { id: "re2", title: "Tech Talks Live: The Future of Development", organizer: "CodeSphere Community", date: "June 22, 2025", time: "3:00 PM", location: "Virtual Meetup", attendeeCount: 85, imageUrl: "https://placehold.co/400x200.png?text=TechTalk", imageAiHint: "presentation stage" },
@@ -79,29 +74,6 @@ export default function EventsPage() {
           )}
         </CardContent>
       </Card>
-
-      <Card className="bg-primary/5 border-primary/20">
-        <CardHeader>
-          <CardTitle className="text-xl flex items-center"><StarIcon className="mr-2 h-5 w-5 text-amber-500 fill-amber-400" />Exclusive Premium Events</CardTitle>
-          <CardDescription>Unlock access to top-tier events with CodeSphere Premium.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {samplePremiumEvents.map(event => (
-             <EventCard
-              key={event.id}
-              title={event.title}
-              organizer={event.organizer}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-              attendeeCount={event.attendeeCount}
-              imageUrl={event.imageUrl}
-              imageAiHint={event.imageAiHint}
-              isPremium
-            />
-          ))}
-        </CardContent>
-      </Card>
       
       <div>
         <h2 className="text-2xl font-semibold tracking-tight mb-4">Recommended for You</h2>
@@ -136,5 +108,3 @@ export default function EventsPage() {
     </div>
   );
 }
-
-    

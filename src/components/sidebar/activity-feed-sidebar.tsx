@@ -76,20 +76,6 @@ export default function ActivityFeedSidebar() {
         </CardFooter>
       </Card>
 
-      {/* Career Goals / Premium Section */}
-      <Card className="shadow-lg rounded-xl">
-        <CardContent className="p-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            Achieve your career goals faster with CodeSphere Premium.
-          </p>
-          <Button variant="outline" size="sm" className="mt-2 w-full hover:bg-amber-400/10 hover:border-amber-500 hover:text-amber-600" asChild>
-            <Link href="/premium">
-              <StarIcon className="mr-2 h-4 w-4 text-amber-500" /> Try Premium for Free
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-      
       {/* Quick Access Links Section */}
       <Card className="shadow-lg rounded-xl">
         <CardHeader className="pb-2 pt-4">
@@ -114,4 +100,3 @@ export default function ActivityFeedSidebar() {
     </aside>
   );
 }
-

@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CalendarDaysIcon, ClockIcon, MapPinIcon, UsersIcon, ArrowRightIcon, StarIcon } from 'lucide-react';
+import { CalendarDaysIcon, ClockIcon, MapPinIcon, UsersIcon, ArrowRightIcon } from 'lucide-react';
 
 interface EventCardProps {
   title: string;
@@ -15,7 +15,6 @@ interface EventCardProps {
   attendeeCount: number;
   imageUrl?: string;
   imageAiHint?: string;
-  isPremium?: boolean;
 }
 
 export default function EventCard({
@@ -27,26 +26,13 @@ export default function EventCard({
   attendeeCount,
   imageUrl,
   imageAiHint,
-  isPremium = false,
 }: EventCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg rounded-xl hover:shadow-xl transition-shadow duration-300 h-full">
       {imageUrl && (
         <div className="relative h-40 w-full bg-muted">
           <Image src={imageUrl} alt={title} layout="fill" objectFit="cover" data-ai-hint={imageAiHint || "event image"} />
-          {isPremium && (
-            <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full flex items-center shadow-md">
-              <StarIcon className="h-3 w-3 mr-1 fill-white"/> Premium
-            </div>
-          )}
         </div>
-      )}
-      {!imageUrl && isPremium && (
-         <div className="p-2 bg-amber-100 border-b border-amber-300 text-center">
-            <p className="text-xs font-semibold text-amber-700 flex items-center justify-center">
-                <StarIcon className="h-4 w-4 mr-1.5 fill-amber-500 text-amber-500"/> Premium Event
-            </p>
-         </div>
       )}
       <CardHeader className="pb-2 pt-4">
         <CardTitle className="text-base font-semibold leading-snug line-clamp-2">{title}</CardTitle>
@@ -66,5 +52,3 @@ export default function EventCard({
     </Card>
   );
 }
-
-    
