@@ -11,13 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import { 
   BookmarkIcon, 
   Users2Icon, 
-  MailIcon, 
   CalendarCheck2Icon, 
   ExternalLinkIcon, 
-  BarChart3Icon, 
   StarIcon,
-  ChevronRightIcon,
-  MailCheckIcon // Ensure MailCheckIcon is imported if used for Newsletters
+  MailCheckIcon 
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +29,7 @@ const currentUserProfile = {
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
   { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' },
-  { id: 'newsletters', label: 'Newsletters', icon: MailCheckIcon, href: '/newsletters' }, // Updated href
+  { id: 'newsletters', label: 'Newsletters', icon: MailCheckIcon, href: '/newsletters' }, 
   { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '/events' },
 ];
 
@@ -85,8 +82,10 @@ export default function ActivityFeedSidebar() {
           <p className="text-sm text-muted-foreground">
             Achieve your career goals faster with CodeSphere Premium.
           </p>
-          <Button variant="outline" size="sm" className="mt-2 w-full hover:bg-amber-400/10 hover:border-amber-500 hover:text-amber-600">
-            <StarIcon className="mr-2 h-4 w-4 text-amber-500" /> Try Premium for Free
+          <Button variant="outline" size="sm" className="mt-2 w-full hover:bg-amber-400/10 hover:border-amber-500 hover:text-amber-600" asChild>
+            <Link href="/premium">
+              <StarIcon className="mr-2 h-4 w-4 text-amber-500" /> Try Premium for Free
+            </Link>
           </Button>
         </CardContent>
       </Card>
@@ -116,4 +115,3 @@ export default function ActivityFeedSidebar() {
   );
 }
 
-    
