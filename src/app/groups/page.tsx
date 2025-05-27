@@ -7,8 +7,8 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import GroupCard from "@/components/groups/group-card";
-import { PlusCircleIcon, UsersIcon, SearchIcon } from "lucide-react";
-import { Input } from "@/components/ui/input"; // Added import
+import { PlusCircleIcon, UsersIcon, SearchIcon, ArrowLeftIcon } from "lucide-react"; // Added ArrowLeftIcon
+import { Input } from "@/components/ui/input";
 
 const yourGroupsData = [
   { id: "grp1", name: "Cat Lovers Anonymous", memberCount: 5, imageUrl: "https://placehold.co/40x40.png?text=CLA", dataAiHint: "cat icon", actionText: "View" },
@@ -36,6 +36,12 @@ export default function GroupsPage() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
       <div className="mb-6">
+        <Button variant="outline" size="sm" asChild className="mb-4">
+          <Link href="/">
+            <ArrowLeftIcon className="mr-2 h-4 w-4" />
+            Back to Feed
+          </Link>
+        </Button>
         <h1 className="text-3xl font-bold tracking-tight flex items-center">
           <UsersIcon className="mr-3 h-8 w-8 text-primary" />
           Groups
