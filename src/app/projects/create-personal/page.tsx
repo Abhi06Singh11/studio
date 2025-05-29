@@ -7,18 +7,17 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Link from "next/link";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { FolderPlusIcon, ArrowLeftIcon, UploadCloudIcon, LayoutGridIcon, UsersIcon, LockIcon, GlobeIcon, TagIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
 
 const projectPrivacyOptions = ["Public", "Team Only", "Private"] as const;
 
@@ -62,6 +61,8 @@ export default function CreatePersonalProjectPage() {
       description: `Project "${data.name}" has been set up.`,
     });
     form.reset();
+    // Potentially navigate to the new project or back to the projects list
+    // router.push('/projects'); 
   }
 
   return (
@@ -164,24 +165,30 @@ export default function CreatePersonalProjectPage() {
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
-                            <FormControl><RadioGroupItem value="Public" /></FormControl>
-                            <FormLabel className="font-normal flex items-center"><GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public</FormLabel>
-                            <FormDescription className="ml-auto text-xs !mt-0">Visible to everyone on CodeSphere.</FormDescription>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
-                            <FormControl><RadioGroupItem value="Team Only" /></FormControl>
-                            <FormLabel className="font-normal flex items-center"><UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Team Only</FormLabel>
-                            <FormDescription className="ml-auto text-xs !mt-0">Only visible to invited team members.</FormDescription>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5">
-                            <FormControl><RadioGroupItem value="Private" /></FormControl>
-                            <FormLabel className="font-normal flex items-center"><LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private</FormLabel>
-                            <FormDescription className="ml-auto text-xs !mt-0">Only visible to you (the creator).</FormDescription>
-                          </FormItem>
+                          <Label htmlFor="privacy-public" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                            <RadioGroupItem value="Public" id="privacy-public" />
+                            <div className="flex-1 flex justify-between items-center">
+                                <span className="font-normal flex items-center"><GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public</span>
+                                <span className="text-xs text-muted-foreground !mt-0">Visible to everyone on CodeSphere.</span>
+                            </div>
+                          </Label>
+                          <Label htmlFor="privacy-team" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                            <RadioGroupItem value="Team Only" id="privacy-team" />
+                             <div className="flex-1 flex justify-between items-center">
+                                <span className="font-normal flex items-center"><UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Team Only</span>
+                                <span className="text-xs text-muted-foreground !mt-0">Only visible to invited team members.</span>
+                            </div>
+                          </Label>
+                          <Label htmlFor="privacy-private" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                            <RadioGroupItem value="Private" id="privacy-private" />
+                            <div className="flex-1 flex justify-between items-center">
+                                <span className="font-normal flex items-center"><LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private</span>
+                                <span className="text-xs text-muted-foreground !mt-0">Only visible to you (the creator).</span>
+                            </div>
+                          </Label>
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />

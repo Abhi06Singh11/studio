@@ -20,6 +20,7 @@ import {
   Share2Icon
 } from "lucide-react";
 import type { JobsProjectsWorkspaceView } from "@/app/jobs/page";
+import { useRouter } from "next/navigation";
 
 interface JobsProjectsSidebarProps {
   activeView: JobsProjectsWorkspaceView;
@@ -42,6 +43,7 @@ const savedPostsMenuItems = [
 ];
 
 export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsProjectsSidebarProps) {
+  const router = useRouter();
   const [isJobsExpanded, setIsJobsExpanded] = React.useState(true);
   const [isProjectsExpanded, setIsProjectsExpanded] = React.useState(true);
   const [isSavedPostsExpanded, setIsSavedPostsExpanded] = React.useState(true);
@@ -49,11 +51,9 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
   return (
     <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
       <div className="p-3 border-b">
-        <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
-          <Link href="/">
-            <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
-            Back
-          </Link>
+        <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => router.push('/')}>
+          <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
+          Back
         </Button>
       </div>
 
@@ -178,3 +178,4 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
     </aside>
   );
 }
+
