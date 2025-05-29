@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UsersIcon, EyeIcon, UserPlusIcon, LogOutIcon } from "lucide-react";
+import Link from 'next/link'; // Import Link
 
 interface GroupCardProps {
   name: string;
@@ -14,6 +15,7 @@ interface GroupCardProps {
   dataAiHint?: string;
   actionText: string;
   onActionClick: () => void;
+  actionHref: string; // Added for navigation
   isSuggestion?: boolean;
 }
 
@@ -23,7 +25,8 @@ export default function GroupCard({
   imageUrl,
   dataAiHint,
   actionText,
-  onActionClick,
+  onActionClick, // This might become redundant if actionHref is always used for navigation
+  actionHref,
   isSuggestion = false,
 }: GroupCardProps) {
   const ActionIcon = isSuggestion ? UserPlusIcon : actionText === "Leave" ? LogOutIcon : EyeIcon;
@@ -50,11 +53,21 @@ export default function GroupCard({
       <Button 
         variant={isSuggestion ? "default" : "outline"} 
         size="sm" 
-        onClick={onActionClick}
+        onClick={onActionClick} // Keep for conceptual actions like "Join"
+        asChild={actionHref && actionText !== "Join" && actionText !== "Leave"} // Use asChild if it's a navigation link
         className="w-full sm:w-auto mt-2 sm:mt-0 text-xs sm:text-sm"
       >
-        <ActionIcon className="mr-1.5 h-3.5 w-3.5" />
-        {actionText}
+        {actionHref && actionText !== "Join" && actionText !== "Leave" ? (
+          <Link href={actionHref}>
+            <ActionIcon className="mr-1.5 h-3.5 w-3.5" />
+            {actionText}
+          </Link>
+        ) : (
+          <>
+            <ActionIcon className="mr-1.5 h-3.5 w-3.5" />
+            {actionText}
+          </>
+        )}
       </Button>
     </Card>
   );

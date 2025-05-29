@@ -10,8 +10,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MoreHorizontalIcon, UsersIcon, LineChartIcon, UserPlusIcon, FileTextIcon, MessageSquareIcon, BriefcaseIcon, ShieldIcon, EyeIcon, UserXIcon, BanIcon, CheckCircleIcon, XCircleIcon, SettingsIcon, MegaphoneIcon } from "lucide-react";
+import Link from "next/link";
 
-// Sample data - replace with actual data fetching in a real app
 const sampleAdminUsers = [
   { id: "user1", name: "Dr. Elara Vance", email: "elara.vance@example.com", role: "Developer", joinedDate: "2023-01-15", status: "Active" },
   { id: "user2", name: "Marcus Chen", email: "marcus.chen@example.com", role: "Entrepreneur", joinedDate: "2023-02-20", status: "Active" },
@@ -38,22 +38,19 @@ export default function AdminPage() {
 
   const handleSuspendUser = (userId: string) => {
     setUsers(users.map(user => user.id === userId ? { ...user, status: user.status === "Suspended" ? "Active" : "Suspended" } : user));
-    // In real app, call API to suspend user
     console.log(`User ${userId} status toggled.`);
   };
 
   const handleBanUser = (userId: string) => {
     setUsers(users.map(user => user.id === userId ? { ...user, status: "Banned" } : user));
-    // In real app, call API to ban user
     console.log(`User ${userId} banned.`);
   };
 
   const handleBroadcastAnnouncement = () => {
     if (!announcementText.trim()) {
-      alert("Announcement text cannot be empty."); // Simple validation
+      alert("Announcement text cannot be empty.");
       return;
     }
-    // In a real app, this would call an API
     console.log("Broadcasting announcement:", { text: announcementText, target: announcementTarget || "All Users" });
     alert(`Announcement broadcasted to ${announcementTarget || "All Users"}:\n${announcementText}`);
     setAnnouncementText("");
@@ -68,10 +65,13 @@ export default function AdminPage() {
           <ShieldIcon className="mr-3 h-8 w-8 text-primary" />
           Admin Panel
         </h1>
-        <Button variant="outline"><SettingsIcon className="mr-2 h-4 w-4"/>Platform Settings</Button>
+        <Button variant="outline" asChild>
+            <Link href="#">
+                <SettingsIcon className="mr-2 h-4 w-4"/>Platform Settings
+            </Link>
+        </Button>
       </div>
 
-      {/* Platform Analytics Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center"><LineChartIcon className="mr-2 h-5 w-5 text-primary" />Platform Analytics</CardTitle>
@@ -90,7 +90,6 @@ export default function AdminPage() {
         </CardContent>
       </Card>
 
-      {/* Broadcast Announcements Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center"><MegaphoneIcon className="mr-2 h-5 w-5 text-primary" />Broadcast Announcements</CardTitle>
@@ -118,14 +117,13 @@ export default function AdminPage() {
             />
           </div>
         </CardContent>
-        <CardContent className="pt-0"> {/* CardFooter could also be used, using CardContent to keep button aligned with inputs */}
+        <CardContent className="pt-0">
              <Button onClick={handleBroadcastAnnouncement} className="w-full sm:w-auto">
                 <MegaphoneIcon className="mr-2 h-4 w-4" /> Broadcast Announcement
             </Button>
         </CardContent>
       </Card>
 
-      {/* User Moderation Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center"><UsersIcon className="mr-2 h-5 w-5 text-primary" />User Moderation</CardTitle>
@@ -168,8 +166,10 @@ export default function AdminPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onSelect={() => console.log("View profile for", user.id)}>
-                          <EyeIcon className="mr-2 h-4 w-4" /> View Profile
+                        <DropdownMenuItem onSelect={() => alert("View profile for " + user.name)} asChild>
+                            <Link href="/profiles">
+                                <EyeIcon className="mr-2 h-4 w-4" /> View Profile
+                            </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onSelect={() => handleSuspendUser(user.id)} disabled={user.status === "Banned"}>
                           {user.status === "Suspended" ? <CheckCircleIcon className="mr-2 h-4 w-4" /> : <UserXIcon className="mr-2 h-4 w-4" /> }
@@ -213,5 +213,3 @@ function StatCard({ icon: Icon, title, value, description, variant = "default" }
     </Card>
   );
 }
-
-    

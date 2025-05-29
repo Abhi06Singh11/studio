@@ -7,8 +7,10 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import GroupCard from "@/components/groups/group-card";
-import { PlusCircleIcon, UsersIcon, SearchIcon, ArrowLeftIcon } from "lucide-react"; // Added ArrowLeftIcon
+import CreateGroupModal from "@/components/groups/create-group-modal"; // New import
+import { PlusCircleIcon, UsersIcon, SearchIcon, ArrowLeftIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 const yourGroupsData = [
   { id: "grp1", name: "Cat Lovers Anonymous", memberCount: 5, imageUrl: "https://placehold.co/40x40.png?text=CLA", dataAiHint: "cat icon", actionText: "View" },
@@ -23,9 +25,10 @@ const suggestedGroupsData = [
 ];
 
 export default function GroupsPage() {
+  const router = useRouter(); // Initialize useRouter
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = React.useState(false); // State for modal
 
-  // Conceptual filtering - in a real app, this would be backend-driven
   const filteredYourGroups = yourGroupsData.filter(group =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -33,14 +36,18 @@ export default function GroupsPage() {
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleGroupCreated = (groupData: any) => {
+    // Conceptual: Add to yourGroupsData or refresh list
+    console.log("New group created (conceptually):", groupData);
+  };
+
   return (
+    <>
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
       <div className="mb-6">
-        <Button variant="outline" size="sm" asChild className="mb-4">
-          <Link href="/">
-            <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back
-          </Link>
+        <Button variant="outline" size="sm" onClick={() => router.push('/')} className="mb-4">
+          <ArrowLeftIcon className="mr-2 h-4 w-4" />
+          Back
         </Button>
         <h1 className="text-3xl font-bold tracking-tight flex items-center">
           <UsersIcon className="mr-3 h-8 w-8 text-primary" />
@@ -61,12 +68,11 @@ export default function GroupsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Panel: Your Groups */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="shadow-lg rounded-xl">
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle className="text-xl font-semibold">Your Groups</CardTitle>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => setIsCreateGroupModalOpen(true)}>
                 <PlusCircleIcon className="mr-2 h-4 w-4" />
                 Create Group
               </Button>
@@ -81,7 +87,8 @@ export default function GroupsPage() {
                     imageUrl={group.imageUrl}
                     dataAiHint={group.dataAiHint}
                     actionText={group.actionText}
-                    onActionClick={() => console.log("Action on:", group.name)}
+                    onActionClick={() => router.push("#")} // Conceptual link to a group page
+                    actionHref="#" // Conceptual link
                   />
                 ))
               ) : (
@@ -93,7 +100,6 @@ export default function GroupsPage() {
           </Card>
         </div>
 
-        {/* Right Panel: Discover Groups */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="shadow-lg rounded-xl">
             <CardHeader>
@@ -110,7 +116,8 @@ export default function GroupsPage() {
                     imageUrl={group.imageUrl}
                     dataAiHint={group.dataAiHint}
                     actionText={group.actionText}
-                    onActionClick={() => console.log("Join:", group.name)}
+                    onActionClick={() => console.log("Join:", group.name)} // Conceptual join
+                    actionHref="#" // Conceptual
                     isSuggestion
                   />
                 ))
@@ -130,5 +137,11 @@ export default function GroupsPage() {
         </Link>
       </div>
     </div>
+    <CreateGroupModal
+        isOpen={isCreateGroupModalOpen}
+        onOpenChange={setIsCreateGroupModalOpen}
+        onGroupCreated={handleGroupCreated}
+    />
+    </>
   );
 }

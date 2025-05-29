@@ -7,7 +7,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import EventCard from "@/components/events/event-card";
+import CreateEventModal from "@/components/events/create-event-modal"; // New import
 import { ArrowLeftIcon, PlusCircleIcon, CalendarCheck2Icon, StarIcon, UsersIcon, MapPinIcon, ClockIcon } from "lucide-react";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 const sampleUserEvents = [
   { id: "ue1", title: "My Workshop on AI Tools", attendees: 12, date: "June 10, 2025" },
@@ -22,89 +24,102 @@ const sampleRecommendedEvents = [
 ];
 
 export default function EventsPage() {
+  const router = useRouter(); // Initialize useRouter
   const [visibleRecommendedCount, setVisibleRecommendedCount] = React.useState(4);
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] = React.useState(false); // State for modal
 
   const handleShowMore = () => {
-    // Conceptual: In a real app, fetch more or show more from a larger list
     setVisibleRecommendedCount(prev => prev + 4); 
   };
 
-  return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-center gap-3">
-            <CalendarCheck2Icon className="h-8 w-8 text-primary" />
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Events</h1>
-                <p className="text-muted-foreground">Discover and create professional events.</p>
-            </div>
-        </div>
-        <div className="flex gap-2">
-            <Button variant="outline" asChild>
-                <Link href="/">
-                    <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
-                </Link>
-            </Button>
-            <Button>
-                <PlusCircleIcon className="mr-2 h-4 w-4" /> Create Event
-            </Button>
-        </div>
-      </div>
+  const handleEventCreated = (eventData: any) => {
+    // Conceptual: Add to sampleUserEvents or refresh list
+    console.log("New event created (conceptually):", eventData);
+    // Potentially add to sampleUserEvents or trigger a refetch
+  };
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">Your Upcoming Events</CardTitle>
-          <CardDescription>Quick overview of events you're hosting or attending.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {sampleUserEvents.length > 0 ? (
-            <ul className="space-y-3">
-              {sampleUserEvents.map(event => (
-                <li key={event.id} className="flex justify-between items-center p-3 bg-muted/50 rounded-md hover:bg-muted/80">
-                  <div>
-                    <p className="font-medium text-sm">{event.title}</p>
-                    <p className="text-xs text-muted-foreground">{event.date} &bull; {event.attendees} attendees</p>
-                  </div>
-                  <Button variant="ghost" size="sm">Manage</Button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-muted-foreground">You have no upcoming events.</p>
-          )}
-        </CardContent>
-      </Card>
-      
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight mb-4">Recommended for You</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sampleRecommendedEvents.slice(0, visibleRecommendedCount).map(event => (
-            <EventCard
-              key={event.id}
-              title={event.title}
-              organizer={event.organizer}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-              attendeeCount={event.attendeeCount}
-              imageUrl={event.imageUrl}
-              imageAiHint={event.imageAiHint}
-            />
-          ))}
-        </div>
-        {visibleRecommendedCount < sampleRecommendedEvents.length && (
-          <div className="mt-6 text-center">
-            <Button variant="outline" onClick={handleShowMore}>Show More Events</Button>
+  return (
+    <>
+      <div className="space-y-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="flex items-center gap-3">
+              <CalendarCheck2Icon className="h-8 w-8 text-primary" />
+              <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Events</h1>
+                  <p className="text-muted-foreground">Discover and create professional events.</p>
+              </div>
           </div>
-        )}
-        {sampleRecommendedEvents.length === 0 && (
-            <Card className="col-span-full">
-                <CardContent className="p-6 text-center text-muted-foreground">
-                    No recommended events at this time. Explore or create new events!
-                </CardContent>
-            </Card>
-        )}
+          <div className="flex gap-2">
+              <Button variant="outline" onClick={() => router.push('/')}>
+                  <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
+              </Button>
+              <Button onClick={() => setIsCreateEventModalOpen(true)}>
+                  <PlusCircleIcon className="mr-2 h-4 w-4" /> Create Event
+              </Button>
+          </div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Your Upcoming Events</CardTitle>
+            <CardDescription>Quick overview of events you're hosting or attending.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {sampleUserEvents.length > 0 ? (
+              <ul className="space-y-3">
+                {sampleUserEvents.map(event => (
+                  <li key={event.id} className="flex justify-between items-center p-3 bg-muted/50 rounded-md hover:bg-muted/80">
+                    <div>
+                      <p className="font-medium text-sm">{event.title}</p>
+                      <p className="text-xs text-muted-foreground">{event.date} &bull; {event.attendees} attendees</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => alert(`Manage event: ${event.title}`)}>Manage</Button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-muted-foreground">You have no upcoming events.</p>
+            )}
+          </CardContent>
+        </Card>
+        
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight mb-4">Recommended for You</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sampleRecommendedEvents.slice(0, visibleRecommendedCount).map(event => (
+              <EventCard
+                key={event.id}
+                title={event.title}
+                organizer={event.organizer}
+                date={event.date}
+                time={event.time}
+                location={event.location}
+                attendeeCount={event.attendeeCount}
+                imageUrl={event.imageUrl}
+                imageAiHint={event.imageAiHint}
+                viewActionHref="#" // Conceptual link
+              />
+            ))}
+          </div>
+          {visibleRecommendedCount < sampleRecommendedEvents.length && (
+            <div className="mt-6 text-center">
+              <Button variant="outline" onClick={handleShowMore}>Show More Events</Button>
+            </div>
+          )}
+          {sampleRecommendedEvents.length === 0 && (
+              <Card className="col-span-full">
+                  <CardContent className="p-6 text-center text-muted-foreground">
+                      No recommended events at this time. Explore or create new events!
+                  </CardContent>
+              </Card>
+          )}
+        </div>
       </div>
-    </div>
+      <CreateEventModal
+        isOpen={isCreateEventModalOpen}
+        onOpenChange={setIsCreateEventModalOpen}
+        onEventCreated={handleEventCreated}
+      />
+    </>
   );
 }
