@@ -22,14 +22,14 @@ import {
   SettingsIcon,
   Edit3Icon,
   CalendarCheck2Icon,
-  MailCheckIcon, // Added for Newsletters
+  MailCheckIcon,
 } from 'lucide-react';
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon }, // Changed "Projects" to "Workplace"
+  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
@@ -67,7 +67,7 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
               buttonVariants({ variant: 'ghost' }),
               "w-full justify-start gap-x-3 text-sm h-10 px-3",
               (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
-                ? "bg-muted text-primary font-medium"
+                ? "bg-primary/10 text-primary font-semibold" // Updated active style
                 : "hover:bg-muted/50"
             )}
             aria-current={ (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined }
@@ -80,5 +80,4 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
     </div>
   );
 }
-
     
