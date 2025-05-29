@@ -12,7 +12,7 @@ import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide
 import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-import PremiumCtaSidebar from "@/components/sidebar/premium-cta-sidebar";
+// PremiumCtaSidebar import removed
 import { Input } from "@/components/ui/input"; 
 
 const initialFeedItems = [
@@ -77,12 +77,12 @@ export default function ActivityFeedPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
         {/* Left Sidebar - User Profile & Quick Access */}
-        <div className="hidden lg:block lg:col-span-3">
+        <div className="lg:col-span-3 space-y-6 order-1 lg:order-1">
           <ActivityFeedSidebar />
         </div>
 
         {/* Center Content - Activity Feed */}
-        <main className="col-span-1 lg:col-span-6 space-y-6">
+        <main className="lg:col-span-6 space-y-6 order-2 lg:order-2">
           {/* Create Post Box */}
           <Card className="shadow-lg rounded-xl">
             <CardContent className="p-4">
@@ -102,13 +102,13 @@ export default function ActivityFeedPage() {
                 </Button>
               </div>
               <div className="mt-3 flex justify-around pt-3 border-t">
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
                   <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
                   <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1">
+                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
                   <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
                 </Button>
               </div>
@@ -149,16 +149,16 @@ export default function ActivityFeedPage() {
         </main>
 
         {/* Right Sidebar - Newsletter & Premium CTA (Desktop) */}
-        <div className="hidden lg:block lg:col-span-3 space-y-6">
+        <div className="lg:col-span-3 space-y-6 order-3 lg:order-3">
           <NewsletterSidebar />
-          <PremiumCtaSidebar /> 
+          {/* PremiumCtaSidebar usage removed */}
         </div>
 
         {/* Sidebars for Mobile (Stacked) */}
-        <div className="lg:hidden col-span-1 mt-8 space-y-6">
+        <div className="lg:hidden col-span-1 mt-8 space-y-6 order-4">
           <ActivityFeedSidebar /> 
           <NewsletterSidebar />
-          <PremiumCtaSidebar /> 
+          {/* PremiumCtaSidebar usage removed */}
         </div>
       </div>
     </div>
