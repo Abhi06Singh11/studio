@@ -71,7 +71,7 @@ export default function CreatePersonalProjectPage() {
         <Button variant="outline" size="sm" asChild>
           <Link href="/projects">
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back to Project Workspaces
+            Back
           </Link>
         </Button>
       </div>

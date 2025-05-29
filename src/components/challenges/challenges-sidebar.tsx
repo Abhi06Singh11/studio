@@ -38,8 +38,7 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
         <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
           <Link href={returnToPath}>
             <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
-            Back to Feed 
-            {/* Text "Back to Feed" remains, but link is dynamic */}
+            Back
           </Link>
         </Button>
       </div>

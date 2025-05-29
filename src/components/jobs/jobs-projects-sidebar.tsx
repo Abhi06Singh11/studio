@@ -52,7 +52,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
         <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
           <Link href="/">
             <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
-            Back to Feed
+            Back
           </Link>
         </Button>
       </div>

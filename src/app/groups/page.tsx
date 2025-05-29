@@ -39,7 +39,7 @@ export default function GroupsPage() {
         <Button variant="outline" size="sm" asChild className="mb-4">
           <Link href="/">
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back to Feed
+            Back
           </Link>
         </Button>
         <h1 className="text-3xl font-bold tracking-tight flex items-center">

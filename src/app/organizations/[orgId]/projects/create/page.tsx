@@ -75,7 +75,7 @@ export default function CreateOrganizationProjectPage() {
         <Button variant="outline" size="sm" asChild>
           <Link href={`/organizations/${orgId}/projects`}>
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back to Projects
+            Back
           </Link>
         </Button>
       </div>

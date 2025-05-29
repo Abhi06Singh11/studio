@@ -42,7 +42,7 @@ export default function EventsPage() {
         <div className="flex gap-2">
             <Button variant="outline" asChild>
                 <Link href="/">
-                    <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back to Feed
+                    <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
                 </Link>
             </Button>
             <Button>

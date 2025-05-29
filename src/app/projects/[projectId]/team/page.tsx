@@ -1,3 +1,4 @@
+
 // src/app/projects/[projectId]/team/page.tsx
 "use client";
 
@@ -91,7 +92,7 @@ export default function ProjectTeamDetailsPage() {
                     The project you are looking for does not exist or could not be loaded.
                 </p>
                 <Button onClick={() => router.push('/projects')}>
-                    <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back to Project Workspace
+                    <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
                 </Button>
             </CardContent>
         </Card>
@@ -104,7 +105,7 @@ export default function ProjectTeamDetailsPage() {
       <div className="flex items-center justify-between">
         <Button variant="outline" size="sm" onClick={() => router.push('/projects')}>
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Back to Project Workspace
+          Back
         </Button>
       </div>
 
