@@ -24,7 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label"; // Added Label import
 import { toast } from "@/hooks/use-toast";
 
 // Sample data for user's organizations - in a real app, this would be fetched
@@ -149,16 +150,14 @@ export default function ModalCreateProjectInOrgForm({ onFormSubmit, onCancel }: 
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                   className="flex flex-col space-y-1"
                 >
                   {projectVisibilityOptions.map(option => (
-                     <FormItem key={option} className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value={option} />
-                        </FormControl>
-                        <FormLabel className="font-normal">{option}</FormLabel>
-                      </FormItem>
+                     <Label key={option} htmlFor={`visibility-${option.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center space-x-3 space-y-0 cursor-pointer p-2 rounded-md border border-transparent hover:border-muted data-[state=checked]:border-primary">
+                        <RadioGroupItem value={option} id={`visibility-${option.toLowerCase().replace(/\s+/g, '-')}`} />
+                        <span className="font-normal">{option}</span>
+                      </Label>
                   ))}
                 </RadioGroup>
               </FormControl>
