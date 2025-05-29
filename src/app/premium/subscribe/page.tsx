@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from "react";
 import { useRouter } from "next/navigation";
@@ -64,7 +65,6 @@ export default function SubscriptionFormPage() {
       title: "Subscription Initiated (Conceptual)",
       description: "Your subscription process has started.",
     });
-    // In a real app, navigate to confirmation page with plan details after successful submission
     router.push(`/premium/confirmation?plan=${data.plan}`);
   }
 
@@ -95,17 +95,17 @@ export default function SubscriptionFormPage() {
                   <FormLabel>Choose Your Plan</FormLabel>
                   <FormControl>
                     <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Label htmlFor="plan-trial" className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer flex-1">
+                      <Label htmlFor="plan-trial" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
                         <RadioGroupItem value="trial" id="plan-trial" className="sr-only" />
                         <h3 className="text-lg font-semibold">Free Trial</h3>
                         <p className="text-sm text-muted-foreground">7 Days Free</p>
                       </Label>
-                      <Label htmlFor="plan-monthly" className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer flex-1">
+                      <Label htmlFor="plan-monthly" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
                         <RadioGroupItem value="monthly" id="plan-monthly" className="sr-only" />
                         <h3 className="text-lg font-semibold">Monthly</h3>
                         <p className="text-sm text-muted-foreground">₹399/month</p>
                       </Label>
-                      <Label htmlFor="plan-yearly" className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer flex-1">
+                      <Label htmlFor="plan-yearly" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
                         <RadioGroupItem value="yearly" id="plan-yearly" className="sr-only" />
                         <h3 className="text-lg font-semibold">Yearly</h3>
                         <p className="text-sm text-muted-foreground">₹3999/year (Save ~15%)</p>

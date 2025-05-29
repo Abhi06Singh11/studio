@@ -25,7 +25,6 @@ const projectFormSchema = z.object({
 
 type ProjectFormValues = z.infer<typeof projectFormSchema>;
 
-// Sample data for an organization - in a real app, this would be fetched based on orgId
 const sampleOrganizationNames: { [key: string]: string } = {
   "org_123": "Innovatech Solutions",
   "org_456": "GreenFuture 🌱",
@@ -37,7 +36,6 @@ export default function CreateOrganizationProjectPage() {
   const router = useRouter();
   const orgId = params.orgId as string;
   
-  // Get organization name for display, default if not found
   const organizationName = sampleOrganizationNames[orgId] || `Organization ${orgId.substring(orgId.length - 3)}`;
 
   const form = useForm<ProjectFormValues>({
@@ -53,7 +51,7 @@ export default function CreateOrganizationProjectPage() {
       orgId: orgId,
       name: data.name,
       description: data.description,
-      createdBy: "current_user_uid_placeholder", // Replace with actual current user ID
+      createdBy: "current_user_uid_placeholder", 
       createdAt: new Date().toISOString(),
       status: "active",
     };
@@ -63,20 +61,15 @@ export default function CreateOrganizationProjectPage() {
       title: "Project Created (Conceptually)!",
       description: `Project "${data.name}" has been added to ${organizationName}.`,
     });
-    // In a real app, you might redirect to the new project page or the projects list
-    // For now, reset form, and conceptually, user would navigate away or list updates.
     form.reset();
-    // router.push(`/organizations/${orgId}/projects`); // Example redirect
   }
 
   return (
     <div className="space-y-8">
        <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/organizations/${orgId}/projects`}>
+        <Button variant="outline" size="sm" onClick={() => router.back()}>
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back
-          </Link>
         </Button>
       </div>
 
@@ -121,7 +114,7 @@ export default function CreateOrganizationProjectPage() {
               />
             </CardContent>
             <CardFooter className="gap-2">
-              <Button type="button" variant="outline" onClick={() => router.push(`/organizations/${orgId}/projects`)}>
+              <Button type="button" variant="outline" onClick={() => router.back()}>
                 Cancel
               </Button>
               <Button type="submit">

@@ -18,7 +18,7 @@ interface TeamMember {
   name: string;
   avatarUrl: string;
   dataAiHint?: string;
-  role: string; // e.g., 'Lead Developer', 'UX Designer'
+  role: string; 
 }
 
 interface ProjectDetails {
@@ -27,11 +27,10 @@ interface ProjectDetails {
   description: string;
   tags: string[];
   team: TeamMember[];
-  imageUrl?: string; // Optional: for project context
+  imageUrl?: string; 
   imageAiHint?: string;
 }
 
-// Sample data - in a real app, fetch this based on projectId
 const sampleProjectDataStore: { [key: string]: ProjectDetails } = {
   "prj_codesphere": {
     id: "prj_codesphere",
@@ -91,7 +90,7 @@ export default function ProjectTeamDetailsPage() {
                 <p className="text-muted-foreground mb-6">
                     The project you are looking for does not exist or could not be loaded.
                 </p>
-                <Button onClick={() => router.push('/projects')}>
+                <Button onClick={() => router.back()}>
                     <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
                 </Button>
             </CardContent>
@@ -103,7 +102,7 @@ export default function ProjectTeamDetailsPage() {
   return (
     <div className="space-y-8 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => router.push('/projects')}>
+        <Button variant="outline" size="sm" onClick={() => router.back()}>
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back
         </Button>

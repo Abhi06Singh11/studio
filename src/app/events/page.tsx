@@ -7,9 +7,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import EventCard from "@/components/events/event-card";
-import CreateEventModal from "@/components/events/create-event-modal"; // New import
+import CreateEventModal from "@/components/events/create-event-modal";
 import { ArrowLeftIcon, PlusCircleIcon, CalendarCheck2Icon, StarIcon, UsersIcon, MapPinIcon, ClockIcon } from "lucide-react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 const sampleUserEvents = [
   { id: "ue1", title: "My Workshop on AI Tools", attendees: 12, date: "June 10, 2025" },
@@ -24,18 +24,16 @@ const sampleRecommendedEvents = [
 ];
 
 export default function EventsPage() {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
   const [visibleRecommendedCount, setVisibleRecommendedCount] = React.useState(4);
-  const [isCreateEventModalOpen, setIsCreateEventModalOpen] = React.useState(false); // State for modal
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] = React.useState(false);
 
   const handleShowMore = () => {
     setVisibleRecommendedCount(prev => prev + 4); 
   };
 
   const handleEventCreated = (eventData: any) => {
-    // Conceptual: Add to sampleUserEvents or refresh list
     console.log("New event created (conceptually):", eventData);
-    // Potentially add to sampleUserEvents or trigger a refetch
   };
 
   return (
@@ -50,7 +48,7 @@ export default function EventsPage() {
               </div>
           </div>
           <div className="flex gap-2">
-              <Button variant="outline" onClick={() => router.push('/')}>
+              <Button variant="outline" onClick={() => router.back()}>
                   <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
               </Button>
               <Button onClick={() => setIsCreateEventModalOpen(true)}>
@@ -97,7 +95,7 @@ export default function EventsPage() {
                 attendeeCount={event.attendeeCount}
                 imageUrl={event.imageUrl}
                 imageAiHint={event.imageAiHint}
-                viewActionHref="#" // Conceptual link
+                viewActionHref="#" 
               />
             ))}
           </div>

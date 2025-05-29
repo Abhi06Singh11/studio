@@ -10,6 +10,7 @@ import NewsletterCard from "@/components/newsletters/newsletter-card";
 import CreateNewsletterModal from "@/components/newsletters/create-newsletter-modal";
 import JoinNewsletterModal from "@/components/newsletters/join-newsletter-modal";
 import { ArrowLeftIcon, PlusCircleIcon, MailCheckIcon, UsersIcon, EditIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface YourNewsletter {
   id: string;
@@ -41,10 +42,11 @@ const samplePopularNewsletters: PopularNewsletter[] = [
 ];
 
 export default function NewslettersPage() {
+  const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = React.useState(false);
   const [selectedNewsletterToJoin, setSelectedNewsletterToJoin] = React.useState<PopularNewsletter | null>(null);
-  const [visiblePopularCount, setVisiblePopularCount] = React.useState(3); // Initial number of popular newsletters to show
+  const [visiblePopularCount, setVisiblePopularCount] = React.useState(3);
 
   const handleOpenJoinModal = (newsletter: PopularNewsletter) => {
     setSelectedNewsletterToJoin(newsletter);
@@ -52,18 +54,16 @@ export default function NewslettersPage() {
   };
 
   const handleShowMorePopular = () => {
-    setVisiblePopularCount(prev => prev + 3); // Show 3 more
+    setVisiblePopularCount(prev => prev + 3);
   };
   
   const handleNewsletterCreated = (data: any) => {
-    // Conceptually, add to 'sampleYourNewsletters' or refresh list
     const newYourNewsletter = {
         id: `yn_${Date.now()}`,
         title: data.title,
         description: data.description,
-        subscribers: 0, // New newsletters start with 0 subscribers
+        subscribers: 0, 
     };
-    // In a real app, you'd update state to re-render the list
     console.log("New newsletter added (conceptually):", newYourNewsletter);
   };
 
@@ -79,10 +79,8 @@ export default function NewslettersPage() {
               </div>
           </div>
           <div className="flex gap-2">
-              <Button variant="outline" asChild>
-                  <Link href="/">
-                      <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
-                  </Link>
+              <Button variant="outline" onClick={() => router.back()}>
+                  <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
               </Button>
               <Button onClick={() => setIsCreateModalOpen(true)}>
                   <PlusCircleIcon className="mr-2 h-4 w-4" /> Create a Newsletter
@@ -90,7 +88,6 @@ export default function NewslettersPage() {
           </div>
         </div>
 
-        {/* Your Newsletters Section */}
         <Card>
           <CardHeader>
             <CardTitle className="text-xl">Your Newsletters</CardTitle>
@@ -120,7 +117,6 @@ export default function NewslettersPage() {
           </CardContent>
         </Card>
 
-        {/* Popular Newsletters Section */}
         <div>
           <h2 className="text-2xl font-semibold tracking-tight mb-4">Popular Newsletters</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

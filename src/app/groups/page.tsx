@@ -7,10 +7,10 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import GroupCard from "@/components/groups/group-card";
-import CreateGroupModal from "@/components/groups/create-group-modal"; // New import
+import CreateGroupModal from "@/components/groups/create-group-modal"; 
 import { PlusCircleIcon, UsersIcon, SearchIcon, ArrowLeftIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 const yourGroupsData = [
   { id: "grp1", name: "Cat Lovers Anonymous", memberCount: 5, imageUrl: "https://placehold.co/40x40.png?text=CLA", dataAiHint: "cat icon", actionText: "View" },
@@ -25,9 +25,9 @@ const suggestedGroupsData = [
 ];
 
 export default function GroupsPage() {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = React.useState(false); // State for modal
+  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = React.useState(false); 
 
   const filteredYourGroups = yourGroupsData.filter(group =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -37,7 +37,6 @@ export default function GroupsPage() {
   );
 
   const handleGroupCreated = (groupData: any) => {
-    // Conceptual: Add to yourGroupsData or refresh list
     console.log("New group created (conceptually):", groupData);
   };
 
@@ -45,7 +44,7 @@ export default function GroupsPage() {
     <>
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
       <div className="mb-6">
-        <Button variant="outline" size="sm" onClick={() => router.push('/')} className="mb-4">
+        <Button variant="outline" size="sm" onClick={() => router.back()} className="mb-4">
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back
         </Button>
@@ -87,8 +86,8 @@ export default function GroupsPage() {
                     imageUrl={group.imageUrl}
                     dataAiHint={group.dataAiHint}
                     actionText={group.actionText}
-                    onActionClick={() => router.push("#")} // Conceptual link to a group page
-                    actionHref="#" // Conceptual link
+                    onActionClick={() => router.push("#")} 
+                    actionHref="#" 
                   />
                 ))
               ) : (
@@ -116,8 +115,8 @@ export default function GroupsPage() {
                     imageUrl={group.imageUrl}
                     dataAiHint={group.dataAiHint}
                     actionText={group.actionText}
-                    onActionClick={() => console.log("Join:", group.name)} // Conceptual join
-                    actionHref="#" // Conceptual
+                    onActionClick={() => console.log("Join:", group.name)} 
+                    actionHref="#" 
                     isSuggestion
                   />
                 ))

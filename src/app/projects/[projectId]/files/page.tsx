@@ -22,7 +22,6 @@ interface ProjectFile {
   type: ProjectFileType;
   size?: string;
   lastModified?: string;
-  // For this outsider view, we assume all are restricted
   access: 'restricted'; 
 }
 
@@ -35,7 +34,6 @@ interface ProjectDetails {
   files: ProjectFile[];
 }
 
-// Sample data - in a real app, fetch this based on projectId
 const sampleProjectDataStoreWithFiles: { [key: string]: ProjectDetails } = {
   "prj_codesphere": {
     id: "prj_codesphere",
@@ -67,7 +65,7 @@ const sampleProjectDataStoreWithFiles: { [key: string]: ProjectDetails } = {
     description: "Creating a native mobile application for CodeSphere to enhance on-the-go connectivity and notifications.",
     imageUrl: "https://placehold.co/600x250.png?prj=3",
     imageAiHint: "mobile app interface",
-    files: [], // No files for this project yet in sample data
+    files: [], 
   }
 };
 
@@ -76,8 +74,8 @@ function getFileIcon(type: ProjectFileType) {
         case 'document': return <FileTextIcon className="h-5 w-5 text-blue-500" />;
         case 'image': return <ImageIcon className="h-5 w-5 text-purple-500" />;
         case 'spreadsheet': return <SheetIcon className="h-5 w-5 text-green-500" />;
-        case 'code': return <FileTextIcon className="h-5 w-5 text-orange-500" />; // Using FileText for generic code, could use CodeIcon
-        case 'archive': return <FileIcon className="h-5 w-5 text-yellow-500" />; // Generic FileIcon for archives
+        case 'code': return <FileTextIcon className="h-5 w-5 text-orange-500" />; 
+        case 'archive': return <FileIcon className="h-5 w-5 text-yellow-500" />; 
         default: return <FileIcon className="h-5 w-5 text-muted-foreground" />;
     }
 }
@@ -100,7 +98,7 @@ export default function ProjectFilesPage() {
                 <p className="text-muted-foreground mb-6">
                     The project you are looking for does not exist or could not be loaded.
                 </p>
-                <Button onClick={() => router.push('/projects')}>
+                <Button onClick={() => router.back()}>
                     <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
                 </Button>
             </CardContent>
@@ -113,11 +111,9 @@ export default function ProjectFilesPage() {
     <TooltipProvider>
       <div className="space-y-8 p-4 md:p-6">
         <div className="flex items-center justify-between">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/projects">
+          <Button variant="outline" size="sm" onClick={() => router.back()}>
               <ArrowLeftIcon className="mr-2 h-4 w-4" />
               Back
-            </Link>
           </Button>
         </div>
 
@@ -181,4 +177,3 @@ export default function ProjectFilesPage() {
     </TooltipProvider>
   );
 }
-

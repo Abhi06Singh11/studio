@@ -25,8 +25,8 @@ const projectPrivacyOptions = ["Public", "Team Only", "Private"] as const;
 const createPersonalProjectFormSchema = z.object({
   name: z.string().min(3, { message: "Project name must be at least 3 characters." }).max(100),
   description: z.string().max(1000, { message: "Description must be at most 1000 characters." }).optional().or(z.literal('')),
-  tags: z.string().optional().or(z.literal('')), // Comma-separated
-  initialTeamMembers: z.string().optional().or(z.literal('')), // Comma-separated emails/UserIDs
+  tags: z.string().optional().or(z.literal('')), 
+  initialTeamMembers: z.string().optional().or(z.literal('')), 
   privacy: z.enum(projectPrivacyOptions, { required_error: "Please select a privacy setting." }),
 });
 
@@ -51,9 +51,9 @@ export default function CreatePersonalProjectPage() {
       ...data,
       tags: data.tags?.split(',').map(tag => tag.trim()).filter(Boolean) || [],
       initialTeamMembers: data.initialTeamMembers?.split(',').map(member => member.trim()).filter(Boolean) || [],
-      createdBy: "current_user_uid_placeholder", // Replace with actual current user ID
+      createdBy: "current_user_uid_placeholder", 
       createdAt: new Date().toISOString(),
-      type: "personal", // Differentiating from organizational projects
+      type: "personal", 
     };
 
     console.log("New Personal Project Data (Conceptual Firestore Write):", projectData);
@@ -62,17 +62,14 @@ export default function CreatePersonalProjectPage() {
       description: `Project "${data.name}" has been set up.`,
     });
     form.reset();
-    // router.push("/projects"); // Optionally redirect after creation
   }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/projects">
+        <Button variant="outline" size="sm" onClick={() => router.back()}>
             <ArrowLeftIcon className="mr-2 h-4 w-4" />
             Back
-          </Link>
         </Button>
       </div>
       <Card>
@@ -213,7 +210,7 @@ export default function CreatePersonalProjectPage() {
 
             </CardContent>
             <CardFooter className="gap-2">
-              <Button type="button" variant="outline" onClick={() => router.push("/projects")}>
+              <Button type="button" variant="outline" onClick={() => router.back()}>
                 Cancel
               </Button>
               <Button type="submit">
@@ -226,5 +223,4 @@ export default function CreatePersonalProjectPage() {
     </div>
   );
 }
-
     

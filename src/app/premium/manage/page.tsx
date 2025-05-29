@@ -1,3 +1,4 @@
+
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,7 +8,6 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { toast } from "@/hooks/use-toast";
 
-// Mocked subscription data for display
 const mockCurrentSubscription = {
   planName: "Premium Monthly",
   status: "Active",
@@ -21,14 +21,12 @@ export default function ManageSubscriptionPage() {
   const router = useRouter();
 
   const handleCancelSubscription = () => {
-    // Conceptual: In a real app, this would call a Firebase Function to interact with Stripe
     console.log("Conceptual: Cancel Subscription Requested");
     toast({
       title: "Subscription Cancellation (Conceptual)",
       description: "Your request to cancel the subscription has been processed.",
       variant: "default" 
     });
-    // Potentially update local state or redirect
   };
 
   return (

@@ -36,7 +36,6 @@ interface ProjectDetails {
   comments: ProjectComment[];
 }
 
-// Sample data - in a real app, fetch this based on projectId
 const sampleProjectDataStoreWithComments: { [key: string]: ProjectDetails } = {
   "prj_codesphere": {
     id: "prj_codesphere",
@@ -86,8 +85,8 @@ export default function ProjectCommentsPage() {
     if (!newComment.trim()) return;
     const newCommentEntry: ProjectComment = {
       id: `comment_${Date.now()}`,
-      userId: "currentUser_placeholder", // Replace with actual current user ID
-      userName: "Current User", // Replace with actual current user name
+      userId: "currentUser_placeholder", 
+      userName: "Current User", 
       userAvatar: "https://placehold.co/100x100.png?u=current",
       dataAiHint: "user avatar",
       text: newComment,
@@ -96,7 +95,6 @@ export default function ProjectCommentsPage() {
     };
     setProjectComments(prevComments => [newCommentEntry, ...prevComments]);
     setNewComment("");
-    // In a real app, you'd send this to the backend to save.
     console.log("New Comment Posted (Conceptual):", newCommentEntry);
   };
 
@@ -111,7 +109,7 @@ export default function ProjectCommentsPage() {
                 <p className="text-muted-foreground mb-6">
                     The project you are looking for does not exist or could not be loaded.
                 </p>
-                <Button onClick={() => router.push('/projects')}>
+                <Button onClick={() => router.back()}>
                     <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
                 </Button>
             </CardContent>
@@ -123,7 +121,7 @@ export default function ProjectCommentsPage() {
   return (
     <div className="space-y-8 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => router.push('/projects')}>
+        <Button variant="outline" size="sm" onClick={() => router.back()}>
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back
         </Button>

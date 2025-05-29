@@ -56,7 +56,6 @@ interface ProjectFullDetails {
   publicComments: ProjectComment[];
 }
 
-// Sample data store for full project details
 const sampleProjectFullDetailsData: { [key: string]: ProjectFullDetails } = {
   "prj_ai_engine": {
     id: "prj_ai_engine",
@@ -127,7 +126,6 @@ export default function ProjectOverviewPage() {
   
   const handlePostComment = () => {
     if (!newComment.trim()) return;
-    // Conceptual: In a real app, this would submit the comment
     console.log("New public comment submitted:", { projectId, text: newComment });
     toast({ title: "Comment Submitted", description: "Your comment has been submitted (conceptually)." });
     setNewComment("");
@@ -144,7 +142,7 @@ export default function ProjectOverviewPage() {
             <p className="text-muted-foreground mb-6">
               The project you are looking for does not exist or could not be loaded.
             </p>
-            <Button onClick={() => router.push('/projects')}>
+            <Button onClick={() => router.back()}>
               <ArrowLeftIcon className="mr-2 h-4 w-4" /> Back
             </Button>
           </CardContent>
@@ -156,20 +154,16 @@ export default function ProjectOverviewPage() {
   return (
     <div className="space-y-8 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/projects">
-            <ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back
-          </Link>
+        <Button variant="outline" size="sm" onClick={() => router.back()}>
+          <ArrowLeftIcon className="mr-2 h-4 w-4" />
+          Back
         </Button>
-        {/* Conceptual Project Settings Button - would be visible only to team members/admins */}
         <Button variant="outline" size="icon" disabled>
             <SettingsIcon className="h-4 w-4"/>
             <span className="sr-only">Project Settings (Team Only)</span>
         </Button>
       </div>
 
-      {/* Project Header Card */}
       <Card className="shadow-lg rounded-xl overflow-hidden">
         {project.imageUrl && (
           <div className="relative h-48 w-full md:h-64 bg-muted">
@@ -205,7 +199,6 @@ export default function ProjectOverviewPage() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Team Preview Section */}
         <Card className="lg:col-span-2 shadow-lg rounded-xl">
           <CardHeader>
             <CardTitle className="flex items-center text-xl"><UsersIcon className="mr-2 h-6 w-6 text-primary"/>Project Team</CardTitle>
@@ -235,7 +228,6 @@ export default function ProjectOverviewPage() {
           </CardContent>
         </Card>
 
-        {/* Quick Actions / Navigation Section */}
         <Card className="shadow-lg rounded-xl">
             <CardHeader>
                 <CardTitle className="text-xl">Project Hub</CardTitle>
@@ -252,14 +244,12 @@ export default function ProjectOverviewPage() {
                         <FileTextIcon className="mr-2 h-4 w-4" /> Project Files (Limited Preview)
                     </Link>
                 </Button>
-                {/* Add other relevant links, e.g., to tasks, roadmap, settings etc. */}
             </CardContent>
         </Card>
       </div>
       
       <Separator />
 
-      {/* Comment Section for Outsiders */}
       <Card className="shadow-lg rounded-xl">
         <CardHeader>
           <CardTitle className="text-xl flex items-center"><MessageSquareIcon className="mr-2 h-6 w-6 text-primary"/>Public Comments & Questions</CardTitle>

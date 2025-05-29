@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -12,7 +13,7 @@ import BundleUpgradeModal from "@/components/premium/bundle-upgrade-modal";
 import { toast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation"; // Added for back button
+import { useRouter } from "next/navigation";
 
 interface SubscriptionPlan {
   id: string;
@@ -79,7 +80,7 @@ interface MockSubscription {
 }
 
 export default function PremiumPage() {
-  const router = useRouter(); // Added for back button
+  const router = useRouter(); 
   const [isModuleModalOpen, setIsModuleModalOpen] = React.useState(false);
   const [isBundleModalOpen, setIsBundleModalOpen] = React.useState(false);
   const [selectedPlan, setSelectedPlan] = React.useState<SubscriptionPlan | null>(null);
