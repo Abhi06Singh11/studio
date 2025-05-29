@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -29,7 +28,7 @@ import {
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon },
+  { href: '/projects', label: 'Projects', icon: FolderKanbanIcon }, // Reverted from Workplace
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
@@ -67,7 +66,7 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
               buttonVariants({ variant: 'ghost' }),
               "w-full justify-start gap-x-3 text-sm h-10 px-3",
               (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
-                ? "bg-primary/10 text-primary font-semibold" // Updated active style
+                ? "bg-primary/10 text-primary font-semibold"
                 : "hover:bg-muted/50"
             )}
             aria-current={ (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined }
