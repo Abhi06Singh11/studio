@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -7,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2Icon, CrownIcon, XCircleIcon, SparklesIcon, BriefcaseIcon, ListChecksIcon, FolderKanbanIcon, UsersIcon } from "lucide-react";
+import { CheckCircle2Icon, CrownIcon, XCircleIcon, SparklesIcon, BriefcaseIcon, ListChecksIcon, FolderKanbanIcon, UsersIcon, ArrowLeftIcon } from "lucide-react";
 import ModuleUpgradeModal from "@/components/premium/module-upgrade-modal";
 import BundleUpgradeModal from "@/components/premium/bundle-upgrade-modal";
 import { toast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation"; // Added for back button
 
 interface SubscriptionPlan {
   id: string;
@@ -79,15 +79,14 @@ interface MockSubscription {
 }
 
 export default function PremiumPage() {
+  const router = useRouter(); // Added for back button
   const [isModuleModalOpen, setIsModuleModalOpen] = React.useState(false);
   const [isBundleModalOpen, setIsBundleModalOpen] = React.useState(false);
   const [selectedPlan, setSelectedPlan] = React.useState<SubscriptionPlan | null>(null);
 
-  // Demo Global Subscription state for UI demonstration
   const [demoGlobalSubscriptionActive, setDemoGlobalSubscriptionActive] = React.useState(false);
 
   React.useEffect(() => {
-    // Check localStorage for demo subscription status on mount
     const storedStatus = localStorage.getItem('demoGlobalSubscriptionActive');
     if (storedStatus) {
       setDemoGlobalSubscriptionActive(storedStatus === 'true');
@@ -103,8 +102,6 @@ export default function PremiumPage() {
     });
   };
 
-
-  // Mocked local subscription state for this page
   const [mockSubscription, setMockSubscription] = React.useState<MockSubscription>({
     workplace: false,
     jobs_projects: false,
@@ -124,7 +121,7 @@ export default function PremiumPage() {
 
   const handleSubscriptionUpdate = (moduleKey: "workplace" | "jobs_projects" | "challenges" | "bundle") => {
     const newExpiryDate = new Date();
-    newExpiryDate.setMonth(newExpiryDate.getMonth() + 1); // Simple 1 month extension for demo
+    newExpiryDate.setMonth(newExpiryDate.getMonth() + 1); 
 
     setMockSubscription(prev => {
       const updatedSub = { ...prev, activeUntil: newExpiryDate.toDateString() };
@@ -156,6 +153,11 @@ export default function PremiumPage() {
 
   return (
     <div className="space-y-10">
+       <Button variant="outline" size="sm" onClick={() => router.back()} className="mb-6">
+        <ArrowLeftIcon className="mr-2 h-4 w-4" />
+        Back
+      </Button>
+
       <Card className="shadow-xl rounded-xl text-center bg-gradient-to-br from-primary/80 to-accent/70 text-primary-foreground">
         <CardHeader className="p-8">
           <CrownIcon className="mx-auto h-16 w-16 mb-4 opacity-90" />
@@ -178,7 +180,6 @@ export default function PremiumPage() {
         </CardContent>
       </Card>
       
-      {/* Demo Global Subscription Toggle */}
       <Card className="bg-muted/30">
         <CardHeader>
           <CardTitle className="text-lg">Demo Global Subscription Toggle</CardTitle>
@@ -195,7 +196,6 @@ export default function PremiumPage() {
           </Label>
         </CardContent>
       </Card>
-
 
       <Card>
         <CardHeader>
@@ -303,5 +303,3 @@ export default function PremiumPage() {
     </div>
   );
 }
-
-    
