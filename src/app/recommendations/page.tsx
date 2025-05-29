@@ -1,7 +1,8 @@
+
 import RecommendationCard from '@/components/recommendation-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { SparklesIcon, UsersIcon, FolderKanbanIcon, BookOpenIcon, RefreshCwIcon } from 'lucide-react';
+import { SparklesIcon, UsersIcon, FolderKanbanIcon, BookOpenIcon, RefreshCwIcon, ArrowDownIcon } from 'lucide-react';
 
 const sampleRecommendations = [
   {
@@ -46,6 +47,12 @@ export default function RecommendationsPage() {
   // In a real app, you would fetch these recommendations, possibly using flows from src/ai/flows
   // For now, we use placeholder data.
 
+  const handleExploreMore = () => {
+    // Conceptual: In a real app, this would fetch more recommendations
+    console.log("Explore More Recommendations clicked");
+    alert("Conceptual: Loading more recommendations...");
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -75,6 +82,15 @@ export default function RecommendationsPage() {
           />
         ))}
       </div>
+
+      {sampleRecommendations.length > 0 && (
+        <div className="text-center mt-8">
+          <Button variant="outline" size="lg" onClick={handleExploreMore}>
+            <ArrowDownIcon className="mr-2 h-5 w-5" />
+            Explore More Recommendations
+          </Button>
+        </div>
+      )}
 
       {sampleRecommendations.length === 0 && (
          <Card className="col-span-full">
