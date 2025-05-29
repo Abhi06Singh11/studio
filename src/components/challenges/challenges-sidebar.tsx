@@ -15,13 +15,14 @@ import {
   BookmarkIcon,
   Share2Icon,
   Code2Icon,
+  UserCheckIcon, // Added for "My Challenges"
 } from "lucide-react";
 import type { ChallengesWorkspaceView } from "@/app/challenges/page";
 
 interface ChallengesSidebarProps {
   activeView: ChallengesWorkspaceView;
   setActiveView: (view: ChallengesWorkspaceView) => void;
-  returnToPath?: string; 
+  returnToPath?: string;
 }
 
 const menuItems = [
@@ -29,6 +30,7 @@ const menuItems = [
   { id: "my-submissions", label: "My Submissions", icon: HistoryIcon },
   { id: "leaderboard", label: "Leaderboard", icon: TrophyIcon },
   { id: "saved-challenges", label: "Saved Challenges", icon: BookmarkIcon },
+  { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon }, // New item
 ];
 
 export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/" }: ChallengesSidebarProps) {
