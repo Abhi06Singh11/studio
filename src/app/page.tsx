@@ -3,18 +3,18 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Added based on error context
+import { useRouter } from 'next/navigation'; 
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide-react'; // Added SearchIcon
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide-react'; 
 import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-import { Input } from "@/components/ui/input"; // Added Input for search
+import PremiumCtaSidebar from "@/components/sidebar/premium-cta-sidebar"; // Import the new component
+import { Input } from "@/components/ui/input"; 
 
-// Renamed from feedItems to initialFeedItems
 const initialFeedItems = [
   {
     id: '1',
@@ -63,12 +63,11 @@ const currentUser = {
 
 export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
-  const router = useRouter(); // Assuming this might be used elsewhere or was part of the actual code
-  const [feedItems, setFeedItems] = React.useState(initialFeedItems); // State for feed items
-  const [searchTerm, setSearchTerm] = React.useState(""); // State for search term
+  const router = useRouter(); 
+  const [feedItems, setFeedItems] = React.useState(initialFeedItems); 
+  const [searchTerm, setSearchTerm] = React.useState(""); 
 
-  // Filtering logic based on the error context
-  const filteredFeedItems = (feedItems || []).filter(item => // Added guard for feedItems
+  const filteredFeedItems = (feedItems || []).filter(item => 
     item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -77,11 +76,14 @@ export default function ActivityFeedPage() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
+        {/* Left Sidebar - User Profile & Quick Access */}
         <div className="hidden lg:block lg:col-span-3">
           <ActivityFeedSidebar />
         </div>
 
+        {/* Center Content - Activity Feed */}
         <main className="col-span-1 lg:col-span-6 space-y-6">
+          {/* Create Post Box */}
           <Card className="shadow-lg rounded-xl">
             <CardContent className="p-4">
               <div className="flex items-start space-x-3">
@@ -93,7 +95,7 @@ export default function ActivityFeedPage() {
                 </Link>
                 <Button
                   variant="outline"
-                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:bg-muted/50 hover:text-accent-foreground"
+                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:text-accent-foreground"
                   onClick={() => setIsCreatePostModalOpen(true)}
                 >
                   Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
@@ -131,6 +133,7 @@ export default function ActivityFeedPage() {
             currentUser={currentUser}
           />
 
+          {/* Feed Items */}
           <div className="space-y-6">
             {filteredFeedItems.map((item) => (
               <ActivityFeedItem key={item.id} {...item} />
@@ -145,15 +148,17 @@ export default function ActivityFeedPage() {
           </div>
         </main>
 
-        <div className="hidden lg:block lg:col-span-3">
+        {/* Right Sidebar - Premium CTA & Newsletters (Desktop) */}
+        <div className="hidden lg:block lg:col-span-3 space-y-6">
+          <PremiumCtaSidebar /> 
           <NewsletterSidebar />
         </div>
 
-        <div className="lg:hidden col-span-1 mt-8">
-          <div className="space-y-6">
-            <ActivityFeedSidebar />
-            <NewsletterSidebar />
-          </div>
+        {/* Sidebars for Mobile (Stacked) */}
+        <div className="lg:hidden col-span-1 mt-8 space-y-6">
+          <ActivityFeedSidebar /> 
+          <PremiumCtaSidebar /> 
+          <NewsletterSidebar />
         </div>
       </div>
     </div>
