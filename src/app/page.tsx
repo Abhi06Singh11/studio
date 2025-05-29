@@ -12,7 +12,7 @@ import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide
 import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-import PremiumCtaSidebar from "@/components/sidebar/premium-cta-sidebar"; // Import the new component
+import PremiumCtaSidebar from "@/components/sidebar/premium-cta-sidebar";
 import { Input } from "@/components/ui/input"; 
 
 const initialFeedItems = [
@@ -148,17 +148,17 @@ export default function ActivityFeedPage() {
           </div>
         </main>
 
-        {/* Right Sidebar - Premium CTA & Newsletters (Desktop) */}
+        {/* Right Sidebar - Newsletter & Premium CTA (Desktop) */}
         <div className="hidden lg:block lg:col-span-3 space-y-6">
-          <PremiumCtaSidebar /> 
           <NewsletterSidebar />
+          <PremiumCtaSidebar /> 
         </div>
 
         {/* Sidebars for Mobile (Stacked) */}
         <div className="lg:hidden col-span-1 mt-8 space-y-6">
           <ActivityFeedSidebar /> 
-          <PremiumCtaSidebar /> 
           <NewsletterSidebar />
+          <PremiumCtaSidebar /> 
         </div>
       </div>
     </div>
