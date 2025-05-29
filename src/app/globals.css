@@ -8,33 +8,33 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 96.1%; /* #F5F5F5 */
-    --foreground: 220 15% 25%; /* Dark grayish blue for text */
+    --background: 0 0% 98%; /* Almost White */
+    --foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 */
 
     --card: 0 0% 100%; /* White */
-    --card-foreground: 220 15% 25%; /* Dark grayish blue for card text */
+    --card-foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 */
 
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 220 15% 25%; /* Dark grayish blue for popover text */
+    --popover-foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 */
 
-    --primary: 207 90% 61%; /* #42A5F5 Deep Sky Blue */
-    --primary-foreground: 0 0% 100%; /* White for text on primary */
+    --primary: 165 30% 29%; /* Medium Teal/Green #335F56 */
+    --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 0 0% 90%; /* Lighter gray for secondary elements */
-    --secondary-foreground: 220 15% 25%; /* Dark grayish blue for text on secondary */
+    --secondary: 145 17% 54%; /* Muted Green/Sage #749F82 */
+    --secondary-foreground: 0 0% 100%; /* White */
 
-    --muted: 0 0% 90%; /* Lighter gray */
-    --muted-foreground: 220 10% 45%; /* Muted text color */
+    --muted: 39 49% 92%; /* Light Beige/Tan (derived from #D6B281) approx #F5F0E6 */
+    --muted-foreground: 170 32% 25%; /* Darker Teal/Green (slightly lighter than main foreground) approx #264F4A */
 
-    --accent: 187 100% 42%; /* #00BCD4 Vivid Cyan */
-    --accent-foreground: 0 0% 100%; /* White for text on accent */
+    --accent: 48 65% 77%; /* Light Beige/Yellowish #EDDE9E */
+    --accent-foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%; /* Light gray border */
-    --input: 0 0% 89.8%; /* Light gray input background */
-    --ring: 207 90% 61%; /* Primary color for focus rings */
+    --border: 170 20% 88%; /* Very Light Desaturated Green approx #D9E3E1 */
+    --input: 170 20% 88%; /* Very Light Desaturated Green approx #D9E3E1 */
+    --ring: 165 30% 29%; /* Medium Teal/Green #335F56 for focus rings */
 
     --radius: 0.5rem;
 
@@ -46,14 +46,14 @@ body {
     --chart-5: 27 87% 67%;
 
     /* Sidebar specific colors, aligned with the new theme */
-    --sidebar-background: 0 0% 98%; /* Slightly off-white, distinct from main BG */
-    --sidebar-foreground: 220 15% 25%; /* Dark text for sidebar items */
-    --sidebar-primary: 207 90% 61%; /* App primary for active item background */
-    --sidebar-primary-foreground: 0 0% 100%; /* White text for active item */
-    --sidebar-accent: 207 90% 92%; /* Light blue for hover background */
-    --sidebar-accent-foreground: 207 90% 30%; /* Darker blue for hover text */
-    --sidebar-border: 0 0% 89.8%; /* Consistent with main border */
-    --sidebar-ring: 207 90% 61%; /* App's primary for focus rings in sidebar */
+    --sidebar-background: 0 0% 96%; /* Light Gray #F5F5F5 */
+    --sidebar-foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 */
+    --sidebar-primary: 165 30% 29%; /* Medium Teal/Green #335F56 */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 48 65% 85%; /* Lighter Beige/Yellowish (from #EDDE9E) for hover background approx #F3EBCD */
+    --sidebar-accent-foreground: 170 32% 16%; /* Dark Teal/Green #1A3735 for hover text */
+    --sidebar-border: 170 20% 88%; /* Consistent with main border approx #D9E3E1 */
+    --sidebar-ring: 165 30% 29%; /* App's primary for focus rings in sidebar #335F56 */
   }
 
   .dark {
@@ -85,12 +85,12 @@ body {
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 0 0% 98%; /* Adjusted for dark theme sidebar text */
-    --sidebar-primary: 207 90% 61%; /* App primary for active item in dark */
+    --sidebar-primary: 165 30% 29%; /* Using new primary for dark theme active item */
     --sidebar-primary-foreground: 0 0% 100%; /* Light text for active item */
     --sidebar-accent: 240 3.7% 15.9%; /* Darker accent for hover */
     --sidebar-accent-foreground: 0 0% 98%; /* Light text for hover */
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 207 90% 61%;
+    --sidebar-ring: 165 30% 29%; /* Using new primary for ring in dark theme */
   }
 }
 
