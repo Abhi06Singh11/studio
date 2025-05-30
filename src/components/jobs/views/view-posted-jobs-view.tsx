@@ -10,13 +10,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { BriefcaseIcon, MoreHorizontalIcon, PlusCircleIcon, SearchIcon, Edit3Icon, Trash2Icon, RotateCwIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+
 interface PostedJob {
   id: string;
   title: string;
-  type: string; // Full-time, Part-time, etc.
-  postedOn: string; // Date string
+  type: string;
+  postedOn: string;
   status: "Active" | "Expired" | "Closed";
-  applicants?: number; // Conceptual
+  applicants?: number;
 }
 
 const samplePostedJobs: PostedJob[] = [
@@ -26,9 +27,10 @@ const samplePostedJobs: PostedJob[] = [
   { id: "job4", title: "AI/ML Research Scientist", type: "Full-time", postedOn: "2024-05-20", status: "Active", applicants: 10 },
 ];
 
-export default function ViewPostedJobsView() {
+interface ViewPostedJobsViewProps {}
+
+export default function ViewPostedJobsView({}: ViewPostedJobsViewProps) {
   const [searchTerm, setSearchTerm] = React.useState("");
-  // In a real app, jobs would be fetched and managed with state
   const [jobs, setJobs] = React.useState(samplePostedJobs);
 
   const filteredJobs = jobs.filter(job =>
@@ -37,14 +39,12 @@ export default function ViewPostedJobsView() {
     job.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Conceptual actions
   const handleEditJob = (jobId: string) => console.log("Edit job:", jobId);
   const handleCloseJob = (jobId: string) => {
     setJobs(jobs.map(job => job.id === jobId ? {...job, status: "Closed"} : job));
     console.log("Close job:", jobId);
   };
   const handleRepostJob = (jobId: string) => console.log("Repost job:", jobId);
-
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -55,13 +55,12 @@ export default function ViewPostedJobsView() {
           </CardTitle>
           <CardDescription>Manage jobs posted by your company. (For Company use only)</CardDescription>
         </div>
-         {/* <Button> <PlusCircleIcon className="mr-2 h-4 w-4"/> Create New Job Posting </Button> */}
       </div>
-      
+
       <div className="relative">
         <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input 
-            placeholder="Search by title, type, status..." 
+        <Input
+            placeholder="Search by title, type, status..."
             className="pl-8 bg-card"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -90,14 +89,16 @@ export default function ViewPostedJobsView() {
                     <TableCell>{job.postedOn}</TableCell>
                     <TableCell>
                       <Badge variant={
-                        job.status === "Active" ? "default" : 
-                        job.status === "Expired" ? "secondary" : 
-                        "outline" // For Closed
+                        job.status === "Active" ? "default" :
+                        job.status === "Expired" ? "secondary" :
+                        "outline"
                       }>
                         {job.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{job.applicants ?? 'N/A'}</TableCell>
+                    <TableCell>
+                      {job.applicants ?? 'N/A'}
+                    </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

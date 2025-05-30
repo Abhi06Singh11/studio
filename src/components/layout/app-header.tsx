@@ -21,7 +21,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuGroup,
-  DropdownMenuTrigger, 
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
   Share2Icon,
@@ -40,25 +40,13 @@ import {
   Slack,
   LogIn,
   CalendarDays,
-  BriefcaseIcon,
-  HomeIcon,
-  UsersIcon,
-  MessageSquareIcon,
-  Code2Icon,
-  SparklesIcon,
-  LayoutDashboardIcon,
   PanelLeft,
-  BellIcon,
-  CalendarCheck2Icon,
-  MailCheckIcon,
-  CrownIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems } from './app-sidebar'; 
+import AppSidebarContent, { allNavItems } from './app-sidebar'; // Assuming allNavItems is exported
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-
 
 // Sample User Data
 const sampleUser = {
@@ -71,15 +59,9 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
-
 export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Filter items for the desktop header
-  const desktopHeaderNavItems = allNavItems.filter(
-    item => item.label !== 'Events' && item.label !== 'Newsletters'
-  );
 
   return (
     <TooltipProvider delayDuration={100}>
@@ -91,19 +73,19 @@ export default function AppHeader() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {desktopHeaderNavItems.map((item) => ( 
+        <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
+          {allNavItems.map((item) => (
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link
                   href={item.href}
                   className={cn(
-                    "px-2.5 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
+                    "flex items-center px-2 py-1.5 text-xs lg:text-sm font-medium text-muted-foreground hover:text-primary rounded-md",
                     (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) && "bg-primary/10 text-primary font-semibold"
                   )}
                   aria-current={(pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined}
                 >
-                   <item.icon className="h-4 w-4 mr-1.5 md:mr-1 lg:mr-1.5 inline-block" />
+                   <item.icon className="h-4 w-4 mr-1 md:mr-1 lg:mr-1.5 inline-block" />
                    <span className="hidden md:inline">{item.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -113,7 +95,7 @@ export default function AppHeader() {
             </Tooltip>
           ))}
         </nav>
-        
+
         <div className="flex items-center ml-auto gap-x-2">
           <div className="relative flex-1 max-w-[180px] sm:max-w-xs">
             <SearchIcon className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -123,7 +105,7 @@ export default function AppHeader() {
               className="w-full rounded-md bg-background/70 pl-8 pr-3 h-9 text-sm focus:bg-background"
             />
           </div>
-        
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">

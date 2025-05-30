@@ -18,10 +18,11 @@ import CreateProjectInOrgView from "@/components/project/views/create-project-or
 import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
 import CreateActionsModal from "@/components/project/create-actions-modal";
-import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal"; // New Import
+import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, FolderKanbanIcon, BuildingIcon } from "lucide-react"; 
 import { toast } from "@/hooks/use-toast";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export type ProjectWorkspaceView =
   | "threads"
@@ -43,15 +44,11 @@ export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
   const [isCreateActionsModalOpen, setIsCreateActionsModalOpen] = React.useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
-
-  // State for the new activation modal
   const [isActivateModalOpen, setIsActivateModalOpen] = React.useState(false);
   const [workspaceActivationAttempted, setWorkspaceActivationAttempted] = React.useState(false);
   const [activatedWorkspaceName, setActivatedWorkspaceName] = React.useState<string | null>(null);
 
-
   React.useEffect(() => {
-    // For MVP, using a simple check. In a real app, this would be tied to user data/localStorage.
     if (!workspaceActivationAttempted) {
       setIsActivateModalOpen(true);
     }
@@ -69,7 +66,7 @@ export default function ProjectsPage() {
   };
 
   const handleActivationCancel = () => {
-    setWorkspaceActivationAttempted(true); // Mark as attempted even if cancelled
+    setWorkspaceActivationAttempted(true);
     setIsActivateModalOpen(false);
      toast({
       title: "Workspace Activation Cancelled",
@@ -78,12 +75,7 @@ export default function ProjectsPage() {
     });
   };
 
-
   const renderActiveView = () => {
-    // If workspace is not conceptually "activated" yet, and modal isn't open, show a placeholder or minimal view.
-    // For this example, we'll proceed to render activeView, but the modal will overlay it.
-    // A more robust UX might wait for activation before showing the full workspace.
-
     switch (activeView) {
       case "threads":
         return <ThreadsView workspaceName={activatedWorkspaceName} />;
@@ -99,7 +91,6 @@ export default function ProjectsPage() {
         return <FilesView />;
       case "settings":
         return <ProjectSettingsView />;
-      // Organization and Project views
       case "create-organization":
         return <CreateOrganizationView />;
       case "join-organization":
@@ -119,7 +110,7 @@ export default function ProjectsPage() {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your app header */}
+      <div className="flex h-[calc(100vh-4rem)]">
         <ProjectWorkspaceSidebar
           activeView={activeView}
           setActiveView={setActiveView}
@@ -141,10 +132,10 @@ export default function ProjectsPage() {
         onOpenChange={setIsCreateActionsModalOpen}
       />
       <ActivateWorkspaceModal
-        isOpen={isActivateModalOpen && !workspaceActivationAttempted} // Only open if not attempted
+        isOpen={isActivateModalOpen && !workspaceActivationAttempted}
         onOpenChange={(isOpen) => {
             setIsActivateModalOpen(isOpen);
-            if (!isOpen) { // If modal is closed by clicking outside or X button
+            if (!isOpen) {
                 handleActivationCancel();
             }
         }}

@@ -28,7 +28,7 @@ const sampleAnalyticsData = {
   totalComments: 1200,
   totalJobPostings: 85,
   openJobPostings: 42,
-  reportsToReview: 5, 
+  reportsToReview: 5,
 };
 
 export default function AdminPage() {
@@ -150,8 +150,8 @@ export default function AdminPage() {
                   <TableCell>{user.joinedDate}</TableCell>
                   <TableCell>
                     <Badge variant={
-                      user.status === "Active" ? "default" : 
-                      user.status === "Suspended" ? "secondary" : 
+                      user.status === "Active" ? "default" :
+                      user.status === "Suspended" ? "secondary" :
                       "destructive"
                     }>
                       {user.status}

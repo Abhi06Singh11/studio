@@ -8,13 +8,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { 
-  BookmarkIcon, 
-  Users2Icon, 
-  CalendarCheck2Icon, 
-  ExternalLinkIcon, 
+import {
+  BookmarkIcon,
+  Users2Icon,
+  CalendarCheck2Icon,
+  ExternalLinkIcon,
   StarIcon,
-  MailCheckIcon 
+  MailCheckIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ const currentUserProfile = {
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
   { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' },
-  { id: 'newsletters', label: 'Newsletters', icon: MailCheckIcon, href: '/newsletters' }, 
+  { id: 'newsletters', label: 'Newsletters', icon: MailCheckIcon, href: '/newsletters' },
   { id: 'events', label: 'Events', icon: CalendarCheck2Icon, href: '/events' },
 ];
 
@@ -76,6 +76,8 @@ export default function ActivityFeedSidebar() {
         </CardFooter>
       </Card>
 
+      {/* Premium CTA section removed */}
+
       {/* Quick Access Links Section */}
       <Card className="shadow-lg rounded-xl">
         <CardHeader className="pb-2 pt-4">
@@ -96,7 +98,7 @@ export default function ActivityFeedSidebar() {
           </ul>
         </CardContent>
       </Card>
-      
+
     </aside>
   );
 }

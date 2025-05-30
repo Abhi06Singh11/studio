@@ -4,7 +4,7 @@ import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Code2Icon, ZapIcon, BarChart3Icon, TrophyIcon, ArrowRightIcon, FilterIcon, SearchIcon, ListChecksIcon } from "lucide-react"; // Added ListChecksIcon
+import { Code2Icon, ZapIcon, BarChart3Icon, TrophyIcon, ArrowRightIcon, FilterIcon, SearchIcon, ListChecksIcon } from "lucide-react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,7 +21,7 @@ const sampleChallenges = [
     tags: ["Graphs", "Dijkstra's", "A*"],
     description: "Find the shortest path in a complex graph. Tests Dijkstra's and A* algorithms.",
     imageUrl: "https://placehold.co/400x200.png?ch=1",
-    imageAiHint: "maze algorithm"
+    imageAiHint: "maze algorithm",
   },
   {
     id: "2",
@@ -34,12 +34,12 @@ const sampleChallenges = [
     tags: ["React", "TailwindCSS", "Frontend"],
     description: "Build a responsive and interactive Kanban board using React and Tailwind CSS.",
     imageUrl: "https://placehold.co/400x200.png?ch=2",
-    imageAiHint: "kanban board"
+    imageAiHint: "kanban board",
   },
   {
     id: "3",
     title: "System Design: Distributed Cache",
-    platform: "CodeSphere Custom",
+    platform: "CodeHinge Custom",
     difficulty: "Expert",
     category: "System Design",
     userScore: "In Progress",
@@ -47,7 +47,7 @@ const sampleChallenges = [
     tags: ["System Design", "Caching", "Distributed Systems"],
     description: "Design a highly available and scalable distributed caching system.",
     imageUrl: "https://placehold.co/400x200.png?ch=3",
-    imageAiHint: "server architecture"
+    imageAiHint: "server architecture",
   },
   {
     id: "4",
@@ -60,12 +60,12 @@ const sampleChallenges = [
     tags: ["Python", "Pandas", "NumPy"],
     description: "Clean and transform a messy dataset for analysis using Pandas and NumPy.",
     imageUrl: "https://placehold.co/400x200.png?ch=4",
-    imageAiHint: "data chart"
+    imageAiHint: "data chart",
   }
 ];
 
 const difficultyOptions = ["All", "Easy", "Medium", "Hard", "Expert"];
-const topicOptions = ["All", "Algorithms", "Data Structures", "Frontend", "Backend", "System Design", "Data Science", "AI/ML"]; // Placeholder
+const topicOptions = ["All", "Algorithms", "Data Structures", "Frontend", "Backend", "System Design", "Data Science", "AI/ML"];
 const statusOptions = ["All", "Solved", "Unsolved", "In Progress"];
 
 export default function AllChallengesView() {
@@ -78,7 +78,7 @@ export default function AllChallengesView() {
     const matchesSearch = challenge.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           challenge.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesDifficulty = selectedDifficulty === "All" || challenge.difficulty === selectedDifficulty;
-    const matchesTopic = selectedTopic === "All" || challenge.category === selectedTopic; // Assuming category maps to topic for now
+    const matchesTopic = selectedTopic === "All" || challenge.category === selectedTopic;
     const matchesStatus = selectedStatus === "All" || challenge.status === selectedStatus;
     return matchesSearch && matchesDifficulty && matchesTopic && matchesStatus;
   });
@@ -170,4 +170,3 @@ export default function AllChallengesView() {
     </div>
   );
 }
-
