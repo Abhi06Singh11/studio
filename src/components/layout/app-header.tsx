@@ -41,11 +41,16 @@ import {
   LogIn,
   CalendarDays,
   PanelLeft,
+  BellIcon,
+  HomeIcon,
+  UsersIcon as NetworkIcon, // Using UsersIcon for Network
+  BriefcaseIcon,
+  MessageSquareIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems } from './app-sidebar'; // Assuming allNavItems is exported
+import AppSidebarContent, { allNavItems } from './app-sidebar';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 // Sample User Data
@@ -58,6 +63,11 @@ const sampleUser = {
   joinDate: "January 15, 2023",
   lastLogin: "5 minutes ago",
 };
+
+// Filter out Events and Newsletters for desktop header
+const desktopHeaderNavItems = allNavItems.filter(
+  item => item.label !== "Events" && item.label !== "Newsletters"
+);
 
 export default function AppHeader() {
   const pathname = usePathname();
@@ -74,7 +84,7 @@ export default function AppHeader() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {allNavItems.map((item) => (
+          {desktopHeaderNavItems.map((item) => (
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link
