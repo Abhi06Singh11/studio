@@ -133,7 +133,32 @@ export default function CreateChallengeModal({
                   <FormField control={form.control} name="startDate" render={({ field }) => ( <FormItem className="flex flex-col"> <FormLabel>Start Date</FormLabel> <Popover> <PopoverTrigger asChild> <FormControl> <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground" )}> <CalendarIcon className="mr-2 h-4 w-4" /> {field.value ? format(field.value, "PPP") : <span>Pick a date</span>} </Button> </FormControl> </PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                   <FormField control={form.control} name="endDate" render={({ field }) => ( <FormItem className="flex flex-col"> <FormLabel>End Date</FormLabel> <Popover> <PopoverTrigger asChild> <FormControl> <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground" )}> <CalendarIcon className="mr-2 h-4 w-4" /> {field.value ? format(field.value, "PPP") : <span>Pick a date</span>} </Button> </FormControl> </PopoverTrigger> <PopoverContent className="w-auto p-0" align="start"> <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => form.getValues("startDate") ? date < form.getValues("startDate") : false } initialFocus /> </PopoverContent> </Popover> <FormMessage /> </FormItem> )} />
                 </div>
-                <FormField control={form.control} name="visibility" render={({ field }) => ( <FormItem className="space-y-2"> <FormLabel>Visibility</FormLabel> <FormControl> <RadioGroup onValueChange={field.onChange} value={field.value} className="flex items-center space-x-3"> <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="Public" id="vis_public" /></FormControl> <Label htmlFor="vis_public" className="font-normal">Public</Label> </FormItem> <FormItem className="flex items-center space-x-2 space-y-0"> <FormControl><RadioGroupItem value="Private" id="vis_private" /></FormControl> <Label htmlFor="vis_private" className="font-normal">Private</Label> </FormItem> </RadioGroup> </FormControl> <FormMessage /> </FormItem> )} />
+                <FormField
+                  control={form.control}
+                  name="visibility"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel>Visibility</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          value={field.value} // Use value for controlled component
+                          className="flex items-center space-x-3"
+                        >
+                          <Label htmlFor="vis_public" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Public" id="vis_public" />
+                            <span>Public</span>
+                          </Label>
+                          <Label htmlFor="vis_private" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Private" id="vis_private" />
+                            <span>Private</span>
+                          </Label>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField control={form.control} name="coverImageUrl" render={({ field }) => ( <FormItem> <FormLabel>Cover Image URL (Optional)</FormLabel> <FormControl><Input placeholder="https://example.com/image.png" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <FormField control={form.control} name="attachmentsUrl" render={({ field }) => ( <FormItem> <FormLabel>Attachments URL (Optional, e.g., PDF spec)</FormLabel> <FormControl><Input placeholder="https://example.com/spec.pdf" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
               </div>
