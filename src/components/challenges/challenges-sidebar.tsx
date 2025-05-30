@@ -30,7 +30,7 @@ const menuItems = [
   { id: "my-submissions", label: "My Submissions", icon: HistoryIcon },
   { id: "leaderboard", label: "Leaderboard", icon: TrophyIcon },
   { id: "saved-challenges", label: "Saved Challenges", icon: BookmarkIcon },
-  { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon }, // New item
+  { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon }, 
 ];
 
 export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/" }: ChallengesSidebarProps) {
@@ -72,7 +72,7 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
       <div className="p-3 border-t mt-auto">
         <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
           <Share2Icon className="h-5 w-5" />
-          <span className="font-semibold">CodeSphere</span>
+          <span className="font-semibold">CodeHinge</span>
         </Link>
       </div>
     </aside>

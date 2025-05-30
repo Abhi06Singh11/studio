@@ -29,8 +29,11 @@ import {
   FolderPlusIcon,
   ListChecksIcon,
   PlusCircleIcon,
+  ArrowLeftIcon, // Added for the Back button
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
+import { useRouter } from "next/navigation";
+
 
 interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
@@ -74,6 +77,7 @@ const projectOrgMenuItems = [
 
 
 export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal }: ProjectWorkspaceSidebarProps) {
+  const router = useRouter();
   const [isChannelsExpanded, setIsChannelsExpanded] = React.useState(true);
   const [isDmsExpanded, setIsDmsExpanded] = React.useState(true);
   const [isOrgsExpanded, setIsOrgsExpanded] = React.useState(true);
@@ -85,7 +89,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
         <Button variant="ghost" asChild className="justify-start h-9 p-2 text-base">
           <Link href="/" className="flex items-center gap-2">
             <Share2Icon className="h-5 w-5 text-primary" />
-            <span className="font-semibold">CodeSphere</span>
+            <span className="font-semibold">CodeHinge</span>
           </Link>
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onOpenCreateActionsModal} title="Create or Join">

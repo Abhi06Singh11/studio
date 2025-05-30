@@ -70,8 +70,8 @@ export default function ActivityFeedSidebar() {
         </CardContent>
         <Separator />
         <CardFooter className="p-3">
-             <Link href="https://codesphere.com" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline flex items-center w-full justify-center">
-                Visit CodeSphere.com <ExternalLinkIcon className="ml-1 h-3 w-3"/>
+             <Link href="https://codehinge.com" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline flex items-center w-full justify-center">
+                Visit CodeHinge.com <ExternalLinkIcon className="ml-1 h-3 w-3"/>
             </Link>
         </CardFooter>
       </Card>

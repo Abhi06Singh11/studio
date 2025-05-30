@@ -172,7 +172,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
       <div className="p-3 border-t mt-auto">
          <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
           <Share2Icon className="h-5 w-5" />
-          <span className="font-semibold">CodeSphere</span>
+          <span className="font-semibold">CodeHinge</span>
         </Link>
       </div>
     </aside>

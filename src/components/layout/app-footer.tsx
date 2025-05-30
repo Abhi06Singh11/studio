@@ -34,7 +34,7 @@ const footerSections = [
     ],
   },
   {
-    title: 'Browse CodeSphere',
+    title: 'Browse CodeHinge',
     links: [
       { label: 'Learning', href: '#' },
       { label: 'Jobs', href: '/jobs' },
@@ -91,7 +91,7 @@ export default function AppFooter() {
         <div className="flex flex-col sm:flex-row items-center justify-between pt-6 text-xs text-muted-foreground">
           <div className="flex items-center mb-2 sm:mb-0">
             <Share2Icon className="h-5 w-5 mr-1.5 text-primary" />
-            <span className="font-semibold text-foreground">CodeSphere</span>
+            <span className="font-semibold text-foreground">CodeHinge</span>
             <span className="ml-2">&copy; {currentYear}</span>
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-1 justify-center sm:justify-end">

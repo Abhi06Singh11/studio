@@ -51,6 +51,7 @@ import {
   BellIcon,
   CalendarCheck2Icon,
   MailCheckIcon,
+  CrownIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -86,12 +87,12 @@ export default function AppHeader() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1.5 text-lg font-semibold text-primary mr-4 shrink-0">
           <Share2Icon className="h-7 w-7" />
-          <span className="hidden sm:inline">CodeSphere</span>
+          <span className="hidden sm:inline">CodeHinge</span>
         </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {desktopHeaderNavItems.map((item) => ( // Use filtered items here
+          {desktopHeaderNavItems.map((item) => ( 
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link

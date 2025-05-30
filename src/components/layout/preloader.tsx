@@ -9,7 +9,7 @@ export default function Preloader() {
       <div className="flex flex-col items-center">
         <Share2Icon className="h-12 w-12 text-primary mb-4 animate-pulse" />
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="mt-4 text-sm text-muted-foreground">Loading CodeSphere...</p>
+        <p className="mt-4 text-sm text-muted-foreground">Loading CodeHinge...</p>
       </div>
     </div>
   );

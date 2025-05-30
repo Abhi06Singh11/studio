@@ -20,8 +20,7 @@ import {
   BriefcaseIcon,
   LayoutDashboardIcon,
   SettingsIcon,
-  Edit3Icon,
-  CalendarCheck2Icon,
+  CalendarCheck2Icon, 
   MailCheckIcon,
 } from 'lucide-react';
 
@@ -29,7 +28,7 @@ import {
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon }, // Changed "Projects" to "Workplace"
+  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon },
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
@@ -54,7 +53,7 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
       <SheetHeader className="border-b"> 
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-primary px-4 h-14" onClick={onLinkClick}>
           <Share2Icon className="h-6 w-6" />
-          <SheetTitle className="font-semibold text-lg text-primary">CodeSphere</SheetTitle> 
+          <SheetTitle className="font-semibold text-lg text-primary">CodeHinge</SheetTitle> 
         </Link>
       </SheetHeader>
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
