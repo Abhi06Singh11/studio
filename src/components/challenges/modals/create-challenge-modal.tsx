@@ -130,44 +130,62 @@ export default function CreateChallengeModal({
                   <FormField control={form.control} name="difficulty" render={({ field }) => ( <FormItem> <FormLabel>Difficulty</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select difficulty" /></SelectTrigger></FormControl> <SelectContent> {challengeDifficulties.map(diff => <SelectItem key={diff} value={diff}>{diff}</SelectItem>)} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField control={form.control} name="startDate" render={({ field }) => ( 
-                    <FormItem className="flex flex-col"> 
-                      <FormLabel>Start Date</FormLabel> 
-                      <Popover> 
-                        <PopoverTrigger asChild> 
-                          <FormControl> 
-                            <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground" )}> 
-                              <CalendarIcon className="mr-2 h-4 w-4" /> 
-                              <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
-                            </Button> 
-                          </FormControl> 
-                        </PopoverTrigger> 
-                        <PopoverContent className="w-auto p-0" align="start"> 
-                          <Calendar mode="single" selected={field.value instanceof Date ? field.value : undefined} onSelect={field.onChange} initialFocus /> 
-                        </PopoverContent> 
-                      </Popover> 
-                      <FormMessage /> 
-                    </FormItem> 
-                  )} />
-                  <FormField control={form.control} name="endDate" render={({ field }) => ( 
-                    <FormItem className="flex flex-col"> 
-                      <FormLabel>End Date</FormLabel> 
-                      <Popover> 
-                        <PopoverTrigger asChild> 
-                          <FormControl> 
-                            <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground" )}> 
-                              <CalendarIcon className="mr-2 h-4 w-4" /> 
-                              <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
-                            </Button> 
-                          </FormControl> 
-                        </PopoverTrigger> 
-                        <PopoverContent className="w-auto p-0" align="start"> 
-                          <Calendar mode="single" selected={field.value instanceof Date ? field.value : undefined} onSelect={field.onChange} disabled={(date) => { const startDate = form.getValues("startDate"); return startDate instanceof Date ? date < startDate : false; }} initialFocus /> 
-                        </PopoverContent> 
-                      </Popover> 
-                      <FormMessage /> 
-                    </FormItem> 
-                  )} />
+                  <FormField control={form.control} name="startDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Start Date</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !(field.value instanceof Date) && "text-muted-foreground" )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value instanceof Date ? field.value : undefined}
+                              onSelect={field.onChange}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField control={form.control} name="endDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>End Date</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !(field.value instanceof Date) && "text-muted-foreground" )}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value instanceof Date ? field.value : undefined}
+                              onSelect={field.onChange}
+                              disabled={(date) => {
+                                const startDate = form.getValues("startDate");
+                                return startDate instanceof Date ? date < startDate : false;
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <FormField
                   control={form.control}
@@ -181,12 +199,12 @@ export default function CreateChallengeModal({
                           value={field.value}
                           className="flex items-center space-x-3"
                         >
-                          <Label htmlFor="vis_public" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
-                            <RadioGroupItem value="Public" id="vis_public" />
+                          <Label htmlFor="vis_public_challenge" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Public" id="vis_public_challenge" />
                             <span>Public</span>
                           </Label>
-                          <Label htmlFor="vis_private" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
-                            <RadioGroupItem value="Private" id="vis_private" />
+                          <Label htmlFor="vis_private_challenge" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Private" id="vis_private_challenge" />
                             <span>Private</span>
                           </Label>
                         </RadioGroup>
@@ -209,5 +227,6 @@ export default function CreateChallengeModal({
     </Dialog>
   );
 }
+    
 
     
