@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, useFieldArray, Control } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -154,6 +155,7 @@ const processStringToArray = (value?: string): string[] => {
 
 
 export default function ProfileEditPage() {
+  const router = useRouter();
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -430,9 +432,7 @@ export default function ProfileEditPage() {
           </Card>
           
           <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" asChild>
-              <Link href="/profiles">Cancel</Link>
-            </Button>
+            <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
             <Button type="submit">Save Profile</Button>
           </div>
         </form>
