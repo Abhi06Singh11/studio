@@ -142,7 +142,7 @@ export default function CreateChallengeModal({
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
-                          value={field.value} // Use value for controlled component
+                          value={field.value}
                           className="flex items-center space-x-3"
                         >
                           <Label htmlFor="vis_public" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
