@@ -1,3 +1,4 @@
+"use client";
 
 import RecommendationCard from '@/components/recommendation-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
