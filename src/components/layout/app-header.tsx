@@ -11,56 +11,26 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuGroup,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
   Share2Icon,
   SearchIcon,
-  User,
-  Mail,
-  Edit3,
-  KeyRound,
-  LogOut,
-  Settings,
-  Activity,
-  FolderKanbanIcon,
-  Building2,
-  Linkedin,
-  Github,
-  Slack,
-  LogIn,
-  CalendarDays,
   PanelLeft,
-  BellIcon,
-  HomeIcon,
-  UsersIcon as NetworkIcon, // Using UsersIcon for Network
-  BriefcaseIcon,
-  MessageSquareIcon,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import AppSidebarContent, { allNavItems } from './app-sidebar';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import UserProfileModal from './UserProfileModal'; // Import the new modal
 
-// Sample User Data
+// Sample User Data (can be moved or fetched from context/auth service in a real app)
 const sampleUser = {
+  id: "user_elara_vance", // Added an ID
   name: "Dr. Elara Vance",
   email: "elara.vance@example.com",
   avatarUrl: "https://placehold.co/100x100.png?p=1",
   dataAiHint: "scientist woman",
   role: "Lead Developer",
-  joinDate: "January 15, 2023",
+  joinedDate: "January 15, 2023",
   lastLogin: "5 minutes ago",
 };
 
@@ -72,6 +42,7 @@ const desktopHeaderNavItems = allNavItems.filter(
 export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State for the new modal
 
   return (
     <TooltipProvider delayDuration={100}>
@@ -116,123 +87,14 @@ export default function AppHeader() {
             />
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar className="h-8 w-8">
-                        <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint} />
-                        <AvatarFallback>{sampleUser.name.substring(0, 1)}</AvatarFallback>
-                    </Avatar>
-                    <span className="sr-only">Open user menu</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-72" align="end">
-                <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1 items-center py-2">
-                    <Avatar className="h-16 w-16 mb-2">
-                    <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint} />
-                    <AvatarFallback>{sampleUser.name.substring(0, 1)}</AvatarFallback>
-                    </Avatar>
-                    <p className="text-sm font-medium leading-none">{sampleUser.name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                    {sampleUser.email}
-                    </p>
-                </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                <DropdownMenuLabel>Account Details</DropdownMenuLabel>
-                <DropdownMenuItem className="text-xs text-muted-foreground">
-                    <User className="mr-2 h-4 w-4" />
-                    Role: <span className="font-medium text-foreground ml-1">{sampleUser.role}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs text-muted-foreground">
-                    <CalendarDays className="mr-2 h-4 w-4" />
-                    Joined: <span className="font-medium text-foreground ml-1">{sampleUser.joinDate}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs text-muted-foreground">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Last Login: <span className="font-medium text-foreground ml-1">{sampleUser.lastLogin}</span>
-                </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuLabel>Linked Accounts (Conceptual)</DropdownMenuLabel>
-                    <DropdownMenuItem disabled>
-                        <Slack className="mr-2 h-4 w-4" /> Slack: Connected
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled>
-                        <Linkedin className="mr-2 h-4 w-4" /> LinkedIn: Not Connected
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled>
-                        <Github className="mr-2 h-4 w-4" /> LeetCode (GitHub): Connected
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                <DropdownMenuLabel>User Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                    <Link href="/profiles/edit">
-                    <Edit3 className="mr-2 h-4 w-4" />
-                    <span>Edit Profile</span>
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <KeyRound className="mr-2 h-4 w-4" />
-                    <span>Change Password</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuLabel>My Hub</DropdownMenuLabel>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            <Activity className="mr-2 h-4 w-4" />
-                            My Activity
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                            <DropdownMenuItem>View Activity Log</DropdownMenuItem>
-                            <DropdownMenuItem>Content Contributions</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            <FolderKanbanIcon className="mr-2 h-4 w-4" />
-                            My Projects
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                            <DropdownMenuItem asChild><Link href="/projects">View Joined Projects</Link></DropdownMenuItem>
-                            <DropdownMenuItem>View Created Projects</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            <Building2 className="mr-2 h-4 w-4" />
-                            My Organizations
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                            <DropdownMenuItem>View My Organizations</DropdownMenuItem>
-                            <DropdownMenuItem>Manage Organization Roles</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-            </DropdownMenu>
+          {/* User Profile Avatar Trigger for Modal */}
+          <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" onClick={() => setIsProfileModalOpen(true)}>
+              <Avatar className="h-8 w-8">
+                  <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint} />
+                  <AvatarFallback>{sampleUser.name.substring(0, 1)}</AvatarFallback>
+              </Avatar>
+              <span className="sr-only">Open user menu</span>
+          </Button>
         </div>
 
         <div className="md:hidden">
@@ -249,6 +111,12 @@ export default function AppHeader() {
           </Sheet>
         </div>
       </header>
+      {/* User Profile Modal */}
+      <UserProfileModal 
+        isOpen={isProfileModalOpen} 
+        onOpenChange={setIsProfileModalOpen}
+        user={sampleUser}
+      />
     </TooltipProvider>
   );
 }
