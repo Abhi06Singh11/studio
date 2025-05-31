@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import * as React from "react";
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ import {
   PhoneIcon,
   LinkIcon as LinkIconLucide,
   ExternalLinkIcon,
-  Edit3Icon, // Added Edit3Icon
+  Edit3Icon,
 } from "lucide-react";
 import { cn } from '@/lib/utils';
 
@@ -147,7 +148,7 @@ const userProfileData: Profile = {
   location: "San Francisco, CA",
   role: "Developer",
   contactInfo: {
-    email: "elara.vance@codesphere.example.com",
+    email: "elara.vance@codehinge.example.com",
     website: "https://elara.dev",
   },
   socialLinks: {
@@ -198,6 +199,26 @@ const MOCK_CURRENT_USER_ID = "1";
 export default function ProfileViewPage() {
   const profile = userProfileData; 
   const [isBioExpanded, setIsBioExpanded] = React.useState(false);
+  const router = useRouter();
+  const [canGoBack, setCanGoBack] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      // If window.history.length > 1, it means there's a page to go back to.
+      // For a page opened in a new tab, length is usually 1.
+      setCanGoBack(window.history.length > 1);
+    }
+  }, []);
+
+  const handleBackNavigation = () => {
+    if (canGoBack) {
+      router.back();
+    } else {
+      router.push("/"); // Fallback to Activity Feed
+    }
+  };
+
+  const buttonText = canGoBack ? "Back" : "Back to Activity Feed";
 
   if (!profile) {
     return <div>Loading profile...</div>; 
@@ -210,11 +231,9 @@ export default function ProfileViewPage() {
     <div className="bg-muted/30 min-h-screen">
       <div className="container mx-auto max-w-5xl py-8 px-2 sm:px-4 lg:px-6">
         <div className="mb-6">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/">
-              <ArrowLeftIcon className="mr-2 h-4 w-4" />
-              Back to Activity Feed
-            </Link>
+          <Button variant="outline" size="sm" onClick={handleBackNavigation}>
+            <ArrowLeftIcon className="mr-2 h-4 w-4" />
+            {buttonText}
           </Button>
         </div>
 
@@ -447,3 +466,4 @@ export default function ProfileViewPage() {
     </div>
   );
 }
+
