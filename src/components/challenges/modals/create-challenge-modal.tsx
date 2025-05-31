@@ -142,16 +142,16 @@ export default function CreateChallengeModal({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full pl-3 text-left font-normal", // Adjusted class
+                                  "w-full pl-3 text-left font-normal",
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                {field.value instanceof Date ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> {/* Adjusted icon position and class */}
+                                <span className="flex items-center justify-between w-full">
+                                  <span>
+                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                  </span>
+                                  <CalendarIcon className="h-4 w-4 opacity-50" />
+                                </span>
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -180,16 +180,16 @@ export default function CreateChallengeModal({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full pl-3 text-left font-normal", // Adjusted class
+                                  "w-full pl-3 text-left font-normal",
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                {field.value instanceof Date ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> {/* Adjusted icon position and class */}
+                                <span className="flex items-center justify-between w-full">
+                                  <span>
+                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                  </span>
+                                  <CalendarIcon className="h-4 w-4 opacity-50" />
+                                </span>
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
