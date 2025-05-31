@@ -107,12 +107,9 @@ export default function MessagesPage() {
   const [conversations, setConversations] = React.useState(initialConversations);
   const [activeChatMessages, setActiveChatMessages] = React.useState(initialActiveChatMessages);
   
-  // For MVP, let's assume the first conversation is active.
-  // In a real app, this would be managed by state based on user interaction.
   const [activeConversationId, setActiveConversationId] = React.useState<string | null>(conversations.length > 0 ? conversations[0].id : null);
   const activeConversation = conversations.find(c => c.id === activeConversationId);
 
-  // Placeholder functions for actions
   const toggleStarMessage = (messageId: string) => {
     setActiveChatMessages(prevMessages => 
       prevMessages.map(msg => 
@@ -122,7 +119,6 @@ export default function MessagesPage() {
   };
 
   const addReactionToMessage = (messageId: string, emoji: string) => {
-    // This is a placeholder. In a real app, you'd update counts, check if user already reacted, etc.
     console.log(`Reacted with ${emoji} to message ${messageId}`);
     setActiveChatMessages(prevMessages =>
       prevMessages.map(msg => {
@@ -161,9 +157,9 @@ export default function MessagesPage() {
         <p className="text-muted-foreground">Your private conversations live here.</p>
       </div>
       
-      <Card className="flex-1 flex overflow-hidden shadow-lg rounded-xl">
+      <Card className="flex-1 flex flex-col md:flex-row overflow-hidden shadow-lg rounded-xl">
         {/* Sidebar with conversations list */}
-        <div className="w-1/3 border-r flex flex-col">
+        <div className="w-full md:w-1/3 border-b md:border-b-0 md:border-r flex flex-col max-h-[250px] md:max-h-full">
           <div className="p-4 border-b">
             <div className="relative">
               <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -201,7 +197,7 @@ export default function MessagesPage() {
         </div>
 
         {/* Main chat area */}
-        <div className="w-2/3 flex flex-col bg-background">
+        <div className="w-full md:w-2/3 flex flex-col bg-background flex-1 md:flex-auto">
           {activeConversation ? (
             <>
               <div className="p-4 border-b">

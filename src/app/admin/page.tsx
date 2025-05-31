@@ -60,7 +60,7 @@ export default function AdminPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
         <h1 className="text-3xl font-bold tracking-tight flex items-center">
           <ShieldIcon className="mr-3 h-8 w-8 text-primary" />
           Admin Panel

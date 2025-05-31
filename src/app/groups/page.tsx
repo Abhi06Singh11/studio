@@ -60,7 +60,7 @@ export default function GroupsPage() {
         <Input
           type="search"
           placeholder="Search groups..."
-          className="pl-10 text-base h-12 rounded-lg"
+          className="pl-10 text-sm md:text-base h-12 rounded-lg"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

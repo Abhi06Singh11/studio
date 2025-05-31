@@ -40,7 +40,7 @@ export default function ClientRoot({
             isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
           )}>
             <div key={pathname} className={cn(
-              "h-full py-8", 
+              "h-full py-4 sm:py-6 md:py-8", 
               isMounted && !isLoading ? "animate-fadeInPage" : "" 
             )}>
               {children}
