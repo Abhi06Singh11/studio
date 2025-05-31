@@ -19,6 +19,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle as UiCardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   User,
   Edit3,
@@ -79,7 +81,7 @@ const dummyOrganizations = [
   { id: 'org2', name: 'Open Source Community Contributors', role: 'Member', joined: '2023-05-01', description: 'A group for external contributors to CodeHinge open-source initiatives.' },
 ];
 
-const dummyActivityStats = { posts: 12, comments: 48, likesReceived: 135 };
+const dummyActivityStats = { posts: 12, comments: 8, likesReceived: 25 };
 
 
 export default function UserProfileModal({ isOpen, onOpenChange, user }: UserProfileModalProps) {
@@ -248,15 +250,15 @@ export default function UserProfileModal({ isOpen, onOpenChange, user }: UserPro
     <div className="p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Posts Created</CardTitle></CardHeader>
+                <CardHeader className="pb-2"><UiCardTitle className="text-sm font-medium text-muted-foreground">Posts Created</UiCardTitle></CardHeader>
                 <CardContent><p className="text-2xl font-bold">{dummyActivityStats.posts}</p></CardContent>
             </Card>
             <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Comments Made</CardTitle></CardHeader>
+                <CardHeader className="pb-2"><UiCardTitle className="text-sm font-medium text-muted-foreground">Comments Made</UiCardTitle></CardHeader>
                 <CardContent><p className="text-2xl font-bold">{dummyActivityStats.comments}</p></CardContent>
             </Card>
             <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Likes Received</CardTitle></CardHeader>
+                <CardHeader className="pb-2"><UiCardTitle className="text-sm font-medium text-muted-foreground">Likes Received</UiCardTitle></CardHeader>
                 <CardContent><p className="text-2xl font-bold">{dummyActivityStats.likesReceived}</p></CardContent>
             </Card>
         </div>
@@ -269,7 +271,7 @@ export default function UserProfileModal({ isOpen, onOpenChange, user }: UserPro
         {dummyProjects.length > 0 ? dummyProjects.map(project => (
             <Card key={project.id} className="shadow-sm">
                 <CardHeader className="pb-2 pt-3">
-                    <CardTitle className="text-base font-semibold">{project.name}</CardTitle>
+                    <UiCardTitle className="text-base font-semibold">{project.name}</UiCardTitle>
                     <div className="text-xs text-muted-foreground">
                         Status: <Badge variant={project.status === "Active" ? "default" : project.status === "Completed" ? "secondary" : "outline"} className="ml-1">{project.status}</Badge>
                         <span className="mx-1.5">&bull;</span> Created: {project.created}
@@ -291,7 +293,7 @@ export default function UserProfileModal({ isOpen, onOpenChange, user }: UserPro
         {dummyOrganizations.length > 0 ? dummyOrganizations.map(org => (
             <Card key={org.id} className="shadow-sm">
                  <CardHeader className="pb-2 pt-3">
-                    <CardTitle className="text-base font-semibold">{org.name}</CardTitle>
+                    <UiCardTitle className="text-base font-semibold">{org.name}</UiCardTitle>
                     <div className="text-xs text-muted-foreground">
                         Your Role: <Badge variant="secondary" className="ml-1">{org.role}</Badge>
                         <span className="mx-1.5">&bull;</span> Joined: {org.joined}
