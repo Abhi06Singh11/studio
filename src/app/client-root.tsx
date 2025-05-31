@@ -40,7 +40,10 @@ export default function ClientRoot({
             isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
           )}>
             <div key={pathname} className={cn(
-              "h-full py-4 sm:py-6 md:py-8", 
+              "h-full",
+              // Apply py-8 initially (server & client initial render)
+              // Then switch to responsive padding after mount
+              isMounted ? "py-4 sm:py-6 md:py-8" : "py-8",
               isMounted && !isLoading ? "animate-fadeInPage" : "" 
             )}>
               {children}
