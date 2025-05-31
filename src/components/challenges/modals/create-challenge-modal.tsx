@@ -130,16 +130,28 @@ export default function CreateChallengeModal({
                   <FormField control={form.control} name="difficulty" render={({ field }) => ( <FormItem> <FormLabel>Difficulty</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select difficulty" /></SelectTrigger></FormControl> <SelectContent> {challengeDifficulties.map(diff => <SelectItem key={diff} value={diff}>{diff}</SelectItem>)} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField control={form.control} name="startDate"
+                  <FormField
+                    control={form.control}
+                    name="startDate"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Start Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
-                              <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !(field.value instanceof Date) && "text-muted-foreground" )}>
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full justify-start text-left font-normal",
+                                  !(field.value instanceof Date) && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value instanceof Date ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -156,16 +168,28 @@ export default function CreateChallengeModal({
                       </FormItem>
                     )}
                   />
-                  <FormField control={form.control} name="endDate"
+                  <FormField
+                    control={form.control}
+                    name="endDate"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>End Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
-                              <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !(field.value instanceof Date) && "text-muted-foreground" )}>
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>{field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}</span>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full justify-start text-left font-normal",
+                                  !(field.value instanceof Date) && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value instanceof Date ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -199,12 +223,12 @@ export default function CreateChallengeModal({
                           value={field.value}
                           className="flex items-center space-x-3"
                         >
-                          <Label htmlFor="vis_public_challenge" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
-                            <RadioGroupItem value="Public" id="vis_public_challenge" />
+                          <Label htmlFor="vis_public_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Public" id="vis_public_challenge_modal" />
                             <span>Public</span>
                           </Label>
-                          <Label htmlFor="vis_private_challenge" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
-                            <RadioGroupItem value="Private" id="vis_private_challenge" />
+                          <Label htmlFor="vis_private_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                            <RadioGroupItem value="Private" id="vis_private_challenge_modal" />
                             <span>Private</span>
                           </Label>
                         </RadioGroup>
