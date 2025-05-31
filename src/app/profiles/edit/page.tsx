@@ -33,6 +33,7 @@ import { toast } from "@/hooks/use-toast";
 import { ArrowLeftIcon, UserIcon, BriefcaseIcon, GraduationCapIcon, LinkIcon, EyeIcon, UploadCloudIcon, BuildingIcon, DollarSignIcon, LightbulbIcon, UsersIcon, LockIcon, SmileIcon, BellIcon, PlusCircleIcon, Trash2Icon, BookOpenIcon, ExternalLinkIcon, StarIcon, InfoIcon, ShieldQuestionIcon, SettingsIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const workExperienceSchema = z.object({
   id: z.string().optional(), // For unique key in mapping
@@ -156,17 +157,50 @@ const processStringToArray = (value?: string): string[] => {
 
 export default function ProfileEditPage() {
   const router = useRouter();
+  const [canGoBackSmartly, setCanGoBackSmartly] = React.useState(false);
+  const [smartBackButtonText, setSmartBackButtonText] = React.useState("Back to Profiles");
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
   });
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      const referrerUrl = document.referrer ? new URL(document.referrer) : null;
+      const referrerPath = referrerUrl ? referrerUrl.pathname : '';
+      
+      const cameFromDifferentRelevantPage = 
+        window.history.length > 1 &&
+        referrerUrl &&
+        referrerUrl.origin === window.location.origin && // Same origin check
+        referrerPath !== '/profiles' && // Not from the main profiles page
+        referrerPath !== '/profiles/edit'; // Not from itself (e.g., after a save action that stays on page)
+
+      if (cameFromDifferentRelevantPage) {
+        setCanGoBackSmartly(true);
+        setSmartBackButtonText("Back");
+      } else {
+        setCanGoBackSmartly(false);
+        setSmartBackButtonText("Back to Profiles");
+      }
+    }
+  }, []);
+
+  const handleSmartBackNavigation = () => {
+    if (canGoBackSmartly) {
+      router.back();
+    } else {
+      router.push('/profiles'); // Default to /profiles page
+    }
+  };
+
   const watchedRole = form.watch("role");
   const profilePictureUrl = form.watch("profilePictureUrl");
 
   const { fields: workFields, append: appendWork, remove: removeWork } = useFieldArray({
-    control: form.control as Control<ProfileFormValues>, // Cast needed for nested arrays
+    control: form.control as Control<ProfileFormValues>, 
     name: "workExperience",
   });
 
@@ -178,7 +212,6 @@ export default function ProfileEditPage() {
   function onSubmit(data: ProfileFormValues) {
     const { currentPassword, newPassword, confirmPassword, ...profileDataToSave } = data;
     
-    // Process comma-separated string fields into arrays for Firestore
     const processedProfileData = {
       ...profileDataToSave,
       developerProfile: data.role === "Developer" ? {
@@ -195,13 +228,10 @@ export default function ProfileEditPage() {
         investmentInterests: processStringToArray(data.investmentInterests),
         pastInvestments: processStringToArray(data.pastInvestments),
       } : undefined,
-      // Remove role-specific flat fields
       developerSkills: undefined,
       developerTools: undefined,
       developerProjects: undefined,
-      // startupName, ideaSummary, pitchDeckUrl, investmentInterests, pastInvestments are fine as they are already role specific
     };
-
 
     console.log("Profile Data to Save (Conceptual Firestore Document):", processedProfileData);
     if (newPassword && currentPassword) {
@@ -217,10 +247,14 @@ export default function ProfileEditPage() {
   return (
     <div className="space-y-6 pb-16">
        <div className="flex items-center justify-between">
-        <Link href="/profiles" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+        <Button 
+          variant="link" 
+          onClick={handleSmartBackNavigation} 
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground p-0 h-auto hover:no-underline"
+        >
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Back to Profiles
-        </Link>
+          {smartBackButtonText}
+        </Button>
         <Button variant="outline" size="sm" onClick={() => form.reset(defaultValues)}>Reset Form</Button>
       </div>
       
