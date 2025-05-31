@@ -146,9 +146,11 @@ export default function CreateChallengeModal({
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                <span className="flex items-center w-full">
+                                  <CalendarIcon className="mr-2 h-4 w-4" />
+                                  <span>
+                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                  </span>
                                 </span>
                               </Button>
                             </FormControl>
@@ -182,9 +184,11 @@ export default function CreateChallengeModal({
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>
-                                  {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                <span className="flex items-center w-full">
+                                  <CalendarIcon className="mr-2 h-4 w-4" />
+                                  <span>
+                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                  </span>
                                 </span>
                               </Button>
                             </FormControl>
@@ -217,13 +221,13 @@ export default function CreateChallengeModal({
                         <RadioGroup
                           onValueChange={field.onChange}
                           value={field.value}
-                          className="flex items-center space-x-3"
+                          className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-3"
                         >
-                          <Label htmlFor="vis_public_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                          <Label htmlFor="vis_public_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
                             <RadioGroupItem value="Public" id="vis_public_challenge_modal" />
                             <span>Public</span>
                           </Label>
-                          <Label htmlFor="vis_private_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer">
+                          <Label htmlFor="vis_private_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
                             <RadioGroupItem value="Private" id="vis_private_challenge_modal" />
                             <span>Private</span>
                           </Label>
