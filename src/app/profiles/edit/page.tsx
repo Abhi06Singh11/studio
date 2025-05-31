@@ -157,44 +157,12 @@ const processStringToArray = (value?: string): string[] => {
 
 export default function ProfileEditPage() {
   const router = useRouter();
-  const [canGoBackSmartly, setCanGoBackSmartly] = React.useState(false);
-  const [smartBackButtonText, setSmartBackButtonText] = React.useState("Back to Profiles");
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
   });
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined" && typeof document !== "undefined") {
-      const referrerUrl = document.referrer ? new URL(document.referrer) : null;
-      const referrerPath = referrerUrl ? referrerUrl.pathname : '';
-      
-      const cameFromDifferentRelevantPage = 
-        window.history.length > 1 &&
-        referrerUrl &&
-        referrerUrl.origin === window.location.origin && // Same origin check
-        referrerPath !== '/profiles' && // Not from the main profiles page
-        referrerPath !== '/profiles/edit'; // Not from itself (e.g., after a save action that stays on page)
-
-      if (cameFromDifferentRelevantPage) {
-        setCanGoBackSmartly(true);
-        setSmartBackButtonText("Back");
-      } else {
-        setCanGoBackSmartly(false);
-        setSmartBackButtonText("Back to Profiles");
-      }
-    }
-  }, []);
-
-  const handleSmartBackNavigation = () => {
-    if (canGoBackSmartly) {
-      router.back();
-    } else {
-      router.push('/profiles'); // Default to /profiles page
-    }
-  };
 
   const watchedRole = form.watch("role");
   const profilePictureUrl = form.watch("profilePictureUrl");
@@ -249,11 +217,11 @@ export default function ProfileEditPage() {
        <div className="flex items-center justify-between">
         <Button 
           variant="link" 
-          onClick={handleSmartBackNavigation} 
+          onClick={() => router.back()} 
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground p-0 h-auto hover:no-underline"
         >
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          {smartBackButtonText}
+          Back
         </Button>
         <Button variant="outline" size="sm" onClick={() => form.reset(defaultValues)}>Reset Form</Button>
       </div>
