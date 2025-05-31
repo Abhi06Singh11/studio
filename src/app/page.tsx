@@ -5,14 +5,14 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; 
 import ActivityFeedItem from '@/components/activity-feed-item';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'; // Added CardHeader, CardTitle, CardDescription
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon } from 'lucide-react'; 
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon, SparklesIcon } from 'lucide-react'; // Added SparklesIcon
 import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-// PremiumCtaSidebar import removed
+import PremiumCenterModal from "@/components/premium-flow/PremiumCenterModal"; // Import PremiumCenterModal
 import { Input } from "@/components/ui/input"; 
 
 const initialFeedItems = [
@@ -61,8 +61,30 @@ const currentUser = {
   avatarAiHint: "scientist woman"
 };
 
+// New component for the Premium CTA Card
+function PremiumCtaCard({ onOpenModal }: { onOpenModal: () => void }) {
+  return (
+    <Card className="shadow-lg rounded-xl">
+      <CardHeader className="items-center text-center pb-3">
+        <SparklesIcon className="h-8 w-8 text-yellow-400 mb-2" />
+        <CardTitle className="text-lg font-semibold">Unlock CodeHinge Premium</CardTitle>
+        <CardDescription className="text-xs px-2">
+          Elevate your experience with advanced tools, insights, and more.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="text-center">
+        <Button onClick={onOpenModal} className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground">
+          Explore Premium Plans
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+
 export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = React.useState(false); // State for Premium Modal
   const router = useRouter(); 
   const [feedItems, setFeedItems] = React.useState(initialFeedItems); 
   const [searchTerm, setSearchTerm] = React.useState(""); 
@@ -73,94 +95,102 @@ export default function ActivityFeedPage() {
   );
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-        {/* Left Sidebar - User Profile & Quick Access */}
-        <div className="lg:col-span-3 space-y-6 order-1 lg:order-1">
-          <ActivityFeedSidebar />
-        </div>
+          {/* Left Sidebar - User Profile & Quick Access */}
+          <div className="lg:col-span-3 space-y-6 order-1 lg:order-1">
+            <ActivityFeedSidebar />
+          </div>
 
-        {/* Center Content - Activity Feed */}
-        <main className="lg:col-span-6 space-y-6 order-2 lg:order-2">
-          {/* Create Post Box */}
-          <Card className="shadow-lg rounded-xl">
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-3">
-                <Link href="/profiles/edit" passHref>
-                  <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
-                    <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
-                    <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
-                  </Avatar>
-                </Link>
-                <Button
-                  variant="outline"
-                  className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:text-accent-foreground"
-                  onClick={() => setIsCreatePostModalOpen(true)}
-                >
-                  Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
-                </Button>
-              </div>
-              <div className="mt-3 flex justify-around pt-3 border-t">
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                  <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
-                </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                  <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
-                </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                  <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Center Content - Activity Feed */}
+          <main className="lg:col-span-6 space-y-6 order-2 lg:order-2">
+            {/* Create Post Box */}
+            <Card className="shadow-lg rounded-xl">
+              <CardContent className="p-4">
+                <div className="flex items-start space-x-3">
+                  <Link href="/profiles/edit" passHref>
+                    <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                      <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} data-ai-hint={currentUser.avatarAiHint} />
+                      <AvatarFallback>{currentUser.name?.substring(0, 1) || 'U'}</AvatarFallback>
+                    </Avatar>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="flex-1 justify-start text-left h-12 px-4 text-muted-foreground hover:text-accent-foreground"
+                    onClick={() => setIsCreatePostModalOpen(true)}
+                  >
+                    Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
+                  </Button>
+                </div>
+                <div className="mt-3 flex justify-around pt-3 border-t">
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
+                    <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
+                  </Button>
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
+                    <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
+                  </Button>
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
+                    <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Search Bar for Feed */}
-          <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search feed by content or user..."
-              className="pl-10 w-full"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+            {/* Search Bar for Feed */}
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search feed by content or user..."
+                className="pl-10 w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <CreatePostModal
+              isOpen={isCreatePostModalOpen}
+              onOpenChange={setIsCreatePostModalOpen}
+              currentUser={currentUser}
             />
+
+            {/* Feed Items */}
+            <div className="space-y-6">
+              {filteredFeedItems.map((item) => (
+                <ActivityFeedItem key={item.id} {...item} />
+              ))}
+              {filteredFeedItems.length === 0 && searchTerm && (
+                <Card>
+                  <CardContent className="p-6 text-center text-muted-foreground">
+                    No posts found matching your search term.
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </main>
+
+          {/* Right Sidebar - Newsletter & Premium CTA (Desktop) */}
+          <div className="lg:col-span-3 space-y-6 order-3 lg:order-3">
+            <NewsletterSidebar />
+            <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} /> {/* Use the new card component */}
           </div>
 
-          <CreatePostModal
-            isOpen={isCreatePostModalOpen}
-            onOpenChange={setIsCreatePostModalOpen}
-            currentUser={currentUser}
-          />
-
-          {/* Feed Items */}
-          <div className="space-y-6">
-            {filteredFeedItems.map((item) => (
-              <ActivityFeedItem key={item.id} {...item} />
-            ))}
-             {filteredFeedItems.length === 0 && searchTerm && (
-              <Card>
-                <CardContent className="p-6 text-center text-muted-foreground">
-                  No posts found matching your search term.
-                </CardContent>
-              </Card>
-            )}
+          {/* Sidebars for Mobile (Stacked) */}
+          <div className="lg:hidden col-span-1 mt-8 space-y-6 order-4">
+            <ActivityFeedSidebar /> 
+            <NewsletterSidebar />
+            <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} /> {/* Use the new card component */}
           </div>
-        </main>
-
-        {/* Right Sidebar - Newsletter & Premium CTA (Desktop) */}
-        <div className="lg:col-span-3 space-y-6 order-3 lg:order-3">
-          <NewsletterSidebar />
-          {/* PremiumCtaSidebar usage removed */}
-        </div>
-
-        {/* Sidebars for Mobile (Stacked) */}
-        <div className="lg:hidden col-span-1 mt-8 space-y-6 order-4">
-          <ActivityFeedSidebar /> 
-          <NewsletterSidebar />
-          {/* PremiumCtaSidebar usage removed */}
         </div>
       </div>
-    </div>
+      {/* Premium Modal */}
+      <PremiumCenterModal 
+        isOpen={isPremiumModalOpen}
+        onOpenChange={setIsPremiumModalOpen}
+      />
+    </>
   );
 }
+
