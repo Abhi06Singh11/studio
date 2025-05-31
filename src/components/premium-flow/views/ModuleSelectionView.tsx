@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -6,11 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { premiumModulesData, type PremiumModule } from "../premium-data";
-import Link from "next/link"; // Import Link
+import { Checkbox } from "@/components/ui/checkbox"; // Using Checkbox instead of Switch for multi-select
+import { toast } from "@/hooks/use-toast";
 
 interface ModuleSelectionViewProps {
   onShowModuleDetail: (moduleId: string) => void;
-  onProceedToCheckout: (selectedPlanDescription: string) => void;
+  onProceedToCheckout: (selectedPlanDescription: string, totalPrice: string) => void;
 }
 
 export default function ModuleSelectionView({
@@ -28,53 +30,61 @@ export default function ModuleSelectionView({
     }));
   };
 
-  const getSelectedModulesCount = () => {
-    return Object.values(selectedModules).filter(Boolean).length;
+  const getSelectedModulesDetails = () => {
+    return premiumModulesData.filter(module => selectedModules[module.id]);
   };
 
-  const getSelectedModulesPrice = () => {
-    // Simplified pricing for MVP - just sums monthly prices
-    // In a real app, this would be more complex (e.g., yearly discounts, currency)
-    return Object.entries(selectedModules).reduce((total, [id, isSelected]) => {
-      if (isSelected) {
-        const module = premiumModulesData.find(m => m.id === id);
-        if (module) {
-          // Extract number from price string like "₹199"
-          const price = parseInt(module.priceMonthly.replace(/[^0-9]/g, ''), 10);
-          return total + (isNaN(price) ? 0 : price);
-        }
-      }
-      return total;
-    }, 0);
+  const selectedModulesCount = getSelectedModulesDetails().length;
+  
+  const totalPriceMonthly = getSelectedModulesDetails().reduce((total, module) => {
+    const price = parseInt(module.priceMonthly.replace(/[^0-9]/g, ''), 10);
+    return total + (isNaN(price) ? 0 : price);
+  }, 0);
+
+  const handleCheckout = () => {
+    if (selectedModulesCount === 0) {
+      toast({
+        title: "No Modules Selected",
+        description: "Please select at least one module to proceed.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const selectedModuleNames = getSelectedModulesDetails().map(m => m.name).join(', ');
+    onProceedToCheckout(
+      `${selectedModulesCount} module(s): ${selectedModuleNames}`, 
+      `₹${totalPriceMonthly}/month` // Conceptual monthly price
+    );
   };
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {premiumModulesData.map((module) => (
-          <Card key={module.id} className="flex flex-col hover:shadow-md transition-shadow">
+          <Card key={module.id} className="flex flex-col hover:shadow-lg transition-shadow rounded-xl">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <module.icon className="h-6 w-6 text-primary" />
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2 flex-grow">
+                  <module.icon className="h-7 w-7 text-primary flex-shrink-0" />
                   <CardTitle className="text-md font-semibold">{module.name}</CardTitle>
                 </div>
-                <Switch
-                  id={`module-switch-${module.id}`}
+                <Checkbox
+                  id={`module-checkbox-${module.id}`}
                   checked={!!selectedModules[module.id]}
                   onCheckedChange={() => handleToggleModule(module.id)}
                   aria-label={`Select ${module.name}`}
+                  className="mt-1"
                 />
               </div>
             </CardHeader>
-            <CardContent className="flex-grow text-sm text-muted-foreground">
-              <p className="mb-2">{module.shortDescription}</p>
+            <CardContent className="flex-grow text-sm text-muted-foreground space-y-1.5">
+              <p className="mb-2 line-clamp-2">{module.shortDescription}</p>
               <p className="font-semibold text-foreground">{module.priceMonthly}/month</p>
             </CardContent>
             <CardFooter className="p-3 border-t">
               <Button
                 variant="link"
-                className="text-xs p-0 h-auto"
+                className="text-xs p-0 h-auto text-primary hover:underline"
                 onClick={() => onShowModuleDetail(module.id)}
               >
                 Learn more
@@ -84,21 +94,21 @@ export default function ModuleSelectionView({
         ))}
       </div>
 
-      {getSelectedModulesCount() > 0 && (
-        <Card className="mt-6 p-4 sticky bottom-0 bg-background border-t shadow-lg">
+      {selectedModulesCount > 0 && (
+        <Card className="mt-6 p-4 sticky bottom-0 bg-card border-t shadow-lg rounded-xl">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
             <div className="text-center sm:text-left">
               <p className="font-semibold">
-                {getSelectedModulesCount()} Module(s) Selected
+                {selectedModulesCount} Module(s) Selected
               </p>
               <p className="text-sm text-muted-foreground">
-                Total: ₹{getSelectedModulesPrice()}/month (Conceptual)
+                Total: ₹{totalPriceMonthly}/month (Conceptual)
               </p>
             </div>
             <Button 
               size="lg" 
               className="w-full sm:w-auto"
-              onClick={() => onProceedToCheckout(`${getSelectedModulesCount()} module(s)`)}
+              onClick={handleCheckout}
             >
               Proceed to Checkout
             </Button>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -18,6 +19,7 @@ import ModuleDetailView from "./views/ModuleDetailView";
 import type { PremiumModule } from "./premium-data";
 import { premiumModulesData } from "./premium-data";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "@/hooks/use-toast";
 
 export type PremiumModalView =
   | "initial"
@@ -47,7 +49,10 @@ export default function PremiumCenterModal({
     if (moduleId) {
       setDetailModuleId(moduleId);
     } else {
-      setDetailModuleId(null);
+      // Clear detailModuleId if not navigating to moduleDetail or if moduleId is not provided
+      if (view !== 'moduleDetail') {
+        setDetailModuleId(null);
+      }
     }
   };
 
@@ -55,17 +60,16 @@ export default function PremiumCenterModal({
     if (historyStack.length > 1) {
       const newStack = historyStack.slice(0, -1);
       setHistoryStack(newStack);
-      setCurrentView(newStack[newStack.length - 1]);
-      // If going back from moduleDetail, clear detailModuleId
-      if (currentView === 'moduleDetail' && newStack[newStack.length - 1] !== 'moduleDetail') {
+      const previousView = newStack[newStack.length - 1];
+      setCurrentView(previousView);
+      if (previousView !== 'moduleDetail') {
         setDetailModuleId(null);
       }
     } else {
-      onOpenChange(false); // Close modal if at the root view
+      onOpenChange(false); 
     }
   };
   
-  // Reset to initial view when modal is closed and reopened
   React.useEffect(() => {
     if (isOpen) {
       setCurrentView("initial");
@@ -79,20 +83,20 @@ export default function PremiumCenterModal({
     switch (currentView) {
       case "bundlePlan":
         return {
-          title: "All-in-One Premium Bundle",
+          title: "All-in-One Premium",
           description:
-            "Unlock the full power of CodeHinge with our comprehensive bundle.",
+            "Unlock the full power of CodeHinge across all modules at one unbeatable price.",
         };
       case "moduleSelection":
         return {
-          title: "Customize Your Premium",
+          title: "Customize Your Premium Experience",
           description:
-            "Choose the premium modules that best fit your needs.",
+            "Pick modules individually to upgrade.",
         };
       case "moduleDetail":
         const module = premiumModulesData.find((m) => m.id === detailModuleId);
         return {
-          title: module ? `${module.name} Details` : "Module Details",
+          title: module ? `${module.name} Premium` : "Module Details",
           description: module
             ? `Learn more about ${module.name} premium features.`
             : "Detailed information about the selected module.",
@@ -102,7 +106,7 @@ export default function PremiumCenterModal({
         return {
           title: "Upgrade to CodeHinge Premium",
           description:
-            "Choose a full-featured bundle or tailor your upgrade with specific premium modules.",
+            "Choose the full-featured All-in-One Premium plan or customize your own upgrade.",
         };
     }
   };
@@ -110,16 +114,19 @@ export default function PremiumCenterModal({
   const { title, description } = getTitleAndDescription();
   const selectedModule = premiumModulesData.find((m) => m.id === detailModuleId);
 
-  const handleConceptualUpgrade = (planName: string) => {
-    alert(`Conceptual: Upgrading to ${planName}...`);
-    // In a real app, trigger Stripe flow here
+  const handleConceptualUpgrade = (planName: string, price: string) => {
+    toast({
+        title: "Subscription Request (Conceptual)",
+        description: `You've chosen to subscribe to ${planName} for ${price}. Proceeding to checkout... (Conceptual)`,
+    });
+    // In a real app, trigger Stripe flow here or navigate to checkout
     onOpenChange(false); // Close modal on conceptual upgrade
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[90vh] flex flex-col p-0">
-        <DialogHeader className="p-6 pb-4 border-b">
+        <DialogHeader className="p-6 pb-4 border-b flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {currentView !== "initial" && (

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ export default function InitialOptionsView({
         </CardHeader>
         <CardContent>
           <Button onClick={onNavigateToBundle} className="w-full">
-            View Bundle Details <ArrowRightIcon className="ml-2 h-4 w-4" />
+            Go All-in-One <ArrowRightIcon className="ml-2 h-4 w-4" />
           </Button>
         </CardContent>
       </Card>
@@ -36,7 +37,7 @@ export default function InitialOptionsView({
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
             <Settings2Icon className="h-8 w-8 text-primary" />
-            <CardTitle className="text-lg">Choose Individual Modules</CardTitle>
+            <CardTitle className="text-lg">Customize Premium</CardTitle>
           </div>
           <CardDescription>
             Tailor your experience by upgrading specific modules that matter most to you.
