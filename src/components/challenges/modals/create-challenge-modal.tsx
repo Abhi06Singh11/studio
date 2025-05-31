@@ -146,12 +146,10 @@ export default function CreateChallengeModal({
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                {field.value instanceof Date ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <span>
+                                  {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                </span>
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -184,12 +182,10 @@ export default function CreateChallengeModal({
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                {field.value instanceof Date ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <span>
+                                  {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
+                                </span>
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
