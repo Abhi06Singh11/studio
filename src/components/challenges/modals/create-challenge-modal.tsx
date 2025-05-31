@@ -142,16 +142,16 @@ export default function CreateChallengeModal({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
+                                  "w-full pl-3 text-left font-normal", // Adjusted class
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                <span className="flex items-center w-full">
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  <span>
-                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
-                                  </span>
-                                </span>
+                                {field.value instanceof Date ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> {/* Adjusted icon position and class */}
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -180,16 +180,16 @@ export default function CreateChallengeModal({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
+                                  "w-full pl-3 text-left font-normal", // Adjusted class
                                   !(field.value instanceof Date) && "text-muted-foreground"
                                 )}
                               >
-                                <span className="flex items-center w-full">
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  <span>
-                                    {field.value instanceof Date ? format(field.value, "PPP") : "Pick a date"}
-                                  </span>
-                                </span>
+                                {field.value instanceof Date ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" /> {/* Adjusted icon position and class */}
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -223,12 +223,12 @@ export default function CreateChallengeModal({
                           value={field.value}
                           className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-3"
                         >
-                          <Label htmlFor="vis_public_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
-                            <RadioGroupItem value="Public" id="vis_public_challenge_modal" />
+                          <Label htmlFor="vis_public_challenge_modal_form" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
+                            <RadioGroupItem value="Public" id="vis_public_challenge_modal_form" />
                             <span>Public</span>
                           </Label>
-                          <Label htmlFor="vis_private_challenge_modal" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
-                            <RadioGroupItem value="Private" id="vis_private_challenge_modal" />
+                          <Label htmlFor="vis_private_challenge_modal_form" className="flex items-center space-x-2 space-y-0 font-normal cursor-pointer p-2 border rounded-md hover:bg-muted/50 has-[[data-state=checked]]:border-primary">
+                            <RadioGroupItem value="Private" id="vis_private_challenge_modal_form" />
                             <span>Private</span>
                           </Label>
                         </RadioGroup>
@@ -251,6 +251,4 @@ export default function CreateChallengeModal({
     </Dialog>
   );
 }
-    
-
     
