@@ -23,6 +23,7 @@ import {
   CalendarCheck2Icon, 
   MailCheckIcon,
 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile'; // Import useIsMobile
 
 // Comprehensive list of navigation items for the mobile drawer AND desktop header
 export const allNavItems = [
@@ -47,6 +48,13 @@ interface AppSidebarContentProps {
 // to be used inside the mobile SheetContent.
 export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProps) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
+
+  const mobileHiddenItemsLabels = ["Events", "Newsletters"];
+
+  const visibleNavItems = isMobile 
+    ? allNavItems.filter(item => !mobileHiddenItemsLabels.includes(item.label))
+    : allNavItems;
 
   return (
     <div className="flex flex-col h-full bg-card text-card-foreground">
@@ -57,21 +65,20 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
         </Link>
       </SheetHeader>
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
-        {allNavItems.map((item) => (
+        {visibleNavItems.map((item) => (
           <Link
             key={item.label}
             href={item.href}
             onClick={onLinkClick}
             className={cn(
-              buttonVariants({ variant: 'ghost' }),
-              "w-full justify-start gap-x-3 text-sm h-10 px-3",
+              "flex items-center w-full justify-start gap-x-3 text-sm h-10 px-3 rounded-md transition-colors duration-150", // Base styles
               (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
-                ? "bg-primary/10 text-primary font-semibold"
-                : "hover:bg-muted/50"
+                ? "bg-primary/10 text-primary font-semibold" // Active state
+                : "text-muted-foreground hover:bg-muted/50 hover:text-primary hover:font-semibold" // Inactive state with hover
             )}
             aria-current={ (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined }
           >
-            <item.icon className="h-5 w-5 text-muted-foreground" />
+            <item.icon className="h-5 w-5" /> {/* Icon color will inherit from parent Link */}
             {item.label}
           </Link>
         ))}
