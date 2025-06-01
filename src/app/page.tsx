@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import ActivityFeedItem from '@/components/activity-feed-item';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'; // Added CardHeader, CardTitle, CardDescription
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,8 @@ import CreatePostModal from "@/components/post/create-post-modal";
 import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
 import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
 import PremiumCenterModal from "@/components/premium-flow/PremiumCenterModal"; // Import PremiumCenterModal
-import { Input } from "@/components/ui/input"; 
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 const initialFeedItems = [
   {
@@ -85,18 +86,18 @@ function PremiumCtaCard({ onOpenModal }: { onOpenModal: () => void }) {
 export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
   const [isPremiumModalOpen, setIsPremiumModalOpen] = React.useState(false); // State for Premium Modal
-  const router = useRouter(); 
-  const [feedItems, setFeedItems] = React.useState(initialFeedItems); 
-  const [searchTerm, setSearchTerm] = React.useState(""); 
+  const router = useRouter();
+  const [feedItems, setFeedItems] = React.useState(initialFeedItems);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
-  const filteredFeedItems = (feedItems || []).filter(item => 
+  const filteredFeedItems = (feedItems || []).filter(item =>
     item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Removed py-8 */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Left Sidebar - User Profile & Quick Access */}
@@ -124,15 +125,15 @@ export default function ActivityFeedPage() {
                     Start a post, {currentUser.name?.split(' ')[0] || 'User'}...
                   </Button>
                 </div>
-                <div className="mt-3 flex justify-around pt-3 border-t">
-                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                    <VideoIcon className="mr-2 h-5 w-5 text-blue-500" /> Video
+                <div className="mt-3 grid grid-cols-3 gap-1 pt-3 border-t">
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground hover:bg-accent flex items-center justify-center flex-col sm:flex-row h-auto py-2 sm:h-10 sm:py-1 text-xs sm:text-sm">
+                    <VideoIcon className="mb-1 sm:mb-0 sm:mr-2 h-5 w-5 text-blue-500" /> Video
                   </Button>
-                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                    <ImageIcon className="mr-2 h-5 w-5 text-green-500" /> Photo
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground hover:bg-accent flex items-center justify-center flex-col sm:flex-row h-auto py-2 sm:h-10 sm:py-1 text-xs sm:text-sm">
+                    <ImageIcon className="mb-1 sm:mb-0 sm:mr-2 h-5 w-5 text-green-500" /> Photo
                   </Button>
-                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground flex-1 hover:bg-accent">
-                    <FileTextIcon className="mr-2 h-5 w-5 text-orange-500" /> Write article
+                  <Button variant="ghost" className="text-muted-foreground hover:text-accent-foreground hover:bg-accent flex items-center justify-center flex-col sm:flex-row h-auto py-2 sm:h-10 sm:py-1 text-xs sm:text-sm">
+                    <FileTextIcon className="mb-1 sm:mb-0 sm:mr-2 h-5 w-5 text-orange-500" /> Write article
                   </Button>
                 </div>
               </CardContent>
@@ -179,14 +180,14 @@ export default function ActivityFeedPage() {
 
           {/* Sidebars for Mobile (Stacked) */}
           <div className="lg:hidden col-span-1 mt-8 space-y-6 order-4">
-            <ActivityFeedSidebar /> 
+            <ActivityFeedSidebar />
             <NewsletterSidebar />
             <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} /> {/* Use the new card component */}
           </div>
         </div>
       </div>
       {/* Premium Modal */}
-      <PremiumCenterModal 
+      <PremiumCenterModal
         isOpen={isPremiumModalOpen}
         onOpenChange={setIsPremiumModalOpen}
       />
