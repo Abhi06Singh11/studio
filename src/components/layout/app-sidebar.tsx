@@ -72,9 +72,10 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
             onClick={onLinkClick}
             className={cn(
               "flex items-center w-full justify-start gap-x-3 text-sm h-10 px-3 rounded-md transition-colors duration-150", // Base styles
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background", // Explicit focus styling
               (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)))
                 ? "bg-primary/10 text-primary font-semibold" // Active state
-                : "text-muted-foreground hover:bg-muted/50 hover:text-primary hover:font-semibold" // Inactive state with hover
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:font-semibold" // Inactive state with hover
             )}
             aria-current={ (pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))) ? "page" : undefined }
           >
