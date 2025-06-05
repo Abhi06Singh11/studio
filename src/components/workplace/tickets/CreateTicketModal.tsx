@@ -36,8 +36,8 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import { Calendar } from "@/components/ui/calendar"; // No longer needed
+// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"; // No longer needed
 import { toast } from "@/hooks/use-toast";
 import { PlusCircleIcon, TagIcon, TicketIcon, CalendarIcon, UploadCloudIcon, ShieldAlertIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,7 +54,7 @@ const createTicketSchema = z.object({
   priority: z.enum(ticketPriorities, { required_error: "Please select a priority." }),
   status: z.enum(ticketStatuses, { required_error: "Please select a status." }),
   assignedTo: z.string().optional().or(z.literal('')),
-  dueDate: z.date().optional(),
+  // dueDate: z.date().optional(), // Due date removed
   tags: z.string().optional().or(z.literal('')),
   attachments: z.string().optional().or(z.literal('')), // Conceptual: string for URL or name
 });
@@ -64,7 +64,7 @@ type CreateTicketFormValues = z.infer<typeof createTicketSchema>;
 interface CreateTicketModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onTicketCreated?: (data: CreateTicketFormValues & { id: string, projectId: string, createdBy: string, createdAt: string }) => void;
+  onTicketCreated?: (data: Omit<CreateTicketFormValues, 'dueDate'> & { id: string, projectId: string, createdBy: string, createdAt: string, dueDate?: string }) => void;
   projectId: string;
   teamMembers: Array<{ id: string, name: string }>;
 }
@@ -87,18 +87,19 @@ export default function CreateTicketModal({
       assignedTo: "",
       tags: "",
       attachments: "",
-      dueDate: undefined,
+      // dueDate: undefined, // Due date removed
     },
   });
 
   function onSubmit(data: CreateTicketFormValues) {
+    const { ...formData } = data; // Destructure to exclude dueDate if it was there
     const newTicketData = {
-      ...data,
+      ...formData,
       ticketId: `tkt_${Date.now()}`,
       projectId,
       createdBy: "current_user_placeholder_id",
       createdAt: new Date().toISOString(),
-      dueDate: data.dueDate ? format(data.dueDate, "yyyy-MM-dd") : undefined,
+      // dueDate: data.dueDate ? format(data.dueDate, "yyyy-MM-dd") : undefined, // Due date processing removed
     };
     console.log("New Ticket Data:", newTicketData);
     toast({
@@ -136,6 +137,8 @@ export default function CreateTicketModal({
                     <FormField control={form.control} name="status" render={({ field }) => ( <FormItem> <FormLabel>Status</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger></FormControl> <SelectContent> {ticketStatuses.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
                 </div>
                  <FormField control={form.control} name="assignedTo" render={({ field }) => ( <FormItem> <FormLabel>Assign to (Optional)</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select team member" /></SelectTrigger></FormControl> <SelectContent> <SelectItem value="">Unassigned</SelectItem> {teamMembers.map(member => <SelectItem key={member.id} value={member.name}>{member.name}</SelectItem>)} </SelectContent> </Select> <FormDescription>Assign this ticket to a team member.</FormDescription> <FormMessage /> </FormItem> )} />
+                
+                {/* Due Date Field Removed
                 <FormField
                   control={form.control}
                   name="dueDate"
@@ -170,6 +173,8 @@ export default function CreateTicketModal({
                     </FormItem>
                   )}
                 />
+                */}
+
                 <FormField control={form.control} name="tags" render={({ field }) => ( <FormItem> <FormLabel className="flex items-center"><TagIcon className="mr-2 h-4 w-4 text-muted-foreground"/>Tags (Optional)</FormLabel> <FormControl><Input placeholder="e.g., frontend, mobile, UI (comma-separated)" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <FormField control={form.control} name="attachments" render={({ field }) => ( <FormItem> <FormLabel className="flex items-center"><UploadCloudIcon className="mr-2 h-4 w-4 text-muted-foreground"/>Attachments (Conceptual)</FormLabel> <FormControl><Input type="text" placeholder="Enter URL or filename (conceptual)" {...field} disabled /></FormControl><FormDescription>File upload feature coming soon.</FormDescription> <FormMessage /> </FormItem> )} />
               </div>
