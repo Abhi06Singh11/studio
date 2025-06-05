@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlusCircleIcon, ArrowLeftIcon, CheckSquareIcon, UsersIcon, ListIcon, ActivityIcon, Edit3Icon, TicketIcon, SearchIcon } from "lucide-react";
+import { PlusCircleIcon, ArrowLeftIcon, CheckSquareIcon, UsersIcon, ListIcon, ActivityIcon, Edit3Icon, TicketIcon, SearchIcon, UserPlusIcon } from "lucide-react"; // Added UserPlusIcon
 import CreateTicketModal from "../tickets/CreateTicketModal"; 
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -157,6 +157,9 @@ export default function ProjectDetailsClient({ projectId }: ProjectDetailsClient
             <TabsList>
               <TabsTrigger value="overview"><ListIcon className="mr-2 h-4 w-4"/>Overview</TabsTrigger>
               <TabsTrigger value="tickets"><TicketIcon className="mr-2 h-4 w-4"/>Tickets ({filteredTickets.length})</TabsTrigger>
+              <TabsTrigger value="board" onClick={() => router.push(`/workplace/projects/${projectId}/board`)}>
+                <CheckSquareIcon className="mr-2 h-4 w-4" /> Board
+              </TabsTrigger>
               <TabsTrigger value="activity"><ActivityIcon className="mr-2 h-4 w-4"/>Activity Log</TabsTrigger>
             </TabsList>
              <Link href={`/workplace/projects/${projectId}/new-ticket`}>
