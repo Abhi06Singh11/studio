@@ -141,7 +141,7 @@ export default function CreateTicketModal({
                   name="dueDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel className="flex items-center"><CalendarIcon className="mr-1.5 h-4 w-4 text-muted-foreground"/>Due Date (Optional)</FormLabel>
+                      <FormLabel>Due Date (Optional)</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -152,12 +152,8 @@ export default function CreateTicketModal({
                                 !field.value && "text-muted-foreground"
                               )}
                             >
-                              <span className="flex items-center justify-between w-full">
-                                <span>
-                                  {field.value ? format(field.value, "PPP") : "Pick a date"}
-                                </span>
-                                <CalendarIcon className="h-4 w-4 opacity-50" />
-                              </span>
+                              {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
@@ -188,3 +184,4 @@ export default function CreateTicketModal({
     </Dialog>
   );
 }
+    
