@@ -53,9 +53,9 @@ const createTicketSchema = z.object({
   type: z.enum(ticketTypes, { required_error: "Please select an ticket type." }),
   priority: z.enum(ticketPriorities, { required_error: "Please select a priority." }),
   status: z.enum(ticketStatuses, { required_error: "Please select a status." }),
-  assignedTo: z.string().optional().or(z.literal('')), 
+  assignedTo: z.string().optional().or(z.literal('')),
   dueDate: z.date().optional(),
-  tags: z.string().optional().or(z.literal('')), 
+  tags: z.string().optional().or(z.literal('')),
   attachments: z.string().optional().or(z.literal('')), // Conceptual: string for URL or name
 });
 
@@ -66,7 +66,7 @@ interface CreateTicketModalProps {
   onOpenChange: (isOpen: boolean) => void;
   onTicketCreated?: (data: CreateTicketFormValues & { id: string, projectId: string, createdBy: string, createdAt: string }) => void;
   projectId: string;
-  teamMembers: Array<{ id: string, name: string }>; 
+  teamMembers: Array<{ id: string, name: string }>;
 }
 
 export default function CreateTicketModal({
@@ -94,9 +94,9 @@ export default function CreateTicketModal({
   function onSubmit(data: CreateTicketFormValues) {
     const newTicketData = {
       ...data,
-      ticketId: `tkt_${Date.now()}`, 
+      ticketId: `tkt_${Date.now()}`,
       projectId,
-      createdBy: "current_user_placeholder_id", 
+      createdBy: "current_user_placeholder_id",
       createdAt: new Date().toISOString(),
       dueDate: data.dueDate ? format(data.dueDate, "yyyy-MM-dd") : undefined,
     };
@@ -152,8 +152,12 @@ export default function CreateTicketModal({
                                 !field.value && "text-muted-foreground"
                               )}
                             >
-                              {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              <span className="flex items-center justify-between w-full">
+                                <span>
+                                  {field.value ? format(field.value, "PPP") : "Pick a date"}
+                                </span>
+                                <CalendarIcon className="h-4 w-4 opacity-50" />
+                              </span>
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
@@ -184,4 +188,3 @@ export default function CreateTicketModal({
     </Dialog>
   );
 }
-    
