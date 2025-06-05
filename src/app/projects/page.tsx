@@ -11,18 +11,22 @@ import MentionsActivityView from "@/components/project/views/mentions-activity-v
 import FilesView from "@/components/project/views/files-view";
 import ProjectSettingsView from "@/components/project/views/settings-view";
 
+// Organization and Project views (original context)
 import CreateOrganizationView from "@/components/project/views/create-organization-view";
 import JoinOrganizationView from "@/components/project/views/join-organization-view";
 import MyOrganizationsView from "@/components/project/views/my-organizations-view";
 import CreateProjectInOrgView from "@/components/project/views/create-project-org-view";
 import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
+
+// Mini Jira components
+import ProjectDashboardClient from "@/components/workplace/projects/ProjectDashboardClient";
+
 import CreateActionsModal from "@/components/project/create-actions-modal";
 import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal";
 import { Button } from "@/components/ui/button";
-import { MenuIcon, FolderKanbanIcon, BuildingIcon } from "lucide-react"; 
+import { MenuIcon } from "lucide-react"; 
 import { toast } from "@/hooks/use-toast";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export type ProjectWorkspaceView =
   | "threads"
@@ -38,7 +42,9 @@ export type ProjectWorkspaceView =
   | "my-organizations"
   | "create-project-org"
   | "join-project-org"
-  | "my-projects-org";
+  | "my-projects-org"
+  // New view for Mini Jira Project Dashboard
+  | "jiraProjectDashboard";
 
 export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
@@ -103,6 +109,8 @@ export default function ProjectsPage() {
         return <JoinProjectOrgView />;
       case "my-projects-org":
         return <MyProjectsOrgView setActiveView={setActiveView} />;
+      case "jiraProjectDashboard": // New case for Jira Dashboard
+        return <ProjectDashboardClient />;
       default:
         return <ThreadsView workspaceName={activatedWorkspaceName} />;
     }
@@ -123,7 +131,9 @@ export default function ProjectsPage() {
               Menu (Toggle Placeholder)
             </Button>
           </div>
-          {activatedWorkspaceName && <h2 className="text-xl font-semibold mb-4 text-primary">Workspace: {activatedWorkspaceName}</h2>}
+          {activatedWorkspaceName && activeView !== "jiraProjectDashboard" && !activeView.startsWith("create-") && !activeView.startsWith("join-") && !activeView.startsWith("my-") && (
+            <h2 className="text-xl font-semibold mb-4 text-primary">Workspace: {activatedWorkspaceName}</h2>
+          )}
           {renderActiveView()}
         </main>
       </div>
