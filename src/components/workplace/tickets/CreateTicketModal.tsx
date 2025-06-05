@@ -141,9 +141,13 @@ export default function CreateTicketModal({
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
-                          <Button variant={"outline"} className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground")}>
+                            <span className="flex items-center justify-between w-full">
+                              <span>
+                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                              </span>
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </span>
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
