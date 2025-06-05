@@ -87,13 +87,14 @@ export default function CreateTicketModal({
       assignedTo: "",
       tags: "",
       attachments: "",
+      dueDate: undefined,
     },
   });
 
   function onSubmit(data: CreateTicketFormValues) {
     const newTicketData = {
       ...data,
-      ticketId: `tkt_${Date.now()}`, // Changed from id to ticketId
+      ticketId: `tkt_${Date.now()}`, 
       projectId,
       createdBy: "current_user_placeholder_id", 
       createdAt: new Date().toISOString(),
@@ -135,29 +136,40 @@ export default function CreateTicketModal({
                     <FormField control={form.control} name="status" render={({ field }) => ( <FormItem> <FormLabel>Status</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger></FormControl> <SelectContent> {ticketStatuses.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
                 </div>
                  <FormField control={form.control} name="assignedTo" render={({ field }) => ( <FormItem> <FormLabel>Assign to (Optional)</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl><SelectTrigger><SelectValue placeholder="Select team member" /></SelectTrigger></FormControl> <SelectContent> <SelectItem value="">Unassigned</SelectItem> {teamMembers.map(member => <SelectItem key={member.id} value={member.name}>{member.name}</SelectItem>)} </SelectContent> </Select> <FormDescription>Assign this ticket to a team member.</FormDescription> <FormMessage /> </FormItem> )} />
-                <FormField control={form.control} name="dueDate" render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel className="flex items-center"><CalendarIcon className="mr-1.5 h-4 w-4 text-muted-foreground"/>Due Date (Optional)</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal", !field.value && "text-muted-foreground")}>
-                            <span className="flex items-center justify-between w-full">
-                              <span>
-                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                              </span>
+                <FormField
+                  control={form.control}
+                  name="dueDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="flex items-center"><CalendarIcon className="mr-1.5 h-4 w-4 text-muted-foreground"/>Due Date (Optional)</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </span>
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField control={form.control} name="tags" render={({ field }) => ( <FormItem> <FormLabel className="flex items-center"><TagIcon className="mr-2 h-4 w-4 text-muted-foreground"/>Tags (Optional)</FormLabel> <FormControl><Input placeholder="e.g., frontend, mobile, UI (comma-separated)" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <FormField control={form.control} name="attachments" render={({ field }) => ( <FormItem> <FormLabel className="flex items-center"><UploadCloudIcon className="mr-2 h-4 w-4 text-muted-foreground"/>Attachments (Conceptual)</FormLabel> <FormControl><Input type="text" placeholder="Enter URL or filename (conceptual)" {...field} disabled /></FormControl><FormDescription>File upload feature coming soon.</FormDescription> <FormMessage /> </FormItem> )} />
               </div>
