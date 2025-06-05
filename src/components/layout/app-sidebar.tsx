@@ -22,17 +22,17 @@ import {
   SettingsIcon,
   CalendarCheck2Icon,
   MailCheckIcon,
-  CheckSquareIcon, // New icon for Project Management
+  CheckSquareIcon, 
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export const allNavItems = [
   { href: '/', label: 'Activity Feed', icon: HomeIcon },
   { href: '/messages', label: 'Messages', icon: MessageSquareIcon },
-  { href: '/projects', label: 'Workplace', icon: FolderKanbanIcon },
+  { href: '/projects', label: 'Workplace (Channels)', icon: FolderKanbanIcon }, // Original Workplace
   { href: '/jobs', label: 'Jobs / Projects', icon: BriefcaseIcon },
   { href: '/challenges', label: 'Challenges', icon: Code2Icon },
-  { href: '/pm/projects', label: 'Project Mgmt', icon: CheckSquareIcon }, // New Project Management Link
+  { href: '/workplace/projects', label: 'Mini Jira (Projects)', icon: CheckSquareIcon }, // New Mini Jira
   { href: '/profiles', label: 'Profiles', icon: UsersIcon },
   { href: '/recommendations', label: 'Recommendations', icon: SparklesIcon },
   { href: '/events', label: 'Events', icon: CalendarCheck2Icon },

@@ -14,12 +14,12 @@ import {
   Share2Icon,
   SearchIcon,
   PanelLeft,
-  CheckSquareIcon, // New Icon
+  CheckSquareIcon, 
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems as mobileNavItems } from './app-sidebar'; // Renamed import
+import AppSidebarContent, { allNavItems as mobileNavItems } from './app-sidebar'; 
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import UserProfileModal from './UserProfileModal';
 
@@ -34,9 +34,8 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
-// Filter out Events and Newsletters for desktop header, and potentially others if too many
 const desktopHeaderNavItems = mobileNavItems.filter(
-  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label) // Also hiding Admin Panel from direct header for brevity
+  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label) 
 );
 
 

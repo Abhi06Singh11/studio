@@ -1,16 +1,23 @@
 
-import ProjectDetailsClient from "@/components/pm/ProjectDetailsClient";
+// This file is moved to /src/app/workplace/projects/[projectId]/page.tsx
+// This file can be deleted or kept as a redirect if necessary.
+// For now, content is removed to avoid conflict.
+"use client";
+import { useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 
-interface ProjectDetailsPageProps {
-  params: {
-    projectId: string;
-  };
+export default function OldPmProjectDetailsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const projectId = params.projectId as string;
+
+  useEffect(() => {
+    if (projectId) {
+      router.replace(`/workplace/projects/${projectId}`);
+    } else {
+      router.replace('/workplace/projects');
+    }
+  }, [router, projectId]);
+  return <div>Redirecting...</div>;
 }
 
-export default function ProjectDetailsPage({ params }: ProjectDetailsPageProps) {
-  // In a real app, you might fetch project details server-side here
-  // based on params.projectId and pass them to ProjectDetailsClient.
-  // For now, ProjectDetailsClient will use dummy data based on the ID.
-  return <ProjectDetailsClient projectId={params.projectId} />;
-}
-    
