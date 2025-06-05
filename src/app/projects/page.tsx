@@ -20,7 +20,7 @@ import JoinProjectOrgView from "@/components/project/views/join-project-org-view
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
 
 // Mini Jira components
-import ProjectDashboardClient from "@/components/workplace/projects/ProjectDashboardClient";
+// import ProjectDashboardClient from "@/components/workplace/projects/ProjectDashboardClient"; // Removed import
 
 import CreateActionsModal from "@/components/project/create-actions-modal";
 import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal";
@@ -42,9 +42,8 @@ export type ProjectWorkspaceView =
   | "my-organizations"
   | "create-project-org"
   | "join-project-org"
-  | "my-projects-org"
-  // New view for Mini Jira Project Dashboard
-  | "jiraProjectDashboard";
+  | "my-projects-org";
+  // | "jiraProjectDashboard"; // Removed Jira Dashboard view type
 
 export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
@@ -109,8 +108,8 @@ export default function ProjectsPage() {
         return <JoinProjectOrgView />;
       case "my-projects-org":
         return <MyProjectsOrgView setActiveView={setActiveView} />;
-      case "jiraProjectDashboard": // New case for Jira Dashboard
-        return <ProjectDashboardClient />;
+      // case "jiraProjectDashboard": // Removed case for Jira Dashboard
+      //   return <ProjectDashboardClient />;
       default:
         return <ThreadsView workspaceName={activatedWorkspaceName} />;
     }
@@ -131,7 +130,7 @@ export default function ProjectsPage() {
               Menu (Toggle Placeholder)
             </Button>
           </div>
-          {activatedWorkspaceName && activeView !== "jiraProjectDashboard" && !activeView.startsWith("create-") && !activeView.startsWith("join-") && !activeView.startsWith("my-") && (
+          {activatedWorkspaceName && !activeView.startsWith("create-") && !activeView.startsWith("join-") && !activeView.startsWith("my-") && (
             <h2 className="text-xl font-semibold mb-4 text-primary">Workspace: {activatedWorkspaceName}</h2>
           )}
           {renderActiveView()}

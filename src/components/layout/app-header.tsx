@@ -14,7 +14,7 @@ import {
   Share2Icon,
   SearchIcon,
   PanelLeft,
-  CheckSquareIcon, 
+  // CheckSquareIcon, // Removed as it was for Jira
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -34,8 +34,10 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
+// desktopHeaderNavItems will be re-derived from the updated allNavItems in app-sidebar.tsx
 const desktopHeaderNavItems = mobileNavItems.filter(
-  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label) 
+  item => !["Events", "Newsletters", "Admin Panel", "Mini Jira (Projects)"].includes(item.label) 
+  // Explicitly remove Mini Jira from desktop too if it was there based on old allNavItems
 );
 
 
@@ -43,6 +45,11 @@ export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  // Re-filter desktop nav items based on the (now updated) allNavItems from app-sidebar
+  const currentDesktopNavItems = mobileNavItems.filter(
+    item => !["Events", "Newsletters", "Admin Panel"].includes(item.label)
+  );
 
   return (
     <TooltipProvider delayDuration={100}>
@@ -53,7 +60,7 @@ export default function AppHeader() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {desktopHeaderNavItems.map((item) => (
+          {currentDesktopNavItems.map((item) => ( // Use currentDesktopNavItems
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link

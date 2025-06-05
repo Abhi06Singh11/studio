@@ -30,7 +30,7 @@ import {
   ListChecksIcon,
   PlusCircleIcon,
   ArrowLeftIcon, 
-  CheckSquareIcon, // Added for Jira Dashboard
+  // CheckSquareIcon, // Removed as it was for Jira
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
 import { useRouter } from "next/navigation";
@@ -83,7 +83,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
   const [isDmsExpanded, setIsDmsExpanded] = React.useState(true);
   const [isOrgsExpanded, setIsOrgsExpanded] = React.useState(true);
   const [isProjectsOrgExpanded, setIsProjectsOrgExpanded] = React.useState(true);
-  const [isJiraExpanded, setIsJiraExpanded] = React.useState(true);
+  // const [isJiraExpanded, setIsJiraExpanded] = React.useState(true); // Removed Jira state
 
 
   return (
@@ -194,33 +194,8 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
           ))}
           <Separator className="my-2"/>
           
-          {/* Jira Project Management Section */}
-          <Button
-            variant="ghost"
-            className="w-full justify-between text-sm h-8 font-semibold"
-            onClick={() => setIsJiraExpanded(!isJiraExpanded)}
-          >
-            <span className="flex items-center gap-2.5">
-              <ChevronDownIcon className={cn("h-4 w-4 transition-transform", !isJiraExpanded && "-rotate-90")} />
-              Project Management
-            </span>
-          </Button>
-          {isJiraExpanded && (
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full justify-start text-sm h-8 pl-7", // Indent this item
-                activeView === "jiraProjectDashboard" && "bg-primary/10 text-primary font-semibold"
-              )}
-              onClick={() => setActiveView("jiraProjectDashboard")}
-            >
-              <span className="flex items-center gap-2.5">
-                <CheckSquareIcon className="h-4 w-4" /> {/* Using CheckSquareIcon for Jira-like dashboard */}
-                Jira Dashboard
-              </span>
-            </Button>
-          )}
-          <Separator className="my-2"/>
+          {/* Jira Project Management Section Removed */}
+          {/* <Separator className="my-2"/> */}
 
 
           <Button
