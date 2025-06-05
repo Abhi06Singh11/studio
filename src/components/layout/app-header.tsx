@@ -14,17 +14,17 @@ import {
   Share2Icon,
   SearchIcon,
   PanelLeft,
+  CheckSquareIcon, // New Icon
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import AppSidebarContent, { allNavItems } from './app-sidebar';
+import AppSidebarContent, { allNavItems as mobileNavItems } from './app-sidebar'; // Renamed import
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import UserProfileModal from './UserProfileModal'; // Import the new modal
+import UserProfileModal from './UserProfileModal';
 
-// Sample User Data (can be moved or fetched from context/auth service in a real app)
 const sampleUser = {
-  id: "user_elara_vance", // Added an ID
+  id: "user_elara_vance",
   name: "Dr. Elara Vance",
   email: "elara.vance@example.com",
   avatarUrl: "https://placehold.co/100x100.png?p=1",
@@ -34,26 +34,25 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
-// Filter out Events and Newsletters for desktop header
-const desktopHeaderNavItems = allNavItems.filter(
-  item => item.label !== "Events" && item.label !== "Newsletters"
+// Filter out Events and Newsletters for desktop header, and potentially others if too many
+const desktopHeaderNavItems = mobileNavItems.filter(
+  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label) // Also hiding Admin Panel from direct header for brevity
 );
+
 
 export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // State for the new modal
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   return (
     <TooltipProvider delayDuration={100}>
       <header className="sticky top-0 z-30 flex h-16 items-center gap-x-3 border-b bg-card px-4 shadow-sm sm:px-6">
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-1.5 text-lg font-semibold text-primary mr-4 shrink-0">
           <Share2Icon className="h-7 w-7" />
           <span className="hidden sm:inline">CodeHinge</span>
         </Link>
 
-        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {desktopHeaderNavItems.map((item) => (
             <Tooltip key={item.label}>
@@ -87,7 +86,6 @@ export default function AppHeader() {
             />
           </div>
 
-          {/* User Profile Avatar Trigger for Modal */}
           <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" onClick={() => setIsProfileModalOpen(true)}>
               <Avatar className="h-8 w-8">
                   <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint} />
@@ -111,12 +109,12 @@ export default function AppHeader() {
           </Sheet>
         </div>
       </header>
-      {/* User Profile Modal */}
-      <UserProfileModal 
-        isOpen={isProfileModalOpen} 
+      <UserProfileModal
+        isOpen={isProfileModalOpen}
         onOpenChange={setIsProfileModalOpen}
         user={sampleUser}
       />
     </TooltipProvider>
   );
 }
+    
