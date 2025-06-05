@@ -178,10 +178,10 @@ export default function ProjectDetailsClient({ projectId }: ProjectDetailsClient
                 <div className="p-4 border rounded-md bg-muted/50 text-center text-muted-foreground">
                     A Kanban-style board previewing tickets by status (To Do, In Progress, Done) would appear here.
                 </div>
-                <p className="mt-4 text-sm">Status: <Badge variant={project.status === "Active" ? "default" : "secondary"}>{project.status}</Badge></p>
-                <p className="text-sm">Priority: <Badge variant={project.priority === "High" ? "destructive" : project.priority === "Medium" ? "secondary" : "outline"}>{project.priority}</Badge></p>
-                <p className="text-sm">Created By: {project.createdBy.replace('_id','').replace(/_/g, ' ')} (Conceptual)</p>
-                <p className="text-sm">Created At: {new Date(project.createdAt).toLocaleDateString()}</p>
+                <div className="mt-4 text-sm">Status: <Badge variant={project.status === "Active" ? "default" : "secondary"}>{project.status}</Badge></div>
+                <div className="text-sm">Priority: <Badge variant={project.priority === "High" ? "destructive" : project.priority === "Medium" ? "secondary" : "outline"}>{project.priority}</Badge></div>
+                <div className="text-sm">Created By: {project.createdBy.replace('_id','').replace(/_/g, ' ')} (Conceptual)</div>
+                <div className="text-sm">Created At: {new Date(project.createdAt).toLocaleDateString()}</div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -264,4 +264,6 @@ export default function ProjectDetailsClient({ projectId }: ProjectDetailsClient
     </>
   );
 }
+    
+
     
