@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+// Removed Label import as FormLabel is used from form.tsx
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { ArrowLeftIcon, CreditCardIcon, CalendarIcon, LockIcon } from "lucide-react";
@@ -90,31 +90,61 @@ export default function SubscriptionFormPage() {
                 <FormItem> <FormLabel>Email Address</FormLabel> <FormControl><Input type="email" placeholder="you@example.com" {...field} /></FormControl> <FormMessage /> </FormItem>
               )} />
 
-              <FormField control={form.control} name="plan" render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Choose Your Plan</FormLabel>
-                  <FormControl>
-                    <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Label htmlFor="plan-trial" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
-                        <RadioGroupItem value="trial" id="plan-trial" className="sr-only" />
-                        <h3 className="text-lg font-semibold">Free Trial</h3>
-                        <p className="text-sm text-muted-foreground">7 Days Free</p>
-                      </Label>
-                      <Label htmlFor="plan-monthly" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
-                        <RadioGroupItem value="monthly" id="plan-monthly" className="sr-only" />
-                        <h3 className="text-lg font-semibold">Monthly</h3>
-                        <p className="text-sm text-muted-foreground">₹399/month</p>
-                      </Label>
-                      <Label htmlFor="plan-yearly" className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer">
-                        <RadioGroupItem value="yearly" id="plan-yearly" className="sr-only" />
-                        <h3 className="text-lg font-semibold">Yearly</h3>
-                        <p className="text-sm text-muted-foreground">₹3999/year (Save ~15%)</p>
-                      </Label>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <FormField
+                control={form.control}
+                name="plan"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Choose Your Plan</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                      >
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <RadioGroupItem value="trial" id="plan-trial" className="sr-only" />
+                          </FormControl>
+                          <FormLabel
+                            htmlFor="plan-trial"
+                            className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer h-full"
+                          >
+                            <h3 className="text-lg font-semibold">Free Trial</h3>
+                            <p className="text-sm text-muted-foreground">7 Days Free</p>
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex-1">
+                           <FormControl>
+                            <RadioGroupItem value="monthly" id="plan-monthly" className="sr-only" />
+                           </FormControl>
+                          <FormLabel
+                            htmlFor="plan-monthly"
+                            className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer h-full"
+                          >
+                            <h3 className="text-lg font-semibold">Monthly</h3>
+                            <p className="text-sm text-muted-foreground">₹399/month</p>
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <RadioGroupItem value="yearly" id="plan-yearly" className="sr-only" />
+                          </FormControl>
+                          <FormLabel
+                            htmlFor="plan-yearly"
+                            className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-pointer h-full"
+                          >
+                            <h3 className="text-lg font-semibold">Yearly</h3>
+                            <p className="text-sm text-muted-foreground">₹3999/year (Save ~15%)</p>
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
 
               {isPaidPlan && (
                 <div className="space-y-4 pt-4 border-t">
@@ -158,3 +188,4 @@ export default function SubscriptionFormPage() {
     </div>
   );
 }
+

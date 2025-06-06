@@ -152,50 +152,54 @@ export default function CreatePersonalProjectPage() {
               
               <Separator />
 
-              <div>
-                <FormLabel className="text-base font-medium flex items-center mb-3">
-                    <LockIcon className="mr-2 h-5 w-5 text-muted-foreground" />
-                    Privacy Settings
-                </FormLabel>
-                <FormField
-                  control={form.control}
-                  name="privacy"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <Label htmlFor="privacy-public" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+              <FormField
+                control={form.control}
+                name="privacy"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-base font-medium flex items-center mb-3">
+                        <LockIcon className="mr-2 h-5 w-5 text-muted-foreground" />
+                        Privacy Settings
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                          <FormControl>
                             <RadioGroupItem value="Public" id="privacy-public" />
-                            <div className="flex-1 flex justify-between items-center">
-                                <span className="font-normal flex items-center"><GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public</span>
-                                <span className="text-xs text-muted-foreground !mt-0">Visible to everyone on CodeSphere.</span>
-                            </div>
-                          </Label>
-                          <Label htmlFor="privacy-team" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                          </FormControl>
+                          <FormLabel htmlFor="privacy-public" className="font-normal flex-1 flex justify-between items-center cursor-pointer">
+                            <span className="flex items-center"><GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public</span>
+                            <span className="text-xs text-muted-foreground !mt-0">Visible to everyone on CodeSphere.</span>
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                          <FormControl>
                             <RadioGroupItem value="Team Only" id="privacy-team" />
-                             <div className="flex-1 flex justify-between items-center">
-                                <span className="font-normal flex items-center"><UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Team Only</span>
-                                <span className="text-xs text-muted-foreground !mt-0">Only visible to invited team members.</span>
-                            </div>
-                          </Label>
-                          <Label htmlFor="privacy-private" className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                          </FormControl>
+                          <FormLabel htmlFor="privacy-team" className="font-normal flex-1 flex justify-between items-center cursor-pointer">
+                            <span className="flex items-center"><UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Team Only</span>
+                            <span className="text-xs text-muted-foreground !mt-0">Only visible to invited team members.</span>
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-md border hover:bg-muted/50 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 cursor-pointer">
+                           <FormControl>
                             <RadioGroupItem value="Private" id="privacy-private" />
-                            <div className="flex-1 flex justify-between items-center">
-                                <span className="font-normal flex items-center"><LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private</span>
-                                <span className="text-xs text-muted-foreground !mt-0">Only visible to you (the creator).</span>
-                            </div>
-                          </Label>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                           </FormControl>
+                           <FormLabel htmlFor="privacy-private" className="font-normal flex-1 flex justify-between items-center cursor-pointer">
+                            <span className="flex items-center"><LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private</span>
+                            <span className="text-xs text-muted-foreground !mt-0">Only visible to you (the creator).</span>
+                           </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <Separator />
               
