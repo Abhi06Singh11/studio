@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority" // Ensure cva is imported if _sidebarMenuButtonVariants uses it
-import { PanelLeft } from "lucide-react"
+import { PanelLeft, MenuIcon as DefaultMenuIcon } from "lucide-react" // Use a default icon if none provided
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -187,11 +187,11 @@ const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <Sheet open={openMobile} onOpenChange={setOpenMobile}> {/* Removed ...props from Sheet */}
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            className={cn("w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden", className)} // className can be passed to SheetContent
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -235,7 +235,7 @@ const Sidebar = React.forwardRef<
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
             className
           )}
-          {...props}
+          {...props} // props passed to the outer div for desktop sidebar
         >
           <div
             data-sidebar="sidebar"
@@ -252,12 +252,12 @@ Sidebar.displayName = "Sidebar"
 
 const SidebarTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
+  React.ComponentProps<typeof Button> & { asChild?: boolean }
 >(({ className, onClick: onClickProp, children, asChild = false, ...props }, ref) => {
   const { toggleSidebar } = useSidebar();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onClickProp?.(event);
+    onClickProp?.(event); // Call original onClick if provided
     toggleSidebar();
   };
 
@@ -268,20 +268,14 @@ const SidebarTrigger = React.forwardRef<
       ref={ref}
       onClick={handleClick}
       data-sidebar="trigger"
-      // Apply default styles only if not `asChild`.
-      // If `asChild`, the child component is responsible for its own styling.
-      // The `className` prop passed to `SidebarTrigger` will be merged by `Slot` or `Button`.
       variant={asChild ? undefined : (props.variant || "ghost")}
       size={asChild ? undefined : (props.size || "icon")}
-      className={cn(
-        asChild ? "" : "h-7 w-7", // Default structural classes if not asChild
-        className // className from <SidebarTrigger className="foo">
-      )}
-      {...props} // Spread remaining props like `type`, `disabled`, etc.
+      className={cn(asChild ? "" : "h-8 w-8", className)} // Adjusted default size for consistency
+      {...props}
     >
-      {asChild && children ? children : ( // If asChild, render the passed child. Otherwise, render default content.
+      {children ? children : (
         <>
-          <PanelLeft />
+          <DefaultMenuIcon className="h-5 w-5" /> {/* Using DefaultMenuIcon or PanelLeft */}
           <span className="sr-only">Toggle Sidebar</span>
         </>
       )}
