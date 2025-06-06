@@ -152,24 +152,29 @@ export default function CreateChannelView({ setActiveView }: CreateChannelViewPr
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
-                      value={field.value} 
+                      value={field.value}
                       className="flex flex-col space-y-1"
                     >
-                      <Label htmlFor="public-channel" className="flex items-center space-x-3 space-y-0 cursor-pointer">
-                        <RadioGroupItem value="public" id="public-channel" />
-                        <span className="font-normal flex items-center">
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="public" id="public-channel" />
+                        </FormControl>
+                        <Label htmlFor="public-channel" className="font-normal flex items-center cursor-pointer">
                           <GlobeIcon className="mr-2 h-4 w-4 text-muted-foreground" /> Public
-                        </span>
-                      </Label>
-                       <FormDescription className="pl-8 text-xs">Anyone in your workspace can view and join this channel.</FormDescription>
-                      <Label htmlFor="private-channel" className="flex items-center space-x-3 space-y-0 cursor-pointer">
-                        <RadioGroupItem value="private" id="private-channel" />
-                        <span className="font-normal flex items-center">
+                        </Label>
+                      </FormItem>
+                       <FormDescription className="pl-8 text-xs !mt-0">Anyone in your workspace can view and join this channel.</FormDescription>
+                      
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                            <RadioGroupItem value="private" id="private-channel" />
+                        </FormControl>
+                        <Label htmlFor="private-channel" className="font-normal flex items-center cursor-pointer">
                           <LockIcon className="mr-2 h-4 w-4 text-muted-foreground" /> Private
-                        </span>
-                      </Label>
+                        </Label>
+                      </FormItem>
                       {watchedPrivacy === "private" && (
-                        <FormDescription className="pl-8 text-xs">
+                        <FormDescription className="pl-8 text-xs !mt-0">
                             Private channels can only be viewed or joined by invitation. This can’t be undone.
                         </FormDescription>
                       )}

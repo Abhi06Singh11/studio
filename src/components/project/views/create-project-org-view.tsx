@@ -158,18 +158,30 @@ export default function CreateProjectInOrgView() {
                         value={field.value}
                         className="flex flex-col space-y-1"
                       >
-                        <Label htmlFor="vis-public-platform" className="flex items-center space-x-3 space-y-0 cursor-pointer p-2 rounded-md border border-transparent hover:border-muted data-[state=checked]:border-primary">
-                          <RadioGroupItem value="Public to Platform" id="vis-public-platform" />
-                          <span className="font-normal flex items-center"><GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public to Platform</span>
-                        </Label>
-                        <Label htmlFor="vis-private-org" className="flex items-center space-x-3 space-y-0 cursor-pointer p-2 rounded-md border border-transparent hover:border-muted data-[state=checked]:border-primary">
-                          <RadioGroupItem value="Private to Organization" id="vis-private-org" />
-                          <span className="font-normal flex items-center"><UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Private to Organization Members</span>
-                        </Label>
-                         <Label htmlFor="vis-private-me" className="flex items-center space-x-3 space-y-0 cursor-pointer p-2 rounded-md border border-transparent hover:border-muted data-[state=checked]:border-primary">
-                          <RadioGroupItem value="Private to Me" id="vis-private-me" />
-                          <span className="font-normal flex items-center"><LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private to Me Only</span>
-                        </Label>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                                <RadioGroupItem value="Public to Platform" id="vis-public-platform" />
+                            </FormControl>
+                            <Label htmlFor="vis-public-platform" className="font-normal flex items-center cursor-pointer">
+                                <GlobeIcon className="mr-2 h-4 w-4 text-green-500"/>Public to Platform
+                            </Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                                <RadioGroupItem value="Private to Organization" id="vis-private-org" />
+                            </FormControl>
+                            <Label htmlFor="vis-private-org" className="font-normal flex items-center cursor-pointer">
+                                <UsersIcon className="mr-2 h-4 w-4 text-blue-500"/>Private to Organization Members
+                            </Label>
+                        </FormItem>
+                         <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                                <RadioGroupItem value="Private to Me" id="vis-private-me" />
+                            </FormControl>
+                           <Label htmlFor="vis-private-me" className="font-normal flex items-center cursor-pointer">
+                            <LockIcon className="mr-2 h-4 w-4 text-red-500"/>Private to Me Only
+                           </Label>
+                        </FormItem>
                       </RadioGroup>
                     </FormControl>
                     <FormDescription>Control who can see this project.</FormDescription>
@@ -189,3 +201,4 @@ export default function CreateProjectInOrgView() {
     </Card>
   );
 }
+

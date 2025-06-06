@@ -250,8 +250,10 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange, onJobPoste
                                     !field.value && "text-muted-foreground"
                                 )}
                                 >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                  <span className="flex items-center justify-between w-full">
+                                    <span>{field.value ? format(field.value, "PPP") : "Pick a date"}</span>
+                                    <CalendarIcon className="h-4 w-4 opacity-50" />
+                                  </span>
                                 </Button>
                             </FormControl>
                             </PopoverTrigger>
@@ -304,3 +306,4 @@ export default function CreateJobPostingModal({ isOpen, onOpenChange, onJobPoste
     </Dialog>
   );
 }
+
