@@ -19,13 +19,12 @@ import CreateProjectInOrgView from "@/components/project/views/create-project-or
 import JoinProjectOrgView from "@/components/project/views/join-project-org-view";
 import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
 
-// Mini Jira components
-// import ProjectDashboardClient from "@/components/workplace/projects/ProjectDashboardClient"; // Removed import
 
 import CreateActionsModal from "@/components/project/create-actions-modal";
 import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react"; 
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
+import { MenuIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 export type ProjectWorkspaceView =
@@ -43,7 +42,6 @@ export type ProjectWorkspaceView =
   | "create-project-org"
   | "join-project-org"
   | "my-projects-org";
-  // | "jiraProjectDashboard"; // Removed Jira Dashboard view type
 
 export default function ProjectsPage() {
   const [activeView, setActiveView] = React.useState<ProjectWorkspaceView>("threads");
@@ -79,6 +77,16 @@ export default function ProjectsPage() {
       variant: "default",
     });
   };
+  
+  const handleOpenCreateActionsModal = () => {
+    setIsCreateActionsModalOpen(true);
+    setIsMobileSidebarOpen(false); // Close mobile sidebar if open
+  };
+
+  const handleMobileLinkClick = () => {
+    setIsMobileSidebarOpen(false);
+  };
+
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -108,8 +116,6 @@ export default function ProjectsPage() {
         return <JoinProjectOrgView />;
       case "my-projects-org":
         return <MyProjectsOrgView setActiveView={setActiveView} />;
-      // case "jiraProjectDashboard": // Removed case for Jira Dashboard
-      //   return <ProjectDashboardClient />;
       default:
         return <ThreadsView workspaceName={activatedWorkspaceName} />;
     }
@@ -118,18 +124,37 @@ export default function ProjectsPage() {
   return (
     <>
       <div className="flex h-[calc(100vh-4rem)]">
-        <ProjectWorkspaceSidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
-          onOpenCreateActionsModal={() => setIsCreateActionsModalOpen(true)}
-        />
+        {/* Desktop Sidebar */}
+        <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+          <ProjectWorkspaceSidebar
+            activeView={activeView}
+            setActiveView={setActiveView}
+            onOpenCreateActionsModal={handleOpenCreateActionsModal}
+          />
+        </aside>
+
+        {/* Main Content Area */}
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
+          {/* Mobile Menu Trigger */}
           <div className="md:hidden mb-4">
-            <Button variant="outline" size="sm" onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}>
-              <MenuIcon className="h-4 w-4 mr-2" />
-              Menu (Toggle Placeholder)
-            </Button>
+            <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <MenuIcon className="h-4 w-4 mr-2" />
+                  Menu
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-72 bg-card">
+                <ProjectWorkspaceSidebar
+                  activeView={activeView}
+                  setActiveView={handleSetActiveView}
+                  onOpenCreateActionsModal={handleOpenCreateActionsModal}
+                  onLinkClick={handleMobileLinkClick} // Pass handler to close sheet
+                />
+              </SheetContent>
+            </Sheet>
           </div>
+
           {activatedWorkspaceName && !activeView.startsWith("create-") && !activeView.startsWith("join-") && !activeView.startsWith("my-") && (
             <h2 className="text-xl font-semibold mb-4 text-primary">Workspace: {activatedWorkspaceName}</h2>
           )}

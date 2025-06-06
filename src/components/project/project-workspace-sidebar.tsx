@@ -29,8 +29,7 @@ import {
   FolderPlusIcon,
   ListChecksIcon,
   PlusCircleIcon,
-  ArrowLeftIcon, 
-  // CheckSquareIcon, // Removed as it was for Jira
+  ArrowLeftIcon,
 } from "lucide-react";
 import type { ProjectWorkspaceView } from "@/app/projects/page";
 import { useRouter } from "next/navigation";
@@ -40,6 +39,7 @@ interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
   setActiveView: (view: ProjectWorkspaceView) => void;
   onOpenCreateActionsModal: () => void;
+  onLinkClick?: () => void; // Added for mobile sheet
 }
 
 const mainNavItems = [
@@ -77,25 +77,39 @@ const projectOrgMenuItems = [
 ];
 
 
-export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal }: ProjectWorkspaceSidebarProps) {
+export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal, onLinkClick }: ProjectWorkspaceSidebarProps) {
   const router = useRouter();
   const [isChannelsExpanded, setIsChannelsExpanded] = React.useState(true);
   const [isDmsExpanded, setIsDmsExpanded] = React.useState(true);
   const [isOrgsExpanded, setIsOrgsExpanded] = React.useState(true);
   const [isProjectsOrgExpanded, setIsProjectsOrgExpanded] = React.useState(true);
-  // const [isJiraExpanded, setIsJiraExpanded] = React.useState(true); // Removed Jira state
+
+  const handleSetActiveView = (view: ProjectWorkspaceView) => {
+    setActiveView(view);
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  };
+
+  const handleOpenCreateActionsModal = () => {
+    onOpenCreateActionsModal();
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  }
 
 
   return (
-    <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+    // Removed hidden md:flex from here to make it reusable
+    <aside className="w-full bg-muted/40 border-r flex flex-col h-full">
       <div className="p-3 border-b flex justify-between items-center">
         <Button variant="ghost" asChild className="justify-start h-9 p-2 text-base">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" onClick={onLinkClick}>
             <Share2Icon className="h-5 w-5 text-primary" />
             <span className="font-semibold">CodeHinge</span>
           </Link>
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onOpenCreateActionsModal} title="Create or Join">
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleOpenCreateActionsModal} title="Create or Join">
           <SquarePenIcon className="h-4 w-4" />
           <span className="sr-only">Create or Join Actions</span>
         </Button>
@@ -110,13 +124,13 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                 className={cn(
                   "w-full justify-start text-sm h-8",
                   activeView === item.id && "bg-primary/10 text-primary font-semibold",
-                  item.id === 'dms' && "justify-between" 
+                  item.id === 'dms' && "justify-between"
                 )}
                 onClick={() => {
                   if (item.id === 'dms') {
                     setIsDmsExpanded(!isDmsExpanded);
                   }
-                  setActiveView(item.id as ProjectWorkspaceView);
+                  handleSetActiveView(item.id as ProjectWorkspaceView);
                 }}
               >
                 <span className="flex items-center gap-2.5">
@@ -134,6 +148,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                             key={subItem.id}
                             variant="ghost"
                             className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground"
+                            onClick={onLinkClick} // DM links should also close mobile sidebar
                         >
                            <span className="flex items-center gap-2.5">
                                 <Avatar className="h-4 w-4 mr-0">
@@ -144,7 +159,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                            </span>
                         </Button>
                     ))}
-                     <Button variant="ghost" className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground">
+                     <Button variant="ghost" className="w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground" onClick={onLinkClick}>
                        <span className="flex items-center gap-2.5">
                             <PlusIcon className="h-3.5 w-3.5"/> Add Teammates
                         </span>
@@ -167,7 +182,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                     Channels
                 </span>
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={(e) => { e.stopPropagation(); setActiveView('create-channel'); }} title="Create Channel">
+            <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={(e) => { e.stopPropagation(); handleSetActiveView('create-channel'); }} title="Create Channel">
                 <PlusIcon className="h-4 w-4"/>
                 <span className="sr-only">Create Channel</span>
             </Button>
@@ -180,9 +195,9 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
-                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold" 
+                     activeView === 'channels' && channel.id === 'ch-general' && "bg-primary/10 text-primary font-semibold"
                   )}
-                   onClick={() => setActiveView('channels')}
+                   onClick={() => handleSetActiveView('channels')}
                 >
                   <span className="flex items-center gap-2.5">
                     {channel.isPrivate ? <LockIcon className="h-3 w-3" /> : <span className="mr-0 font-bold text-muted-foreground/70">#</span>}
@@ -193,9 +208,6 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
             </div>
           ))}
           <Separator className="my-2"/>
-          
-          {/* Jira Project Management Section Removed */}
-          {/* <Separator className="my-2"/> */}
 
 
           <Button
@@ -216,7 +228,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                 "w-full justify-start text-sm h-8 pl-7",
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
-              onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
+              onClick={() => handleSetActiveView(item.id as ProjectWorkspaceView)}
             >
               <span className="flex items-center gap-2.5">
                 <item.icon className="h-4 w-4" />
@@ -244,7 +256,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
                 "w-full justify-start text-sm h-8 pl-7",
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
-              onClick={() => setActiveView(item.id as ProjectWorkspaceView)}
+              onClick={() => handleSetActiveView(item.id as ProjectWorkspaceView)}
             >
               <span className="flex items-center gap-2.5">
                 <item.icon className="h-4 w-4" />
@@ -261,7 +273,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
               "w-full justify-start text-sm h-8",
               activeView === "settings" && "bg-primary/10 text-primary font-semibold"
             )}
-            onClick={() => setActiveView("settings")}
+            onClick={() => handleSetActiveView("settings")}
           >
             <span className="flex items-center gap-2.5">
               <SettingsIcon className="h-4 w-4" />
@@ -273,7 +285,7 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
 
       <div className="p-2 border-t mt-auto">
         <Button variant="ghost" className="w-full justify-start h-10 p-2" asChild>
-            <Link href={`/profiles?returnTo=/projects`} className="flex items-center gap-2 w-full">
+            <Link href={`/profiles?returnTo=/projects`} className="flex items-center gap-2 w-full" onClick={onLinkClick}>
                <span className="flex items-center gap-2.5">
                 <Avatar className="h-8 w-8">
                     <AvatarImage src="https://placehold.co/100x100.png?p=1" alt="Current User" data-ai-hint="user avatar" />
