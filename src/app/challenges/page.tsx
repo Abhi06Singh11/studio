@@ -8,19 +8,18 @@ import AllChallengesView from "@/components/challenges/views/all-challenges-view
 import MySubmissionsView from "@/components/challenges/views/my-submissions-view";
 import LeaderboardView from "@/components/challenges/views/leaderboard-view";
 import SavedChallengesView from "@/components/challenges/views/saved-challenges-view";
-import MyChallengesView from "@/components/challenges/views/my-challenges-view"; // New
-import CreateChallengeModal from "@/components/challenges/modals/create-challenge-modal"; // New
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import MyChallengesView from "@/components/challenges/views/my-challenges-view";
+import CreateChallengeModal from "@/components/challenges/modals/create-challenge-modal";
 import { Button } from "@/components/ui/button";
-import { MenuIcon, PlusCircleIcon } from "lucide-react"; // New
-import { toast } from "@/hooks/use-toast";
+import { MenuIcon, PlusCircleIcon } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
 
 export type ChallengesWorkspaceView =
   | "all-challenges"
   | "my-submissions"
   | "leaderboard"
   | "saved-challenges"
-  | "my-challenges"; // New
+  | "my-challenges";
 
 export default function ChallengesPage() {
   const searchParams = useSearchParams();
@@ -29,7 +28,7 @@ export default function ChallengesPage() {
 
   const [activeView, setActiveView] = React.useState<ChallengesWorkspaceView>(initialViewQueryParam || "all-challenges");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
-  const [isCreateChallengeModalOpen, setIsCreateChallengeModalOpen] = React.useState(false); // New
+  const [isCreateChallengeModalOpen, setIsCreateChallengeModalOpen] = React.useState(false);
 
   const returnToPath = returnToQueryParam || '/';
 
@@ -41,8 +40,10 @@ export default function ChallengesPage() {
 
   const handleChallengeCreated = (data: any) => {
     console.log("Challenge created (conceptually):", data);
-    // Potentially refresh lists or navigate to the new challenge if needed
-    // For now, just shows a toast handled by the modal itself.
+  };
+
+  const handleMobileLinkClick = () => {
+    setIsMobileSidebarOpen(false);
   };
 
   const renderActiveView = () => {
@@ -55,7 +56,7 @@ export default function ChallengesPage() {
         return <LeaderboardView />;
       case "saved-challenges":
         return <SavedChallengesView />;
-      case "my-challenges": // New
+      case "my-challenges":
         return <MyChallengesView />;
       default:
         return <AllChallengesView />;
@@ -65,18 +66,35 @@ export default function ChallengesPage() {
   return (
     <>
       <div className="flex h-[calc(100vh-4rem)]"> {/* Adjust height based on your app header */}
-        <ChallengesSidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
-          returnToPath={returnToPath}
-        />
+        {/* Desktop Sidebar */}
+        <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+          <ChallengesSidebar
+            activeView={activeView}
+            setActiveView={setActiveView}
+            returnToPath={returnToPath}
+          />
+        </aside>
+
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-            <div className="md:hidden"> {/* Mobile menu toggle */}
-              <Button variant="outline" size="sm" onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}>
-                <MenuIcon className="h-4 w-4 mr-2" />
-                Menu (Toggle Placeholder)
-              </Button>
+            {/* Mobile Menu Trigger */}
+            <div className="md:hidden">
+              <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <MenuIcon className="h-4 w-4 mr-2" />
+                    Menu
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="p-0 w-72 bg-card">
+                  <ChallengesSidebar
+                    activeView={activeView}
+                    setActiveView={setActiveView}
+                    returnToPath={returnToPath}
+                    onLinkClick={handleMobileLinkClick}
+                  />
+                </SheetContent>
+              </Sheet>
             </div>
             <div className="flex-grow">
               {/* Header/title for current view will be inside the view component */}

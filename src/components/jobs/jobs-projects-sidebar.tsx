@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 interface JobsProjectsSidebarProps {
   activeView: JobsProjectsWorkspaceView;
   setActiveView: (view: JobsProjectsWorkspaceView) => void;
+  onLinkClick?: () => void; // Added for mobile sheet
 }
 
 const jobMenuItems = [
@@ -42,16 +43,23 @@ const savedPostsMenuItems = [
   { id: "saved-projects", label: "Saved Projects", icon: BookmarkIcon },
 ];
 
-export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsProjectsSidebarProps) {
+export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkClick }: JobsProjectsSidebarProps) {
   const router = useRouter();
   const [isJobsExpanded, setIsJobsExpanded] = React.useState(true);
   const [isProjectsExpanded, setIsProjectsExpanded] = React.useState(true);
   const [isSavedPostsExpanded, setIsSavedPostsExpanded] = React.useState(true);
 
+  const handleSetActiveView = (view: JobsProjectsWorkspaceView) => {
+    setActiveView(view);
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  };
+
   return (
-    <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+    <aside className="w-full bg-muted/40 border-r flex-col h-full flex"> {/* Removed hidden md:flex */}
       <div className="p-3 border-b">
-        <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => router.push('/')}>
+        <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => { router.push('/'); if(onLinkClick) onLinkClick(); }}>
           <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
           Back
         </Button>
@@ -80,7 +88,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
                     activeView === item.id && "bg-primary/10 text-primary font-medium"
                   )}
-                  onClick={() => setActiveView(item.id as JobsProjectsWorkspaceView)}
+                  onClick={() => handleSetActiveView(item.id as JobsProjectsWorkspaceView)}
                 >
                   <item.icon className="mr-2 h-3.5 w-3.5" />
                   <span className="truncate flex-1">{item.label}</span>
@@ -112,7 +120,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
                     activeView === item.id && "bg-primary/10 text-primary font-medium"
                   )}
-                  onClick={() => setActiveView(item.id as JobsProjectsWorkspaceView)}
+                  onClick={() => handleSetActiveView(item.id as JobsProjectsWorkspaceView)}
                 >
                   <item.icon className="mr-2 h-3.5 w-3.5" />
                    <span className="truncate flex-1">{item.label}</span>
@@ -130,7 +138,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
               "w-full justify-start text-sm h-8 text-muted-foreground hover:text-foreground",
                activeView === "messages" && "bg-primary/10 text-primary font-medium"
             )}
-            onClick={() => setActiveView("messages")}
+            onClick={() => handleSetActiveView("messages")}
             disabled // Optional: disable if not implemented
           >
             <MessageSquareIcon className="mr-2.5 h-4 w-4" />
@@ -159,7 +167,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
                     "w-full justify-start text-xs h-7 text-muted-foreground hover:text-foreground",
                     activeView === item.id && "bg-primary/10 text-primary font-medium"
                   )}
-                  onClick={() => setActiveView(item.id as JobsProjectsWorkspaceView)}
+                  onClick={() => handleSetActiveView(item.id as JobsProjectsWorkspaceView)}
                 >
                   <item.icon className="mr-2 h-3.5 w-3.5" />
                   {item.label}
@@ -170,7 +178,7 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
         </nav>
       </ScrollArea>
       <div className="p-3 border-t mt-auto">
-         <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
+         <Link href="/" onClick={onLinkClick} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
           <Share2Icon className="h-5 w-5" />
           <span className="font-semibold">CodeHinge</span>
         </Link>
@@ -178,4 +186,3 @@ export default function JobsProjectsSidebar({ activeView, setActiveView }: JobsP
     </aside>
   );
 }
-

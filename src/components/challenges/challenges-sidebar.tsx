@@ -15,7 +15,7 @@ import {
   BookmarkIcon,
   Share2Icon,
   Code2Icon,
-  UserCheckIcon, // Added for "My Challenges"
+  UserCheckIcon,
 } from "lucide-react";
 import type { ChallengesWorkspaceView } from "@/app/challenges/page";
 
@@ -23,6 +23,7 @@ interface ChallengesSidebarProps {
   activeView: ChallengesWorkspaceView;
   setActiveView: (view: ChallengesWorkspaceView) => void;
   returnToPath?: string;
+  onLinkClick?: () => void; // Added for mobile sheet
 }
 
 const menuItems = [
@@ -30,15 +31,22 @@ const menuItems = [
   { id: "my-submissions", label: "My Submissions", icon: HistoryIcon },
   { id: "leaderboard", label: "Leaderboard", icon: TrophyIcon },
   { id: "saved-challenges", label: "Saved Challenges", icon: BookmarkIcon },
-  { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon }, 
+  { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon },
 ];
 
-export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/" }: ChallengesSidebarProps) {
+export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/", onLinkClick }: ChallengesSidebarProps) {
+  const handleSetActiveView = (view: ChallengesWorkspaceView) => {
+    setActiveView(view);
+    if (onLinkClick) {
+      onLinkClick();
+    }
+  };
+
   return (
-    <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+    <aside className="w-full bg-muted/40 border-r flex-col h-full flex"> {/* Removed hidden md:flex */}
       <div className="p-3 border-b">
         <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
-          <Link href={returnToPath}>
+          <Link href={returnToPath} onClick={onLinkClick}>
             <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
             Back
           </Link>
@@ -61,7 +69,7 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
                 "w-full justify-start text-sm h-9",
                 activeView === item.id && "bg-primary/10 text-primary font-semibold"
               )}
-              onClick={() => setActiveView(item.id as ChallengesWorkspaceView)}
+              onClick={() => handleSetActiveView(item.id as ChallengesWorkspaceView)}
             >
               <item.icon className="mr-2.5 h-4 w-4" />
               {item.label}
@@ -70,7 +78,7 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
         </nav>
       </ScrollArea>
       <div className="p-3 border-t mt-auto">
-        <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
+        <Link href="/" onClick={onLinkClick} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
           <Share2Icon className="h-5 w-5" />
           <span className="font-semibold">CodeHinge</span>
         </Link>

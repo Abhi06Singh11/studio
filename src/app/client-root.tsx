@@ -36,14 +36,11 @@ export default function ClientRoot({
           <AppHeader /> 
           <main className={cn(
             "flex-1 bg-background overflow-hidden",
-            isMounted && pathname !== '/' && "px-4 sm:px-6 lg:px-8", 
+            pathname !== '/' && "px-4 sm:px-6 lg:px-8", // Apply horizontal padding for non-homepage routes always
             isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-300" 
           )}>
             <div key={pathname} className={cn(
-              "h-full",
-              // Apply py-8 initially (server & client initial render)
-              // Then switch to responsive padding after mount
-              isMounted ? "py-4 sm:py-6 md:py-8" : "py-8",
+              "h-full py-4 sm:py-6 md:py-8", // Apply responsive vertical padding directly
               isMounted && !isLoading ? "animate-fadeInPage" : "" 
             )}>
               {children}

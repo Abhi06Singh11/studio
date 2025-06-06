@@ -13,8 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, BriefcaseIcon, UserPlusIcon } from "lucide-react"; 
-import { toast } from "@/hooks/use-toast";
-
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
 
 export type JobsProjectsWorkspaceView =
   | "post-job"
@@ -40,11 +39,18 @@ export default function JobsProjectsWorkspacePage() {
     } else {
       setActiveView(view);
     }
+    if (isMobileSidebarOpen) {
+        setIsMobileSidebarOpen(false);
+    }
   };
 
   const handleJobPosted = (newJob: any) => {
     console.log("New job posted, potentially refresh job list:", newJob);
     setActiveView("view-posted-jobs");
+  };
+  
+  const handleMobileLinkClick = () => {
+    setIsMobileSidebarOpen(false);
   };
 
   const renderActiveView = () => {
@@ -79,13 +85,29 @@ export default function JobsProjectsWorkspacePage() {
   return (
     <TooltipProvider>
       <div className="flex h-[calc(100vh-4rem)]">
-        <JobsProjectsSidebar activeView={activeView} setActiveView={handleSetActiveView} />
+        {/* Desktop Sidebar */}
+        <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
+          <JobsProjectsSidebar activeView={activeView} setActiveView={handleSetActiveView} />
+        </aside>
+        
         <main className="flex-1 bg-background p-4 md:p-6 overflow-y-auto">
+           {/* Mobile Menu Trigger */}
           <div className="md:hidden mb-4">
-            <Button variant="outline" size="sm" onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}>
-              <MenuIcon className="h-4 w-4 mr-2" />
-              Menu (Toggle Placeholder)
-            </Button>
+            <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <MenuIcon className="h-4 w-4 mr-2" />
+                  Menu
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0 w-72 bg-card">
+                <JobsProjectsSidebar
+                  activeView={activeView}
+                  setActiveView={handleSetActiveView}
+                  onLinkClick={handleMobileLinkClick}
+                />
+              </SheetContent>
+            </Sheet>
           </div>
           {renderActiveView()}
         </main>
