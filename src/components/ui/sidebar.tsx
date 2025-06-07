@@ -187,11 +187,11 @@ const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile}> {/* Removed ...props from Sheet */}
+        <Sheet open={openMobile} onOpenChange={setOpenMobile}>
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className={cn("w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden", className)} // className can be passed to SheetContent
+            className={cn("w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden", className)}
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -235,7 +235,7 @@ const Sidebar = React.forwardRef<
               : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
             className
           )}
-          {...props} // props passed to the outer div for desktop sidebar
+          {...props} 
         >
           <div
             data-sidebar="sidebar"
@@ -257,29 +257,46 @@ const SidebarTrigger = React.forwardRef<
   const { toggleSidebar } = useSidebar();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onClickProp?.(event); // Call original onClick if provided
+    onClickProp?.(event);
     toggleSidebar();
   };
 
-  const Comp = asChild ? Slot : Button;
+  if (asChild) {
+    if (React.Children.count(children) !== 1) {
+        // This check is mostly for development; Slot itself will throw if not a single child.
+        console.warn("SidebarTrigger with 'asChild' expects a single React element child.");
+    }
+    return (
+      <Slot
+        ref={ref}
+        onClick={handleClick}
+        data-sidebar="trigger"
+        className={className} // Pass className to Slot
+        {...props} // Pass other props like aria-label, etc.
+      >
+        {children}
+      </Slot>
+    );
+  }
 
+  // Default rendering (asChild is false)
   return (
-    <Comp
+    <Button
       ref={ref}
       onClick={handleClick}
       data-sidebar="trigger"
-      variant={asChild ? undefined : (props.variant || "ghost")}
-      size={asChild ? undefined : (props.size || "icon")}
-      className={cn(asChild ? "" : "h-8 w-8", className)} // Adjusted default size for consistency
+      variant={props.variant || "ghost"}
+      size={props.size || "icon"}
+      className={cn(props.size === "icon" || !props.size ? "h-8 w-8" : "", className)} // Default size if not specified or icon
       {...props}
     >
-      {children ? children : (
+      {children || ( // Use provided children if any, otherwise default icon
         <>
-          <DefaultMenuIcon className="h-5 w-5" /> {/* Using DefaultMenuIcon or PanelLeft */}
+          <DefaultMenuIcon className="h-5 w-5" />
           <span className="sr-only">Toggle Sidebar</span>
         </>
       )}
-    </Comp>
+    </Button>
   );
 });
 SidebarTrigger.displayName = "SidebarTrigger";
