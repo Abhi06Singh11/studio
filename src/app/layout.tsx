@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ClientRoot from './client-root'; // Import the new client component
 import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/components/theme-provider'; // Import ThemeProvider
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,7 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(geistSans.variable, geistMono.variable, "antialiased font-sans")}>
-        <ClientRoot>{children}</ClientRoot>
+        <ThemeProvider
+          defaultTheme="system"
+          storageKey="codehinge-theme"
+        >
+          <ClientRoot>{children}</ClientRoot>
+        </ThemeProvider>
       </body>
     </html>
   );

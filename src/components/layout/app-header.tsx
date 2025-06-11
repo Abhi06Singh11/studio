@@ -13,8 +13,7 @@ import {
 import {
   Share2Icon,
   SearchIcon,
-  PanelLeft,
-  // CheckSquareIcon, // Removed as it was for Jira
+  MenuIcon, // Changed from PanelLeft for consistency
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -22,6 +21,7 @@ import { cn } from '@/lib/utils';
 import AppSidebarContent, { allNavItems as mobileNavItems } from './app-sidebar'; 
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import UserProfileModal from './UserProfileModal';
+import { ThemeToggle } from '@/components/theme-provider'; // Import ThemeToggle
 
 const sampleUser = {
   id: "user_elara_vance",
@@ -34,10 +34,9 @@ const sampleUser = {
   lastLogin: "5 minutes ago",
 };
 
-// desktopHeaderNavItems will be re-derived from the updated allNavItems in app-sidebar.tsx
-const desktopHeaderNavItems = mobileNavItems.filter(
-  item => !["Events", "Newsletters", "Admin Panel", "Mini Jira (Projects)"].includes(item.label) 
-  // Explicitly remove Mini Jira from desktop too if it was there based on old allNavItems
+// Re-filter desktop nav items based on the (now updated) allNavItems from app-sidebar
+const currentDesktopNavItems = mobileNavItems.filter(
+  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label)
 );
 
 
@@ -45,11 +44,6 @@ export default function AppHeader() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-
-  // Re-filter desktop nav items based on the (now updated) allNavItems from app-sidebar
-  const currentDesktopNavItems = mobileNavItems.filter(
-    item => !["Events", "Newsletters", "Admin Panel"].includes(item.label)
-  );
 
   return (
     <TooltipProvider delayDuration={100}>
@@ -60,7 +54,7 @@ export default function AppHeader() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-x-1 lg:gap-x-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {currentDesktopNavItems.map((item) => ( // Use currentDesktopNavItems
+          {currentDesktopNavItems.map((item) => (
             <Tooltip key={item.label}>
               <TooltipTrigger asChild>
                 <Link
@@ -91,6 +85,8 @@ export default function AppHeader() {
               className="w-full rounded-md bg-background/70 pl-8 pr-3 h-9 text-sm focus:bg-background"
             />
           </div>
+          
+          <ThemeToggle /> {/* Add the theme toggle button here */}
 
           <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0" onClick={() => setIsProfileModalOpen(true)}>
               <Avatar className="h-8 w-8">
@@ -105,7 +101,7 @@ export default function AppHeader() {
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <PanelLeft className="h-6 w-6" />
+                <MenuIcon className="h-6 w-6" /> {/* Using MenuIcon consistently */}
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
@@ -123,4 +119,3 @@ export default function AppHeader() {
     </TooltipProvider>
   );
 }
-    
