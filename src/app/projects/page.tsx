@@ -87,6 +87,13 @@ export default function ProjectsPage() {
     setIsMobileSidebarOpen(false);
   };
 
+  const handleSetActiveView = (view: ProjectWorkspaceView) => {
+    setActiveView(view);
+    if (isMobileSidebarOpen) {
+      setIsMobileSidebarOpen(false);
+    }
+  };
+
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -95,7 +102,7 @@ export default function ProjectsPage() {
       case "channels":
         return <ChannelsView />;
       case "create-channel":
-        return <CreateChannelView setActiveView={setActiveView} />;
+        return <CreateChannelView setActiveView={handleSetActiveView} />;
       case "dms":
         return <DirectMessagesView />;
       case "activity":
@@ -109,13 +116,13 @@ export default function ProjectsPage() {
       case "join-organization":
         return <JoinOrganizationView />;
       case "my-organizations":
-        return <MyOrganizationsView setActiveView={setActiveView} />;
+        return <MyOrganizationsView setActiveView={handleSetActiveView} />;
       case "create-project-org":
         return <CreateProjectInOrgView />;
       case "join-project-org":
         return <JoinProjectOrgView />;
       case "my-projects-org":
-        return <MyProjectsOrgView setActiveView={setActiveView} />;
+        return <MyProjectsOrgView setActiveView={handleSetActiveView} />;
       default:
         return <ThreadsView workspaceName={activatedWorkspaceName} />;
     }
@@ -128,7 +135,7 @@ export default function ProjectsPage() {
         <aside className="w-64 md:w-72 bg-muted/40 border-r flex-col h-full hidden md:flex">
           <ProjectWorkspaceSidebar
             activeView={activeView}
-            setActiveView={setActiveView}
+            setActiveView={handleSetActiveView}
             onOpenCreateActionsModal={handleOpenCreateActionsModal}
           />
         </aside>
