@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,38 +9,40 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 96.1%; /* Light Gray #F5F5F5 (Synergy Hub background) */
-    --foreground: 20 14.3% 4.1%; /* Default dark gray, good contrast on light gray */
+    --background: 278 100% 83.3%; /* #E0AAFF soft lavender (User Primary Background) */
+    --foreground: 0 0% 11.8%;   /* #1E1E1E dark neutral gray (User Text Primary) */
 
-    --card: 0 0% 100%; /* White for cards */
-    --card-foreground: 20 14.3% 4.1%;
+    --card: 270 100% 95.5%;       /* #F4EBFF light lilac (User Card/Panel Background) */
+    --card-foreground: 0 0% 11.8%; /* Same as primary text */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
+    --popover: 270 100% 95.5%;     /* Light Lilac */
+    --popover-foreground: 0 0% 11.8%; /* Dark Neutral Gray */
 
-    --primary: 195 82% 48%;      /* Deep Sky Blue #42A5F5 (Synergy Hub primary) */
-    --primary-foreground: 0 0% 100%; /* White for high contrast on blue */
+    --primary: 276 67.6% 61.4%;   /* #9D4EDD (User Accent/CTA Buttons) */
+    --primary-foreground: 0 0% 100%; /* White for high contrast on primary */
 
-    --secondary: 186 100% 42%;   /* Vivid Cyan #00BCD4 (Synergy Hub accent) */
-    --secondary-foreground: 0 0% 100%; /* White for high contrast on cyan */
-    /* If cyan is too bright for text, consider a darker fg: 20 14.3% 4.1% */
+    --secondary: 276 67.6% 61.4%;  /* Using Accent/CTA for secondary elements too */
+    --secondary-foreground: 0 0% 100%; /* White */
 
-    --muted: 0 0% 90%; /* Slightly darker gray for muted elements */
-    --muted-foreground: 20 8.9% 45.9%; /* A less prominent gray for text on muted backgrounds */
+    --muted: 275 100% 74.1%;       /* #C77DFF violet (User Secondary Background) */
+    --muted-foreground: 273 71% 34.9%; /* #5A189A deep purple (User Text Secondary) */
 
-    --accent: 186 100% 42%;       /* Vivid Cyan #00BCD4 (Synergy Hub accent) */
-    --accent-foreground: 0 0% 100%;  /* White for high contrast on cyan */
+    --accent: 276 67.6% 61.4%;    /* #9D4EDD (User Accent/CTA Buttons) */
+    --accent-foreground: 0 0% 100%;  /* White */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 100% 92%;      /* #FFD6D6 soft red (User Error/Warning) */
+    --destructive-foreground: 0 70% 25%; /* Darker red for contrast on light soft red */
+    
+    --success: 157 72.2% 82.9%;      /* #B5F2DA mint (User Success Info) */
+    --success-foreground: 157 50% 25%; /* Dark mint/green for contrast */
 
-    --border: 0 0% 89.8%; /* Light Gray for borders */
-    --input: 0 0% 89.8%;  /* Light Gray for inputs */
-    --ring: 195 82% 48%;      /* Deep Sky Blue for focus rings */
+    --border: 270 42.3% 88.2%;     /* #DDD1F1 (User Border/Dividers) */
+    --input: 270 42.3% 88.2%;      /* #DDD1F1 */
+    --ring: 276 67.6% 61.4%;      /* #9D4EDD (User Accent/CTA for focus rings) */
 
     --radius: 0.5rem;
 
-    /* Chart colors (can be kept as is or themed if charts are used extensively) */
+    /* Chart colors (kept as is unless specified otherwise) */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -47,51 +50,64 @@ body {
     --chart-5: 27 87% 67%;
 
     /* Sidebar specific colors, aligned with the new theme */
-    --sidebar-background: 0 0% 96.1%; /* Light Gray #F5F5F5 */
-    --sidebar-foreground: 20 14.3% 4.1%; /* Default dark gray */
-    --sidebar-primary: 195 82% 48%; /* Deep Sky Blue for active item */
+    --sidebar-background: 278 100% 83.3%; /* Soft Lavender */
+    --sidebar-foreground: 0 0% 11.8%;   /* Dark Neutral Gray */
+    --sidebar-primary: 276 67.6% 61.4%;   /* #9D4EDD (Accent/CTA) */
     --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 0 0% 90%; /* Slightly darker gray for hover background */
-    --sidebar-accent-foreground: 20 14.3% 4.1%; /* Default dark gray for hover text */
-    --sidebar-border: 0 0% 89.8%; /* Consistent with main border */
-    --sidebar-ring: 195 82% 48%; /* App's primary for focus rings in sidebar */
+    --sidebar-accent: 270 100% 92%;       /* Lighter Lilac for hover #EAE0FF */
+    --sidebar-accent-foreground: 0 0% 11.8%; /* Dark Neutral Gray */
+    --sidebar-border: 270 42.3% 88.2%;     /* Light Border */
+    --sidebar-ring: 276 67.6% 61.4%;      /* Accent/CTA for focus rings */
   }
 
   .dark {
-    /* Dark theme remains as default, not specified in request to change */
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --background: 263 100% 8.4%;   /* #10002B deep purple (User Dark Primary Background) */
+    --foreground: 270 100% 95.5%;  /* #F4EBFF light lilac (User Dark Text Primary) */
+
+    --card: 273 81.8% 22.9%;       /* #3C096C (User Dark Card/Panel Background) */
+    --card-foreground: 270 100% 95.5%; /* Light Lilac */
+
+    --popover: 273 81.8% 22.9%;     /* Dark Card Background */
+    --popover-foreground: 270 100% 95.5%; /* Light Lilac */
+
+    --primary: 278 100% 83.3%;   /* #E0AAFF (User Dark Accent/CTA) */
+    --primary-foreground: 263 100% 8.4%; /* Deep purple text for contrast on light lavender primary */
+
+    --secondary: 278 100% 83.3%;  /* Using Dark Accent/CTA for secondary */
+    --secondary-foreground: 263 100% 8.4%; /* Deep purple text */
+
+    --muted: 270 100% 13.3%;       /* #240046 (User Dark Secondary Background) */
+    --muted-foreground: 275 100% 74.1%; /* #C77DFF violet (User Dark Text Secondary) */
+
+    --accent: 278 100% 83.3%;    /* #E0AAFF (User Dark Accent/CTA) */
+    --accent-foreground: 263 100% 8.4%;   /* Deep purple text */
+
+    --destructive: 0 100% 71%;      /* #FF6B6B (User Dark Error/Warning) */
+    --destructive-foreground: 0 0% 100%; /* White */
+    
+    --success: 120 39.4% 49.2%;     /* #4CAF50 (User Dark Success Info) */
+    --success-foreground: 0 0% 100%;  /* White */
+
+    --border: 273 71% 34.9%;     /* #5A189A (User Dark Border/Dividers) */
+    --input: 273 71% 34.9%;      /* #5A189A */
+    --ring: 278 100% 83.3%;      /* #E0AAFF (User Dark Accent/CTA for focus rings) */
+    
+    /* Chart colors (kept as is unless specified otherwise) */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 0 0% 98%; /* Adjusted for dark theme sidebar text */
-    --sidebar-primary: 195 82% 58%; /* Using lighter primary for dark theme active item */
-    --sidebar-primary-foreground: 0 0% 9%; /* Dark text for active item */
-    --sidebar-accent: 240 3.7% 15.9%; /* Darker accent for hover */
-    --sidebar-accent-foreground: 0 0% 98%; /* Light text for hover */
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 195 82% 68%; /* Lighter primary for ring in dark theme */
+    /* Sidebar specific colors for dark theme */
+    --sidebar-background: 263 100% 8.4%;   /* Deep Purple */
+    --sidebar-foreground: 270 100% 95.5%;  /* Light Lilac */
+    --sidebar-primary: 278 100% 83.3%;   /* #E0AAFF (Dark Accent/CTA) */
+    --sidebar-primary-foreground: 263 100% 8.4%; /* Deep Purple text */
+    --sidebar-accent: 273 80% 18%;       /* Darker Card Hover #2E0753 */
+    --sidebar-accent-foreground: 270 100% 95.5%;  /* Light Lilac */
+    --sidebar-border: 273 71% 34.9%;     /* Mid Purple Border */
+    --sidebar-ring: 278 100% 83.3%;      /* Dark Accent/CTA for focus rings */
   }
 }
 
