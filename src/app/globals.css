@@ -9,105 +9,113 @@ body {
 
 @layer base {
   :root {
-    --background: 229 84% 60%; /* #4361EE - Calm blue */
-    --foreground: 0 0% 12%;   /* #1E1E1E - Dark neutral gray */
+    /* Light Mode (Day) */
+    --background: 210 25% 97%; /* #F7F9FA - Clean, off-white */
+    --foreground: 215 35% 37%; /* #3D5A80 - Body Text, deep contrast */
 
-    --card: 278 100% 83%;       /* #E0AAFF - Soft lavender (for cards) */
-    --card-foreground: 0 0% 12%; /* #1E1E1E - Dark neutral gray */
+    --card: 0 0% 100%; /* #FFFFFF - Cards / Panels (solid white, D9 alpha ignored for HSL variable) */
+    --card-foreground: 215 35% 37%; /* #3D5A80 - Body Text on Cards */
 
-    --popover: 278 100% 83%;     /* Soft lavender */
-    --popover-foreground: 0 0% 12%; /* Dark Neutral Gray */
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 215 35% 37%; /* #3D5A80 */
 
-    --primary: 260 89% 35%;   /* #480CA8 - Bold royal purple (for buttons, links) */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF - White (for text on primary buttons) */
+    --primary: 215 35% 37%; /* #3D5A80 - Primary Accent, soft navy */
+    --primary-foreground: 0 0% 100%; /* White for contrast on soft navy */
 
-    --secondary: 270 100% 95.5%;  /* #F4EBFF - Light lilac (for secondary button background) */
-    --secondary-foreground: 0 0% 100%; /* #FFFFFF - White (for text on secondary buttons on hover) */
-
-    --muted: 275 100% 74%;       /* #C77DFF - Violet (was previous secondary background) */
-    --muted-foreground: 273 71% 35%; /* #5A189A - Deep purple (was previous secondary text) */
-
-    --accent: 311 79% 40%;    /* #B5179E - Punchy pink/purple (for accent, hover on outline/ghost) */
-    --accent-foreground: 0 0% 100%;  /* #FFFFFF - White */
-
-    --destructive: 0 100% 92%;      /* #FFD6D6 - Soft red (retained) */
-    --destructive-foreground: 0 70% 25%; /* (retained) */
+    /* Using user's Secondary Accent for ShadCN's 'secondary' button variant */
+    --secondary: 14 82% 62%; /* #EE6C4D - Secondary Accent, for CTA buttons */
+    --secondary-foreground: 0 0% 100%; /* White for contrast on orange */
     
-    --success: 157 72% 83%;      /* #B5F2DA - Mint (retained) */
-    --success-foreground: 157 50% 25%; /* (retained) */
+    /* Using user's Muted/Disabled Text for muted-foreground, and a derived light gray for muted background */
+    --muted: 213 20% 95%; /* #EFF2F5 - Derived light gray for muted backgrounds */
+    --muted-foreground: 213 14% 55%; /* #7B8A9D - Muted / Disabled Text */
 
-    --border: 270 42% 88%;     /* #DDD1F1 - Light lavender (retained light mode border) */
-    --input: 270 42% 88%;      /* #DDD1F1 */
-    --ring: 260 89% 35%;      /* #480CA8 - Royal purple (for focus rings) */
+    /* Using user's Secondary Accent for ShadCN's 'accent' (e.g. hover states) */
+    --accent: 14 82% 62%; /* #EE6C4D - Secondary Accent */
+    --accent-foreground: 0 0% 100%;  /* White for contrast on orange */
+
+    --destructive: 0 100% 84%; /* #FFADAD - Soft red */
+    --destructive-foreground: 0 80% 35%; /* Darker red for text on soft red */
+    
+    --success: 130 67% 83%; /* #B2F2BB - Fresh green */
+    --success-foreground: 130 50% 25%; /* Dark green for text on fresh green */
+
+    --border: 185 83% 94%; /* #E0FBFC - Subtle and fresh border */
+    --input: 185 83% 94%; /* #E0FBFC */
+    --ring: 215 35% 37%; /* #3D5A80 - Primary Accent for focus rings */
 
     --radius: 0.5rem;
 
-    /* Chart colors (kept as is unless specified otherwise) */
+    /* Chart colors (retained, can be themed if needed) */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    /* Sidebar specific colors, aligned with the new theme */
-    --sidebar-background: 229 84% 60%; /* Calm blue */
-    --sidebar-foreground: 0 0% 12%;   /* Dark Neutral Gray */
-    --sidebar-primary: 260 89% 35%;   /* Royal purple */
-    --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 311 79% 40%;       /* Punchy pink/purple */
-    --sidebar-accent-foreground: 0 0% 100%; /* White */
-    --sidebar-border: 270 42% 88%;     /* Light lavender border */
-    --sidebar-ring: 260 89% 35%;      /* Royal purple for focus rings */
+    /* Sidebar specific colors - aliased to main theme */
+    --sidebar-background: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 
   .dark {
-    --background: 346 94% 30%;   /* #9A031E - Deep crimson-violet */
-    --foreground: 270 100% 95.5%;  /* #F4EBFF - Light lilac */
+    /* Dark Mode (Night) */
+    --background: 216 29% 10%; /* #121721 - Deep tech black */
+    --foreground: 208 27% 88%; /* #D8E1E8 - Smooth gray-white text */
 
-    --card: 270 100% 13.3%;       /* #240046 - Dark purple (for cards) */
-    --card-foreground: 270 100% 95.5%; /* #F4EBFF - Light Lilac */
+    --card: 209 25% 16%; /* #1F2933 - Dark slate with contrast */
+    --card-foreground: 208 27% 88%; /* #D8E1E8 - Text on Cards */
 
-    --popover: 270 100% 13.3%;     /* Dark purple */
-    --popover-foreground: 270 100% 95.5%; /* Light Lilac */
+    --popover: 209 25% 16%; /* #1F2933 */
+    --popover-foreground: 208 27% 88%; /* #D8E1E8 */
 
-    --primary: 278 100% 83.3%;   /* #E0AAFF - Neon purple (for buttons, links) */
-    --primary-foreground: 263 100% 8.4%; /* #10002B - Deep purple (for text on primary buttons) */
+    --primary: 205 47% 72%; /* #98C1D9 - Primary Accent, soft cyan */
+    --primary-foreground: 216 29% 10%; /* Deep tech black for text on soft cyan */
 
-    --secondary: 193 70% 21%;  /* #0F4C5C - Sleek teal (for secondary button background) */
-    --secondary-foreground: 263 100% 8.4%; /* #10002B - Deep purple (for text on secondary buttons on hover) */
-
-    --muted: 193 70% 21%;       /* #0F4C5C - Sleek teal (Accent Layer for dev-style sections) */
-    --muted-foreground: 275 100% 74.1%; /* #C77DFF - Violet */
-
-    --accent: 268 65% 49%;    /* #7B2CBF - Border glow purple (for accent, hover on outline/ghost) */
-    --accent-foreground: 270 100% 95.5%;   /* #F4EBFF - Light lilac */
-
-    --destructive: 0 100% 71%;      /* #FF6B6B (retained) */
-    --destructive-foreground: 0 0% 100%; /* #FFFFFF (retained) */
+    /* Using user's Secondary Accent for ShadCN's 'secondary' button variant */
+    --secondary: 14 82% 62%; /* #EE6C4D - Secondary Accent, eye-catching warmth */
+    --secondary-foreground: 0 0% 100%; /* White for contrast on orange */
     
-    --success: 120 39% 49%;     /* #4CAF50 (retained) */
-    --success-foreground: 0 0% 100%;  /* #FFFFFF (retained) */
+    /* Using user's Muted/Disabled Text for muted-foreground, and a derived dark gray for muted background */
+    --muted: 220 25% 14%; /* #1A202C - Derived dark gray for muted backgrounds */
+    --muted-foreground: 203 18% 46%; /* #607D8B - Low-contrast UI text */
 
-    --border: 268 65% 49%;     /* #7B2CBF - Border glow purple (for borders) */
-    --input: 268 65% 49%;      /* #7B2CBF */
-    --ring: 268 65% 49%;      /* #7B2CBF - Border glow purple (for focus rings) */
+    /* Using user's Secondary Accent for ShadCN's 'accent' */
+    --accent: 14 82% 62%; /* #EE6C4D - Secondary Accent */
+    --accent-foreground: 0 0% 100%; /* White for contrast on orange */
+
+    --destructive: 0 90% 71%; /* #F87171 - Non-aggressive red */
+    --destructive-foreground: 0 0% 100%; /* White for text on red */
     
-    /* Chart colors (kept as is unless specified otherwise) */
+    --success: 145 67% 45%; /* #22C55E - Calming success tone */
+    --success-foreground: 0 0% 100%; /* White for text on green */
+
+    --border: 215 35% 37%; /* #3D5A80 - Subtle ocean blue tone border */
+    --input: 215 35% 37%; /* #3D5A80 */
+    --ring: 205 47% 72%; /* #98C1D9 - Primary Accent for focus rings */
+    
+    /* Chart colors (retained, can be themed if needed) */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    /* Sidebar specific colors for dark theme */
-    --sidebar-background: 346 94% 30%;   /* Deep crimson-violet */
-    --sidebar-foreground: 270 100% 95.5%;  /* Light Lilac */
-    --sidebar-primary: 278 100% 83.3%;   /* Neon purple */
-    --sidebar-primary-foreground: 263 100% 8.4%; /* Deep Purple text */
-    --sidebar-accent: 268 65% 49%;       /* Border glow purple */
-    --sidebar-accent-foreground: 270 100% 95.5%;  /* Light Lilac */
-    --sidebar-border: 268 65% 49%;     /* Border glow purple */
-    --sidebar-ring: 268 65% 49%;      /* Border glow purple for focus rings */
+    /* Sidebar specific colors - aliased to main theme */
+    --sidebar-background: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 }
 
