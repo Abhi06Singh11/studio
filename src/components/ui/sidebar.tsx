@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority" // Ensure cva is imported if _sidebarMenuButtonVariants uses it
-import { PanelLeft, MenuIcon as DefaultMenuIcon } from "lucide-react" // Use a default icon if none provided
+import { MenuIcon as DefaultMenuIcon } from "lucide-react" // Use a default icon if none provided
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -217,6 +217,7 @@ const Sidebar = React.forwardRef<
         <div
           className={cn(
             "duration-200 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-linear",
+            "group-data-[collapsible=icon]:w-[--sidebar-width-icon]",
             "group-data-[collapsible=offcanvas]:w-0",
             "group-data-[side=right]:rotate-180",
             variant === "floating" || variant === "inset"
@@ -262,37 +263,32 @@ const SidebarTrigger = React.forwardRef<
   };
 
   if (asChild) {
-    if (React.Children.count(children) !== 1) {
-        // This check is mostly for development; Slot itself will throw if not a single child.
-        console.warn("SidebarTrigger with 'asChild' expects a single React element child.");
-    }
     return (
       <Slot
         ref={ref}
         onClick={handleClick}
         data-sidebar="trigger"
-        className={className} // Pass className to Slot
-        {...props} // Pass other props like aria-label, etc.
+        className={className}
+        {...props}
       >
         {children}
       </Slot>
     );
   }
 
-  // Default rendering (asChild is false)
   return (
     <Button
       ref={ref}
       onClick={handleClick}
       data-sidebar="trigger"
       variant={props.variant || "ghost"}
-      size={props.size || "icon"}
-      className={cn(props.size === "icon" || !props.size ? "h-8 w-8" : "", className)} // Default size if not specified or icon
+      size={props.size || "icon"} // Rely on buttonVariants for "icon" size styling
+      className={className} // Pass through className, buttonVariants handles the rest
       {...props}
     >
-      {children || ( // Use provided children if any, otherwise default icon
+      {children || (
         <>
-          <DefaultMenuIcon className="h-5 w-5" />
+          <DefaultMenuIcon /> {/* Size will be inherited via buttonVariants */}
           <span className="sr-only">Toggle Sidebar</span>
         </>
       )}
