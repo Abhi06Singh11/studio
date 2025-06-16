@@ -8,9 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { SheetHeader, SheetTitle } from "@/components/ui/sheet"; // Corrected import
 import {
-  SheetHeader, // Added
-  SheetTitle,  // Added
   MessageSquareTextIcon,
   ListVideoIcon,
   UsersIcon,
