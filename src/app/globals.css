@@ -9,40 +9,37 @@ body {
 
 @layer base {
   :root {
-    /* Light Mode (Day) */
-    --background: 210 25% 97%; /* #F7F9FA - Clean, off-white */
-    --foreground: 215 35% 37%; /* #3D5A80 - Body Text, deep contrast */
+    /* Light Mode (Day) - "Enigmatic Dawn" */
+    --background: 257 60% 98%; /* #F8F7FC */
+    --foreground: 251 13% 27%; /* #3D3B4E - Body Text */
 
-    --card: 0 0% 100%; /* #FFFFFF - Cards / Panels (solid white, D9 alpha ignored for HSL variable) */
-    --card-foreground: 215 35% 37%; /* #3D5A80 - Body Text on Cards */
+    --card: 0 0% 100%; /* #FFFFFF - Cards / Panels */
+    --card-foreground: 251 13% 27%; /* #3D3B4E - Body Text on Cards */
 
     --popover: 0 0% 100%; /* #FFFFFF */
-    --popover-foreground: 215 35% 37%; /* #3D5A80 */
+    --popover-foreground: 251 13% 27%; /* #3D3B4E */
 
-    --primary: 215 35% 37%; /* #3D5A80 - Primary Accent, soft navy */
-    --primary-foreground: 0 0% 100%; /* White for contrast on soft navy */
+    --primary: 261 100% 44%; /* #4A00E0 - Primary Accent, deep indigo/violet */
+    --primary-foreground: 0 0% 100%; /* White for contrast */
 
-    /* Using user's Secondary Accent for ShadCN's 'secondary' button variant */
-    --secondary: 14 82% 62%; /* #EE6C4D - Secondary Accent, for CTA buttons */
-    --secondary-foreground: 0 0% 100%; /* White for contrast on orange */
+    --secondary: 81 85% 67%; /* #BEF264 - Secondary Accent / CTA, neon lime */
+    --secondary-foreground: 261 100% 10%; /* Dark color for contrast on lime */
     
-    /* Using user's Muted/Disabled Text for muted-foreground, and a derived light gray for muted background */
-    --muted: 213 20% 95%; /* #EFF2F5 - Derived light gray for muted backgrounds */
-    --muted-foreground: 213 14% 55%; /* #7B8A9D - Muted / Disabled Text */
+    --muted: 260 27% 94%; /* #E2DDEF - Subtle cool lavender-gray for muted backgrounds (derived) */
+    --muted-foreground: 254 14% 58%; /* #8C88A2 - Muted / Disabled Text */
 
-    /* Using user's Secondary Accent for ShadCN's 'accent' (e.g. hover states) */
-    --accent: 14 82% 62%; /* #EE6C4D - Secondary Accent */
-    --accent-foreground: 0 0% 100%;  /* White for contrast on orange */
+    --accent: 81 85% 67%; /* #BEF264 - Same as Secondary Accent for hover states */
+    --accent-foreground: 261 100% 10%;  /* Dark color for contrast on lime */
 
-    --destructive: 0 100% 84%; /* #FFADAD - Soft red */
-    --destructive-foreground: 0 80% 35%; /* Darker red for text on soft red */
+    --destructive: 0 100% 71%; /* #FF6B6B - Warning / Error, clear red */
+    --destructive-foreground: 0 0% 100%; /* White for text on red */
     
-    --success: 130 67% 83%; /* #B2F2BB - Fresh green */
-    --success-foreground: 130 50% 25%; /* Dark green for text on fresh green */
+    --success: 145 58% 55%; /* #50C878 - Success / Info, emerald green */
+    --success-foreground: 0 0% 100%; /* White for text on green */
 
-    --border: 185 83% 94%; /* #E0FBFC - Subtle and fresh border */
-    --input: 185 83% 94%; /* #E0FBFC */
-    --ring: 215 35% 37%; /* #3D5A80 - Primary Accent for focus rings */
+    --border: 260 27% 91%; /* #E2DDEF - Border / Divider */
+    --input: 260 27% 91%; /* #E2DDEF */
+    --ring: 261 100% 44%; /* #4A00E0 - Primary Accent for focus rings */
 
     --radius: 0.5rem;
 
@@ -65,40 +62,37 @@ body {
   }
 
   .dark {
-    /* Dark Mode (Night) */
-    --background: 216 29% 10%; /* #121721 - Deep tech black */
-    --foreground: 208 27% 88%; /* #D8E1E8 - Smooth gray-white text */
+    /* Dark Mode (Night) - "Cipher Night" */
+    --background: 256 14% 10%; /* #16131D - Deep tech black/slate */
+    --foreground: 257 25% 85%; /* #D4D0E1 - Light cool gray text */
 
-    --card: 209 25% 16%; /* #1F2933 - Dark slate with contrast */
-    --card-foreground: 208 27% 88%; /* #D8E1E8 - Text on Cards */
+    --card: 257 16% 16%; /* #252130 - Dark purple-slate */
+    --card-foreground: 257 25% 85%; /* #D4D0E1 - Text on Cards */
 
-    --popover: 209 25% 16%; /* #1F2933 */
-    --popover-foreground: 208 27% 88%; /* #D8E1E8 */
+    --popover: 257 16% 16%; /* #252130 */
+    --popover-foreground: 257 25% 85%; /* #D4D0E1 */
 
-    --primary: 205 47% 72%; /* #98C1D9 - Primary Accent, soft cyan */
-    --primary-foreground: 216 29% 10%; /* Deep tech black for text on soft cyan */
+    --primary: 263 95% 70%; /* #A26BFC - Primary Accent, vibrant violet */
+    --primary-foreground: 256 14% 10%; /* Dark for text on light violet */
 
-    /* Using user's Secondary Accent for ShadCN's 'secondary' button variant */
-    --secondary: 14 82% 62%; /* #EE6C4D - Secondary Accent, eye-catching warmth */
-    --secondary-foreground: 0 0% 100%; /* White for contrast on orange */
+    --secondary: 76 93% 79%; /* #D9F99D - Secondary Accent / CTA, softer neon lime */
+    --secondary-foreground: 256 14% 10%; /* Dark color for contrast on lime */
     
-    /* Using user's Muted/Disabled Text for muted-foreground, and a derived dark gray for muted background */
-    --muted: 220 25% 14%; /* #1A202C - Derived dark gray for muted backgrounds */
-    --muted-foreground: 203 18% 46%; /* #607D8B - Low-contrast UI text */
+    --muted: 260 15% 25%; /* #3C3649 - Derived dark muted background (darker than card) */
+    --muted-foreground: 257 10% 49%; /* #77728B - Low-contrast UI text */
 
-    /* Using user's Secondary Accent for ShadCN's 'accent' */
-    --accent: 14 82% 62%; /* #EE6C4D - Secondary Accent */
-    --accent-foreground: 0 0% 100%; /* White for contrast on orange */
+    --accent: 76 93% 79%; /* #D9F99D - Same as Secondary Accent */
+    --accent-foreground: 256 14% 10%; /* Dark for contrast on lime */
 
-    --destructive: 0 90% 71%; /* #F87171 - Non-aggressive red */
-    --destructive-foreground: 0 0% 100%; /* White for text on red */
+    --destructive: 0 100% 83%; /* #FFAAAA - Softer Warning / Error */
+    --destructive-foreground: 256 14% 5%; /* Very dark for text on soft red */
     
-    --success: 145 67% 45%; /* #22C55E - Calming success tone */
-    --success-foreground: 0 0% 100%; /* White for text on green */
+    --success: 150 67% 67%; /* #6EE7B7 - Brighter Success / Info */
+    --success-foreground: 256 14% 5%; /* Very dark for text on bright green */
 
-    --border: 215 35% 37%; /* #3D5A80 - Subtle ocean blue tone border */
-    --input: 215 35% 37%; /* #3D5A80 */
-    --ring: 205 47% 72%; /* #98C1D9 - Primary Accent for focus rings */
+    --border: 261 17% 30%; /* #453C5C - Muted violet-gray border */
+    --input: 261 17% 30%; /* #453C5C */
+    --ring: 263 95% 70%; /* #A26BFC - Primary Accent for focus rings */
     
     /* Chart colors (retained, can be themed if needed) */
     --chart-1: 220 70% 50%;
