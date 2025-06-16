@@ -9,6 +9,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import {
+  SheetHeader, // Added
+  SheetTitle,  // Added
   MessageSquareTextIcon,
   ListVideoIcon,
   UsersIcon,
@@ -100,20 +102,19 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
 
 
   return (
-    // Removed hidden md:flex from here to make it reusable
     <aside className="w-full bg-muted/40 border-r flex flex-col h-full">
-      <div className="p-3 border-b flex justify-between items-center">
-        <Button variant="ghost" asChild className="justify-start h-9 p-2 text-base">
+      <SheetHeader className="p-3 border-b flex flex-row justify-between items-center">
+        <Button variant="ghost" asChild className="justify-start h-9 p-0 text-base">
           <Link href="/" className="flex items-center gap-2" onClick={onLinkClick}>
             <Share2Icon className="h-5 w-5 text-primary" />
-            <span className="font-semibold">CodeHinge</span>
+            <SheetTitle className="font-semibold text-primary text-lg">CodeHinge</SheetTitle>
           </Link>
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleOpenCreateActionsModal} title="Create or Join">
           <SquarePenIcon className="h-4 w-4" />
           <span className="sr-only">Create or Join Actions</span>
         </Button>
-      </div>
+      </SheetHeader>
 
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
@@ -303,3 +304,5 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
     </aside>
   );
 }
+
+    

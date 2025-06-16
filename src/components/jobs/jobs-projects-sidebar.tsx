@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import {
+  SheetHeader, // Added
+  SheetTitle,  // Added
   ArrowLeftIcon,
   BriefcaseIcon,
   PlusCircleIcon,
@@ -57,13 +59,18 @@ export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkC
   };
 
   return (
-    <aside className="w-full bg-muted/40 border-r flex-col h-full flex"> {/* Removed hidden md:flex */}
-      <div className="p-3 border-b">
-        <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => { router.push('/'); if(onLinkClick) onLinkClick(); }}>
-          <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
-          Back
-        </Button>
-      </div>
+    <aside className="w-full bg-muted/40 border-r flex-col h-full flex">
+      <SheetHeader className="p-3 border-b">
+        <SheetTitle className="text-lg font-semibold flex items-center text-primary">
+           <BriefcaseIcon className="mr-2 h-5 w-5"/> Jobs & Projects Menu
+        </SheetTitle>
+        <div className="mt-2"> {/* Added div for spacing */}
+          <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => { router.push('/'); if(onLinkClick) onLinkClick(); }}>
+            <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
+            Back
+          </Button>
+        </div>
+      </SheetHeader>
 
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
@@ -186,3 +193,5 @@ export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkC
     </aside>
   );
 }
+
+    
