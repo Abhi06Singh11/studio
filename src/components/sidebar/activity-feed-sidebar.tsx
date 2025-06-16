@@ -26,6 +26,7 @@ const currentUserProfile = {
   location: "San Francisco, CA",
 };
 
+// These links are effectively moved to the global AppSidebarContent for mobile
 const quickAccessLinks = [
   { id: 'saved', label: 'Saved Items', icon: BookmarkIcon, href: '/saved-items' },
   { id: 'groups', label: 'My Groups', icon: Users2Icon, href: '/groups' },
@@ -35,7 +36,7 @@ const quickAccessLinks = [
 
 export default function ActivityFeedSidebar() {
   return (
-    <aside className="w-full space-y-6 shrink-0">
+    <aside className="w-full space-y-6 shrink-0 hidden lg:block"> {/* Ensures this is only for desktop */}
       {/* User Profile Card Section */}
       <Card className="shadow-lg rounded-xl overflow-hidden">
         <div className="relative h-20 bg-gradient-to-br from-primary/30 to-accent/30">
@@ -76,7 +77,7 @@ export default function ActivityFeedSidebar() {
         </CardFooter>
       </Card>
 
-      {/* Premium CTA section removed */}
+      {/* Premium CTA section removed from here as it's handled in page.tsx */}
 
       {/* Quick Access Links Section */}
       <Card className="shadow-lg rounded-xl">

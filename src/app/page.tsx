@@ -5,14 +5,14 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import ActivityFeedItem from '@/components/activity-feed-item';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'; // Added CardHeader, CardTitle, CardDescription
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon, SparklesIcon } from 'lucide-react'; // Added SparklesIcon
+import { VideoIcon, ImageIcon, FileTextIcon, HashIcon, SearchIcon, SparklesIcon } from 'lucide-react';
 import CreatePostModal from "@/components/post/create-post-modal";
-import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar";
-import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar";
-import PremiumCenterModal from "@/components/premium-flow/PremiumCenterModal"; // Import PremiumCenterModal
+import ActivityFeedSidebar from "@/components/sidebar/activity-feed-sidebar"; // For Desktop
+import NewsletterSidebar from "@/components/sidebar/newsletter-sidebar"; // For Desktop
+import PremiumCenterModal from "@/components/premium-flow/PremiumCenterModal";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -62,7 +62,6 @@ const currentUser = {
   avatarAiHint: "scientist woman"
 };
 
-// New component for the Premium CTA Card
 function PremiumCtaCard({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <Card className="shadow-lg rounded-xl">
@@ -85,7 +84,7 @@ function PremiumCtaCard({ onOpenModal }: { onOpenModal: () => void }) {
 
 export default function ActivityFeedPage() {
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = React.useState(false);
-  const [isPremiumModalOpen, setIsPremiumModalOpen] = React.useState(false); // State for Premium Modal
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = React.useState(false);
   const router = useRouter();
   const [feedItems, setFeedItems] = React.useState(initialFeedItems);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -97,16 +96,16 @@ export default function ActivityFeedPage() {
 
   return (
     <>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Removed py-8 */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-          {/* Left Sidebar - User Profile & Quick Access */}
-          <div className="lg:col-span-3 space-y-6 order-1 lg:order-1">
+          {/* Desktop Left Sidebar - User Profile & Quick Access */}
+          <div className="lg:col-span-3 space-y-6 order-1 lg:order-1 hidden lg:block"> {/* Hidden on mobile, visible on lg and up */}
             <ActivityFeedSidebar />
           </div>
 
           {/* Center Content - Activity Feed */}
-          <main className="lg:col-span-6 space-y-6 order-2 lg:order-2">
+          <main className="lg:col-span-6 space-y-6 order-2"> {/* Takes full width on mobile, 6 cols on lg */}
             {/* Create Post Box */}
             <Card className="shadow-lg rounded-xl">
               <CardContent className="p-4">
@@ -170,23 +169,27 @@ export default function ActivityFeedPage() {
                 </Card>
               )}
             </div>
+            
+            {/* Premium CTA for mobile, shown after feed items */}
+            <div className="lg:hidden mt-8">
+                <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} />
+            </div>
           </main>
 
-          {/* Right Sidebar - Newsletter & Premium CTA (Desktop) */}
-          <div className="lg:col-span-3 space-y-6 order-3 lg:order-3">
+          {/* Desktop Right Sidebar - Newsletter & Premium CTA */}
+          <div className="lg:col-span-3 space-y-6 order-3 hidden lg:block"> {/* Hidden on mobile, visible on lg and up */}
             <NewsletterSidebar />
-            <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} /> {/* Use the new card component */}
+            <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} />
           </div>
 
-          {/* Sidebars for Mobile (Stacked) */}
-          <div className="lg:hidden col-span-1 mt-8 space-y-6 order-4">
-            <ActivityFeedSidebar />
-            <NewsletterSidebar />
-            <PremiumCtaCard onOpenModal={() => setIsPremiumModalOpen(true)} /> {/* Use the new card component */}
-          </div>
+          {/* 
+            Removed the explicit mobile-only block for ActivityFeedSidebar and NewsletterSidebar.
+            ActivityFeedSidebar (Profile/Quick Actions) is now in the global nav drawer for mobile.
+            Newsletter link is in the global nav drawer for mobile.
+            PremiumCtaCard is moved into the main column flow for mobile.
+          */}
         </div>
       </div>
-      {/* Premium Modal */}
       <PremiumCenterModal
         isOpen={isPremiumModalOpen}
         onOpenChange={setIsPremiumModalOpen}
@@ -194,4 +197,3 @@ export default function ActivityFeedPage() {
     </>
   );
 }
-
