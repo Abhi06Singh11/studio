@@ -1,6 +1,7 @@
 
 "use client";
 
+import * as React from "react"; // Added missing React import
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
