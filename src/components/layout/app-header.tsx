@@ -36,7 +36,7 @@ const sampleUser = {
 
 // Re-filter desktop nav items based on the (now updated) allNavItems from app-sidebar
 const currentDesktopNavItems = mobileNavItems.filter(
-  item => !["Events", "Newsletters", "Admin Panel"].includes(item.label)
+  item => !["Events", "Newsletters", "Admin Panel", "Saved Items", "My Groups"].includes(item.label)
 );
 
 
