@@ -5,8 +5,10 @@ import * as React from "react";
 import SavedItemsSidebar from "@/components/saved-items/saved-items-sidebar";
 import SavedItemCard from "@/components/saved-items/saved-item-card";
 import SavedItemsTipsPanel from "@/components/saved-items/saved-items-tips-panel";
-import { BriefcaseIcon, FolderKanbanIcon, LightbulbIcon, FileTextIcon, AlertTriangleIcon } from "lucide-react";
+import { BriefcaseIcon, FolderKanbanIcon, LightbulbIcon, FileTextIcon, AlertTriangleIcon, MenuIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const sampleSavedItems = [
   {
@@ -56,14 +58,34 @@ const sampleSavedItems = [
 ];
 
 export default function SavedItemsPage() {
-  // Conceptual: state for mobile sidebar visibility
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = React.useState(false);
 
   return (
     <div className="container mx-auto max-w-7xl py-8">
+      {/* Mobile Menu Trigger */}
+      <div className="lg:hidden mb-4">
+        <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MenuIcon className="h-6 w-6" />
+              <span className="sr-only">Open Dashboard Menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-72 bg-card flex flex-col">
+            <SheetHeader className="p-3 border-b">
+              <SheetTitle className="sr-only">Dashboard Navigation</SheetTitle>
+            </SheetHeader>
+            <SavedItemsSidebar 
+              onLinkClick={() => setIsMobileSidebarOpen(false)}
+              isMobileContext={true} 
+            />
+          </SheetContent>
+        </Sheet>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Sidebar for Saved Items page */}
-        <aside className="lg:col-span-3">
+        {/* Desktop Left Sidebar */}
+        <aside className="lg:col-span-3 hidden lg:block">
           <SavedItemsSidebar />
         </aside>
 
@@ -95,10 +117,15 @@ export default function SavedItemsPage() {
           </Card>
         </main>
 
-        {/* Right Panel for Tips */}
-        <aside className="lg:col-span-3">
+        {/* Desktop Right Panel for Tips */}
+        <aside className="lg:col-span-3 hidden lg:block">
           <SavedItemsTipsPanel />
         </aside>
+        
+        {/* Mobile Right Panel for Tips (if desired, or remove if too cluttered) */}
+        <div className="lg:hidden mt-8">
+            <SavedItemsTipsPanel />
+        </div>
       </div>
     </div>
   );
