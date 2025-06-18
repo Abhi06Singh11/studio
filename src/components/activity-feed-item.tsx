@@ -3,7 +3,9 @@ import Image from 'next/image';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator'; // Added Separator
 import { HeartIcon, MessageCircleIcon, Share2Icon, MoreHorizontalIcon, SmilePlusIcon } from 'lucide-react';
+import { cn } from '@/lib/utils'; // For potential responsive class usage
 
 interface ActivityFeedItemProps {
   userName: string;
@@ -49,6 +51,7 @@ export default function ActivityFeedItem({
         </div>
         <Button variant="ghost" size="icon">
           <MoreHorizontalIcon className="h-5 w-5" />
+          <span className="sr-only">More options</span>
         </Button>
       </CardHeader>
       <CardContent className="px-4 pb-3">
@@ -67,27 +70,32 @@ export default function ActivityFeedItem({
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-start p-4 border-t space-y-2">
-        <div className="flex justify-between w-full">
-          <Button variant="ghost" size="sm">
-            <HeartIcon className="mr-2 h-4 w-4" /> {likes} Likes
+      <CardFooter className="flex flex-col items-start p-3 sm:p-4 border-t space-y-2">
+        {/* Main Actions: Likes, Comments, Shares */}
+        <div className="flex justify-around items-center w-full">
+          <Button variant="ghost" size="sm" className="text-xs sm:text-sm flex-1">
+            <HeartIcon className="mr-1.5 h-4 w-4" /> <span className="whitespace-nowrap">{likes} Likes</span>
           </Button>
-          <Button variant="ghost" size="sm">
-            <MessageCircleIcon className="mr-2 h-4 w-4" /> {comments} Comments
+          <Button variant="ghost" size="sm" className="text-xs sm:text-sm flex-1">
+            <MessageCircleIcon className="mr-1.5 h-4 w-4" /> <span className="whitespace-nowrap">{comments} Comments</span>
           </Button>
-          <Button variant="ghost" size="sm">
-            <Share2Icon className="mr-2 h-4 w-4" /> {shares} Shares
+          <Button variant="ghost" size="sm" className="text-xs sm:text-sm flex-1">
+            <Share2Icon className="mr-1.5 h-4 w-4" /> <span className="whitespace-nowrap">{shares} Shares</span>
           </Button>
         </div>
-        <div className="flex items-center space-x-1 pt-1 w-full border-t mt-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-                <SmilePlusIcon className="h-5 w-5"/>
+        
+        <Separator className="my-1 sm:my-2 w-full" /> 
+        
+        {/* Reaction Emojis Picker */}
+        <div className="flex items-center gap-1 w-full justify-start">
+            <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8">
+                <SmilePlusIcon className="h-4 w-4 sm:h-5 sm:w-5"/>
                 <span className="sr-only">Add reaction</span>
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2">👍</Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2">🎉</Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2">❤️</Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2">🤔</Button>
+            <Button variant="ghost" size="sm" className="h-7 px-1.5 sm:h-8 sm:px-2 text-sm sm:text-base">👍</Button>
+            <Button variant="ghost" size="sm" className="h-7 px-1.5 sm:h-8 sm:px-2 text-sm sm:text-base">🎉</Button>
+            <Button variant="ghost" size="sm" className="h-7 px-1.5 sm:h-8 sm:px-2 text-sm sm:text-base">❤️</Button>
+            <Button variant="ghost" size="sm" className="h-7 px-1.5 sm:h-8 sm:px-2 text-sm sm:text-base">🤔</Button>
         </div>
       </CardFooter>
     </Card>
