@@ -25,6 +25,7 @@ import {
   MailCheckIcon,
   BookmarkIcon, // Added for Saved Items
   Users2Icon as GroupsIcon, // Added for My Groups (alias for clarity)
+  CrownIcon, // Added for Premium button
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Separator } from '../ui/separator'; // Added Separator
@@ -128,8 +129,27 @@ export default function AppSidebarContent({ onLinkClick }: AppSidebarContentProp
           );
         })}
       </nav>
-       {/* User profile section in footer */}
-       <div className="mt-auto border-t p-3">
+       {/* User profile and Premium button section in footer */}
+       <div className="mt-auto border-t p-3 space-y-3">
+        
+        {/* "Recommended" Label */}
+        <div className="text-center">
+          <p className="text-xs font-medium text-yellow-500">🌟 Recommended</p>
+        </div>
+
+        {/* New Premium Button */}
+        <Button 
+          asChild 
+          size="lg" 
+          className="w-full rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 ease-in-out shadow-md hover:shadow-lg focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2"
+        >
+          <Link href="/premium" onClick={onLinkClick} aria-label="Upgrade to Premium">
+            <CrownIcon className="mr-2 h-5 w-5" />
+            Upgrade to Premium
+          </Link>
+        </Button>
+
+        {/* Existing User Profile Link */}
          <Link href="/profiles/edit" className="flex items-center gap-2 p-2 rounded-md hover:bg-accent" onClick={onLinkClick}>
             <Avatar className="h-9 w-9">
                 <AvatarImage src={sampleUser.avatarUrl} alt={sampleUser.name} data-ai-hint={sampleUser.dataAiHint}/>
