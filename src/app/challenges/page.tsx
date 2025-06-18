@@ -12,7 +12,7 @@ import MyChallengesView from "@/components/challenges/views/my-challenges-view";
 import CreateChallengeModal from "@/components/challenges/modals/create-challenge-modal";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, PlusCircleIcon } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
 
 export type ChallengesWorkspaceView =
   | "all-challenges"
@@ -86,12 +86,16 @@ export default function ChallengesPage() {
                     Menu
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="p-0 w-72 bg-card">
+                <SheetContent side="left" className="p-0 w-72 bg-card flex flex-col">
+                  <SheetHeader className="p-3 border-b">
+                    <SheetTitle className="sr-only">Challenges Navigation</SheetTitle>
+                  </SheetHeader>
                   <ChallengesSidebar
                     activeView={activeView}
                     setActiveView={setActiveView}
                     returnToPath={returnToPath}
                     onLinkClick={handleMobileLinkClick}
+                    isMobileContext={true}
                   />
                 </SheetContent>
               </Sheet>

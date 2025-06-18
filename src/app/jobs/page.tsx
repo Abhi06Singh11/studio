@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { MenuIcon, BriefcaseIcon, UserPlusIcon } from "lucide-react"; 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
 
 export type JobsProjectsWorkspaceView =
   | "post-job"
@@ -100,11 +100,15 @@ export default function JobsProjectsWorkspacePage() {
                   Menu
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-72 bg-card">
+              <SheetContent side="left" className="p-0 w-72 bg-card flex flex-col">
+                <SheetHeader className="p-3 border-b">
+                  <SheetTitle className="sr-only">Jobs & Projects Navigation</SheetTitle>
+                </SheetHeader>
                 <JobsProjectsSidebar
                   activeView={activeView}
                   setActiveView={handleSetActiveView}
                   onLinkClick={handleMobileLinkClick}
+                  isMobileContext={true}
                 />
               </SheetContent>
             </Sheet>

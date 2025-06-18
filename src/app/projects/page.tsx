@@ -23,7 +23,7 @@ import MyProjectsOrgView from "@/components/project/views/my-projects-org-view";
 import CreateActionsModal from "@/components/project/create-actions-modal";
 import ActivateWorkspaceModal from "@/components/workspace/activate-workspace-modal";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"; // Import Sheet components
 import { MenuIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
@@ -151,12 +151,16 @@ export default function ProjectsPage() {
                   Menu
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-72 bg-card">
+              <SheetContent side="left" className="p-0 w-72 bg-card flex flex-col"> {/* Added flex flex-col */}
+                <SheetHeader className="p-3 border-b"> {/* Added SheetHeader */}
+                  <SheetTitle className="sr-only">Workspace Navigation</SheetTitle> {/* Added SheetTitle for accessibility */}
+                </SheetHeader>
                 <ProjectWorkspaceSidebar
                   activeView={activeView}
                   setActiveView={handleSetActiveView}
                   onOpenCreateActionsModal={handleOpenCreateActionsModal}
                   onLinkClick={handleMobileLinkClick} // Pass handler to close sheet
+                  isMobileContext={true} // Indicate mobile context
                 />
               </SheetContent>
             </Sheet>

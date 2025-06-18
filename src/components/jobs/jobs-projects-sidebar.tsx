@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet"; // Corrected import
+// Removed SheetHeader, SheetTitle import
 import {
   ArrowLeftIcon,
   BriefcaseIcon,
@@ -26,7 +26,8 @@ import { useRouter } from "next/navigation";
 interface JobsProjectsSidebarProps {
   activeView: JobsProjectsWorkspaceView;
   setActiveView: (view: JobsProjectsWorkspaceView) => void;
-  onLinkClick?: () => void; // Added for mobile sheet
+  onLinkClick?: () => void;
+  isMobileContext?: boolean; // New prop
 }
 
 const jobMenuItems = [
@@ -44,7 +45,12 @@ const savedPostsMenuItems = [
   { id: "saved-projects", label: "Saved Projects", icon: BookmarkIcon },
 ];
 
-export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkClick }: JobsProjectsSidebarProps) {
+export default function JobsProjectsSidebar({ 
+    activeView, 
+    setActiveView, 
+    onLinkClick,
+    isMobileContext = false 
+}: JobsProjectsSidebarProps) {
   const router = useRouter();
   const [isJobsExpanded, setIsJobsExpanded] = React.useState(true);
   const [isProjectsExpanded, setIsProjectsExpanded] = React.useState(true);
@@ -58,18 +64,24 @@ export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkC
   };
 
   return (
-    <aside className="w-full bg-muted/40 border-r flex-col h-full flex">
-      <SheetHeader className="p-3 border-b">
-        <SheetTitle className="text-lg font-semibold flex items-center text-primary">
+    <aside className={cn(
+        "w-full flex-col h-full flex",
+        isMobileContext ? "bg-card" : "bg-muted/40 border-r"
+    )}>
+      <div className={cn(
+          "p-3 border-b",
+          isMobileContext && "pt-0"
+      )}>
+        <div className="text-lg font-semibold flex items-center text-primary">
            <BriefcaseIcon className="mr-2 h-5 w-5"/> Jobs & Projects Menu
-        </SheetTitle>
-        <div className="mt-2"> {/* Added div for spacing */}
+        </div>
+        <div className="mt-2"> 
           <Button variant="ghost" className="w-full justify-start text-sm h-9" onClick={() => { router.push('/'); if(onLinkClick) onLinkClick(); }}>
             <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
             Back
           </Button>
         </div>
-      </SheetHeader>
+      </div>
 
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
@@ -192,5 +204,3 @@ export default function JobsProjectsSidebar({ activeView, setActiveView, onLinkC
     </aside>
   );
 }
-
-    

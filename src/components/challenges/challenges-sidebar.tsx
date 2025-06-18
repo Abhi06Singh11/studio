@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet"; // Corrected import
+// Removed SheetHeader, SheetTitle import
 import {
   ArrowLeftIcon,
   ListChecksIcon,
@@ -24,7 +24,8 @@ interface ChallengesSidebarProps {
   activeView: ChallengesWorkspaceView;
   setActiveView: (view: ChallengesWorkspaceView) => void;
   returnToPath?: string;
-  onLinkClick?: () => void; // Added for mobile sheet
+  onLinkClick?: () => void;
+  isMobileContext?: boolean; // New prop
 }
 
 const menuItems = [
@@ -35,7 +36,13 @@ const menuItems = [
   { id: "my-challenges", label: "My Challenges", icon: UserCheckIcon },
 ];
 
-export default function ChallengesSidebar({ activeView, setActiveView, returnToPath = "/", onLinkClick }: ChallengesSidebarProps) {
+export default function ChallengesSidebar({ 
+    activeView, 
+    setActiveView, 
+    returnToPath = "/", 
+    onLinkClick,
+    isMobileContext = false 
+}: ChallengesSidebarProps) {
   const handleSetActiveView = (view: ChallengesWorkspaceView) => {
     setActiveView(view);
     if (onLinkClick) {
@@ -44,13 +51,20 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
   };
 
   return (
-    <aside className="w-full bg-muted/40 border-r flex-col h-full flex">
-      <SheetHeader className="p-3 border-b">
-        <SheetTitle className="text-lg font-semibold flex items-center text-primary">
+    <aside className={cn(
+        "w-full flex-col h-full flex",
+        isMobileContext ? "bg-card" : "bg-muted/40 border-r"
+    )}>
+      {/* Header section of the sidebar itself */}
+      <div className={cn(
+        "p-3 border-b",
+        isMobileContext && "pt-0" // No top padding if mobile, as SheetHeader from page provides it
+      )}>
+        <div className="text-lg font-semibold flex items-center text-primary">
           <Code2Icon className="mr-2 h-5 w-5"/>
           Challenges Menu
-        </SheetTitle>
-        <div className="mt-2"> {/* Added div for spacing */}
+        </div>
+        <div className="mt-2"> 
           <Button variant="ghost" className="w-full justify-start text-sm h-9" asChild>
             <Link href={returnToPath} onClick={onLinkClick}>
               <ArrowLeftIcon className="mr-2.5 h-4 w-4" />
@@ -58,11 +72,10 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
             </Link>
           </Button>
         </div>
-      </SheetHeader>
+      </div>
 
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
-          {/* Removed the original h2 title as it's now in SheetHeader */}
           {menuItems.map((item) => (
             <Button
               key={item.id}
@@ -88,5 +101,3 @@ export default function ChallengesSidebar({ activeView, setActiveView, returnToP
     </aside>
   );
 }
-
-    

@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
+// Removed SheetHeader, SheetTitle import from here as they are handled by the page
 import {
   MessageSquareTextIcon,
   ListVideoIcon,
@@ -40,7 +40,8 @@ interface ProjectWorkspaceSidebarProps {
   activeView: ProjectWorkspaceView;
   setActiveView: (view: ProjectWorkspaceView) => void;
   onOpenCreateActionsModal: () => void;
-  onLinkClick?: () => void; // Added for mobile sheet
+  onLinkClick?: () => void;
+  isMobileContext?: boolean; // New prop
 }
 
 const mainNavItems = [
@@ -78,7 +79,13 @@ const projectOrgMenuItems = [
 ];
 
 
-export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onOpenCreateActionsModal, onLinkClick }: ProjectWorkspaceSidebarProps) {
+export default function ProjectWorkspaceSidebar({ 
+    activeView, 
+    setActiveView, 
+    onOpenCreateActionsModal, 
+    onLinkClick,
+    isMobileContext = false // Default to false
+}: ProjectWorkspaceSidebarProps) {
   const router = useRouter();
   const [isChannelsExpanded, setIsChannelsExpanded] = React.useState(true);
   const [isDmsExpanded, setIsDmsExpanded] = React.useState(true);
@@ -101,12 +108,17 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
 
 
   return (
-    <aside className="w-full bg-muted/40 border-r flex flex-col h-full">
-      <SheetHeader className="p-3 border-b flex flex-row justify-between items-center">
-        {/* Visually hidden title for accessibility, direct child of SheetHeader */}
-        <SheetTitle className="sr-only">Workspace Navigation</SheetTitle>
-        
-        {/* Visual branding and link */}
+    // If in mobile context, this aside is directly inside SheetContent which already has p-0,
+    // so internal padding (p-2) is needed for nav. For desktop, bg-muted/40 and border-r are on this aside.
+    <aside className={cn(
+        "w-full flex flex-col h-full",
+        isMobileContext ? "bg-card" : "bg-muted/40 border-r" 
+    )}>
+      {/* Header section of the sidebar itself */}
+      <div className={cn(
+          "p-3 border-b flex flex-row justify-between items-center",
+          isMobileContext && "pt-0" // No top padding if mobile, as SheetHeader from page provides it
+      )}>
         <Button variant="ghost" asChild className="justify-start h-9 p-0 text-base">
           <Link href="/" className="flex items-center gap-2" onClick={onLinkClick}>
             <Share2Icon className="h-5 w-5 text-primary" />
@@ -114,12 +126,11 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
           </Link>
         </Button>
         
-        {/* Other header actions */}
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleOpenCreateActionsModal} title="Create or Join">
           <SquarePenIcon className="h-4 w-4" />
           <span className="sr-only">Create or Join Actions</span>
         </Button>
-      </SheetHeader>
+      </div>
 
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
@@ -309,4 +320,3 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
     </aside>
   );
 }
-    
