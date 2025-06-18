@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet"; // Corrected import
+import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import {
   MessageSquareTextIcon,
   ListVideoIcon,
@@ -103,12 +103,18 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
   return (
     <aside className="w-full bg-muted/40 border-r flex flex-col h-full">
       <SheetHeader className="p-3 border-b flex flex-row justify-between items-center">
+        {/* Visually hidden title for accessibility, direct child of SheetHeader */}
+        <SheetTitle className="sr-only">Workspace Navigation</SheetTitle>
+        
+        {/* Visual branding and link */}
         <Button variant="ghost" asChild className="justify-start h-9 p-0 text-base">
           <Link href="/" className="flex items-center gap-2" onClick={onLinkClick}>
             <Share2Icon className="h-5 w-5 text-primary" />
-            <SheetTitle className="font-semibold text-primary text-lg">CodeHinge</SheetTitle>
+            <span className="font-semibold text-lg text-primary">CodeHinge</span>
           </Link>
         </Button>
+        
+        {/* Other header actions */}
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleOpenCreateActionsModal} title="Create or Join">
           <SquarePenIcon className="h-4 w-4" />
           <span className="sr-only">Create or Join Actions</span>
@@ -303,5 +309,4 @@ export default function ProjectWorkspaceSidebar({ activeView, setActiveView, onO
     </aside>
   );
 }
-
     

@@ -10,36 +10,36 @@ body {
 @layer base {
   :root {
     /* Light Mode (Day) - "Enigmatic Dawn" */
-    --background: 257 60% 98%; /* #F8F7FC */
-    --foreground: 251 13% 27%; /* #3D3B4E - Body Text */
+    --background: 206 33% 97%; /* #F7F9FA - Clean, off-white */
+    --foreground: 215 28% 29%; /* #3D5A80 - Calm, serious (Body Text) */
 
-    --card: 0 0% 100%; /* #FFFFFF - Cards / Panels */
-    --card-foreground: 251 13% 27%; /* #3D3B4E - Body Text on Cards */
+    --card: 0 0% 100%; /* #FFFFFF - Cards / Panels (Solid White for HSL) */
+    --card-foreground: 215 28% 29%; /* #3D5A80 - Body Text on Cards */
 
     --popover: 0 0% 100%; /* #FFFFFF */
-    --popover-foreground: 251 13% 27%; /* #3D3B4E */
+    --popover-foreground: 215 28% 29%; /* #3D5A80 */
 
-    --primary: 261 100% 44%; /* #4A00E0 - Primary Accent, deep indigo/violet */
+    --primary: 215 38% 37%; /* #3D5A80 - Primary Accent (Soft Navy) */
     --primary-foreground: 0 0% 100%; /* White for contrast */
 
-    --secondary: 81 85% 67%; /* #BEF264 - Secondary Accent / CTA, neon lime */
-    --secondary-foreground: 261 100% 10%; /* Dark color for contrast on lime */
+    --secondary: 14 82% 61%; /* #EE6C4D - Secondary Accent / CTA (Contrast Orange-Red) */
+    --secondary-foreground: 0 0% 100%; /* White for contrast */
     
-    --muted: 260 27% 94%; /* #E2DDEF - Subtle cool lavender-gray for muted backgrounds (derived) */
-    --muted-foreground: 254 14% 58%; /* #8C88A2 - Muted / Disabled Text */
+    --muted: 210 22% 85%; /* #CCD5E0 - Derived from Muted Text & Border for subtle backgrounds */
+    --muted-foreground: 211 18% 63%; /* #7B8A9D - Muted / Disabled Text (Soft neutral gray) */
 
-    --accent: 81 85% 67%; /* #BEF264 - Same as Secondary Accent for hover states */
-    --accent-foreground: 261 100% 10%;  /* Dark color for contrast on lime */
+    --accent: 14 82% 61%; /* #EE6C4D - Same as Secondary Accent for hover states */
+    --accent-foreground: 0 0% 100%;  /* White for contrast */
 
-    --destructive: 0 100% 71%; /* #FF6B6B - Warning / Error, clear red */
-    --destructive-foreground: 0 0% 100%; /* White for text on red */
+    --destructive: 0 100% 83%; /* #FFADAD - Warning / Error (Soft Red) */
+    --destructive-foreground: 0 70% 30%; /* Darker red for text on soft red */
     
-    --success: 145 58% 55%; /* #50C878 - Success / Info, emerald green */
-    --success-foreground: 0 0% 100%; /* White for text on green */
+    --success: 127 80% 85%; /* #B2F2BB - Success / Info (Fresh Green) */
+    --success-foreground: 130 50% 25%; /* Darker green for text on fresh green */
 
-    --border: 260 27% 91%; /* #E2DDEF - Border / Divider */
-    --input: 260 27% 91%; /* #E2DDEF */
-    --ring: 261 100% 44%; /* #4A00E0 - Primary Accent for focus rings */
+    --border: 182 88% 94%; /* #E0FBFC - Border / Divider (Subtle and fresh) */
+    --input: 182 88% 94%; /* #E0FBFC */
+    --ring: 215 38% 37%; /* #3D5A80 - Primary Accent for focus rings */
 
     --radius: 0.5rem;
 
@@ -63,36 +63,36 @@ body {
 
   .dark {
     /* Dark Mode (Night) - "Cipher Night" */
-    --background: 256 14% 10%; /* #16131D - Deep tech black/slate */
-    --foreground: 257 25% 85%; /* #D4D0E1 - Light cool gray text */
+    --background: 216 28% 10%; /* #121721 - Deep tech black */
+    --foreground: 208 27% 91%; /* #D8E1E8 - Smooth gray-white text (Body Text) */
 
-    --card: 257 16% 16%; /* #252130 - Dark purple-slate */
-    --card-foreground: 257 25% 85%; /* #D4D0E1 - Text on Cards */
+    --card: 214 27% 16%; /* #1F2933 - Dark slate with contrast (Cards / Panels) */
+    --card-foreground: 208 27% 91%; /* #D8E1E8 - Text on Cards */
 
-    --popover: 257 16% 16%; /* #252130 */
-    --popover-foreground: 257 25% 85%; /* #D4D0E1 */
+    --popover: 214 27% 16%; /* #1F2933 */
+    --popover-foreground: 208 27% 91%; /* #D8E1E8 */
 
-    --primary: 263 95% 70%; /* #A26BFC - Primary Accent, vibrant violet */
-    --primary-foreground: 256 14% 10%; /* Dark for text on light violet */
+    --primary: 205 57% 72%; /* #98C1D9 - Primary Accent (Soft cyan, glows subtly) */
+    --primary-foreground: 216 28% 10%; /* Deep tech black for contrast */
 
-    --secondary: 76 93% 79%; /* #D9F99D - Secondary Accent / CTA, softer neon lime */
-    --secondary-foreground: 256 14% 10%; /* Dark color for contrast on lime */
+    --secondary: 14 82% 61%; /* #EE6C4D - Secondary Accent / CTA (Eye-catching warmth) */
+    --secondary-foreground: 0 0% 100%; /* White for contrast */
     
-    --muted: 260 15% 25%; /* #3C3649 - Derived dark muted background (darker than card) */
-    --muted-foreground: 257 10% 49%; /* #77728B - Low-contrast UI text */
+    --muted: 216 28% 20%; /* Darker muted background */
+    --muted-foreground: 203 20% 46%; /* #607D8B - Low-contrast UI text (Muted / Disabled Text) */
 
-    --accent: 76 93% 79%; /* #D9F99D - Same as Secondary Accent */
-    --accent-foreground: 256 14% 10%; /* Dark for contrast on lime */
+    --accent: 14 82% 61%; /* #EE6C4D - Same as Secondary Accent */
+    --accent-foreground: 0 0% 100%; /* White for contrast */
 
-    --destructive: 0 100% 83%; /* #FFAAAA - Softer Warning / Error */
-    --destructive-foreground: 256 14% 5%; /* Very dark for text on soft red */
+    --destructive: 0 91% 71%; /* #F87171 - Warning / Error (Non-aggressive red) */
+    --destructive-foreground: 0 0% 100%; /* White for text on red */
     
-    --success: 150 67% 67%; /* #6EE7B7 - Brighter Success / Info */
-    --success-foreground: 256 14% 5%; /* Very dark for text on bright green */
+    --success: 145 63% 49%; /* #22C55E - Success / Info (Calming success tone) */
+    --success-foreground: 0 0% 100%; /* White for text on green */
 
-    --border: 261 17% 30%; /* #453C5C - Muted violet-gray border */
-    --input: 261 17% 30%; /* #453C5C */
-    --ring: 263 95% 70%; /* #A26BFC - Primary Accent for focus rings */
+    --border: 215 28% 29%; /* #3D5A80 - Border / Divider (Subtle ocean blue tone) */
+    --input: 215 28% 29%; /* #3D5A80 */
+    --ring: 205 57% 72%; /* #98C1D9 - Primary Accent for focus rings */
     
     /* Chart colors (retained, can be themed if needed) */
     --chart-1: 220 70% 50%;
@@ -136,5 +136,17 @@ body {
 
   .animate-fadeInPage {
     animation: fadeInPage 0.4s ease-out forwards;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }
